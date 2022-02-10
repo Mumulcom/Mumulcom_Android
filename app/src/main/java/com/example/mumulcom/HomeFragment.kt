@@ -1,7 +1,6 @@
 package com.example.mumulcom
 
 import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,7 +11,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.mumulcom.databinding.FragmentHomeBinding
 
 
-class HomeFragment : Fragment(),RecentQuestionView {
+class HomeFragment : Fragment(), RecentQuestionView {
     lateinit var binding: FragmentHomeBinding
     private lateinit var recentQuestionAdapter: RecentQuestionAdapter
 
@@ -27,7 +26,8 @@ class HomeFragment : Fragment(),RecentQuestionView {
         initCategoryButton()
 
         binding.searchBtn.setOnClickListener {
-            startActivity(Intent(activity, SearchActivity::class.java))
+            val intent = Intent(requireContext(), SearchActivity::class.java)
+            startActivity(intent)
         }
 
         return binding.root
@@ -62,6 +62,7 @@ class HomeFragment : Fragment(),RecentQuestionView {
         val intent = Intent(requireContext(),QuestionDetailActivity::class.java)
         intent.putExtra("bigCategoryName",question.bigCategoryName) // 상위 카테고리명 넘김
         intent.putExtra("questionIdx",question.questionIdx) // 질문 고유 번호 넘김
+        intent.putExtra("type", question.type)
         startActivity(intent)
 
 
@@ -72,7 +73,7 @@ class HomeFragment : Fragment(),RecentQuestionView {
         questionService.setRecentQuestionView(this)
 
         // TODO sharedPreference 에 저장된 userIdx 값으로 바꿔서 넣기
-        questionService.getQuestions(3) // 현재 로그인한 사용자 정보 넣어줌.
+        questionService.getQuestions(getUserIdx(requireContext()), getJwt(requireContext())) // 현재 로그인한 사용자 정보 넣어줌.
     }
 
 
