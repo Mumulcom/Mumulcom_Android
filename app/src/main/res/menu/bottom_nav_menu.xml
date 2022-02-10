@@ -27,7 +27,7 @@
         android:title="알림" />
     <item
         android:id="@+id/profileFragment"
-        android:icon="@drawable/main_btm_my_selector"
+        android:icon="@drawable/main_btm_profile_selector"
         app:showAsAction="always"
         android:title="프로필" />
 
