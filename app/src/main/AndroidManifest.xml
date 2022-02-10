@@ -35,8 +35,8 @@
         </activity>
       
         <activity android:name=".QuestionActivity" android:exported="false" />
-        <activity android:name=".MyQuestionAllActivity" android:exported="false" />
         <activity android:name=".QuestionBoardActivity" android:exported="false" />
+        <activity android:name=".QuestionDetailActivity" />
         <activity android:name=".QuestionCategoryActivity"/>
         <activity android:name=".CameraPermissionActivity"/>
         <activity android:name=".CameraPermissionAccessActivity"/>
@@ -47,6 +47,11 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".SignUpCategoryActivity" />
+        <activity android:name=".SearchActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
 
         <!--카카오 로그인-->
         <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity" >
