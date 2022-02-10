@@ -76,10 +76,12 @@
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/drawable/ic_bottom_scrap_select.xml" value="0.1605" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/drawable/ic_character.xml" value="0.1435" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/drawable/ic_check_no.xml" value="0.1605" />
+        <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/drawable/ic_concept_question_img.xml" value="0.1295" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/drawable/ic_group_7400.xml" value="0.255" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/drawable/ic_my_answer_select.xml" value="0.1605" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/drawable/ic_my_question_no_select.xml" value="0.1605" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/drawable/ic_next.xml" value="0.1" />
+        <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/drawable/ic_question.xml" value="0.1" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/drawable/ic_question_face.xml" value="0.1605" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/drawable/ic_search_close.xml" value="0.1555" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/drawable/ic_signup_bottom.xml" value="0.207" />
@@ -114,16 +116,23 @@
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/drawable/tab_question_selector.xml" value="0.1695" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/drawable/typing_done_no_select.xml" value="0.232" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/activity_aftercheckbutton.xml" value="0.23385416666666667" />
+        <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/activity_answer.xml" value="0.176" />
+        <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/activity_answercamareshooting.xml" value="0.20478837109876016" />
+        <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/activity_answercamerashooting.xml" value="0.16460025651988028" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/activity_camerapermission.xml" value="0.18771929824561404" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/activity_camerapermissionaccess.xml" value="0.18771929824561404" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/activity_camerashooting.xml" value="0.18771929824561404" />
+        <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/activity_checkcodingquestion.xml" value="0.20478837109876016" />
+        <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/activity_checkconceptquestion.xml" value="0.20478837109876016" />
+        <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/activity_codingcamerashooting.xml" value="0.20478837109876016" />
+        <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/activity_conceptcamerashooting.xml" value="0.20478837109876016" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/activity_main.xml" value="0.1890625" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/activity_my_question_all.xml" value="0.2100877192982456" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/activity_question.xml" value="0.1265625" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/activity_question_board.xml" value="0.1890625" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/activity_question_detail.xml" value="0.1671654553227875" />
-        <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/activity_questioncategory.xml" value="0.17239583333333333" />
+        <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/activity_questioncategory.xml" value="0.176" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/activity_search.xml" value="0.16" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/activity_selectcategorytop.xml" value="0.264" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/activity_signup.xml" value="0.4" />
@@ -134,7 +143,7 @@
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/fragment_alarm.xml" value="0.1" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/fragment_home.xml" value="0.264" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/fragment_question.xml" value="0.176" />
-        <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/fragment_scrap.xml" value="0.264" />
+        <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/fragment_scrap.xml" value="0.176" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/fragment_tab_my_answer.xml" value="0.136" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/fragment_tab_my_question.xml" value="0.36059479553903345" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/general_item.xml" value="0.17058572039333048" />
@@ -142,6 +151,9 @@
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/item_alarm_header.xml" value="0.2" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/item_big_category.xml" value="0.1658828559213339" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/item_category.xml" value="0.1658828559213339" />
+        <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/item_select_bottom.xml" value="0.20478837109876016" />
+        <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/item_select_top.xml" value="0.20478837109876016" />
+        <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/item_slider.xml" value="0.152" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/item_small_category.xml" value="0.1658828559213339" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/item_spinner.xml" value="0.264" />
         <entry key="..\:/Users/ji_11/Documents/GitHub/Mumulcom_Android/app/src/main/res/layout/menuitem.xml" value="0.1838392475416845" />

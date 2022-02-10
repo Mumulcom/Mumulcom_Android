@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background"
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="30dp">
+
+            <ImageView
+                android:id="@+id/checkcodingquestion_BackIv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30.77dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/background"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_back_black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/checkcodingquestion_QuestionIv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="30dp"
+                android:background="@color/background"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_question"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/checkcodingquestion_Vp"
+                android:layout_width="286.21dp"
+                android:layout_height="142.84dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/button_aftercheck"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/checkcodingquestion_BackIv" />
+
+            <me.relex.circleindicator.CircleIndicator3
+                android:id="@+id/checkcoding_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                app:ci_drawable="@drawable/indicator_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/checkcodingquestion_Vp" />
+
+
+            <ImageView
+                android:id="@+id/checkcodingquestion_PlusIv"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="#C4C4C4"
+                android:src="@drawable/ic_image_plus"
+                app:layout_constraintBottom_toBottomOf="@id/checkcodingquestion_Vp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/checkcodingquestion_Vp" />
+
+            <TextView
+                android:id="@+id/checkcodingquestion_CategoryTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="50dp"
+                android:text="카테고리"
+                android:textColor="@color/black"
+                android:textSize="45px"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/checkcodingquestion_Vp" />
+
+            <TextView
+                android:id="@+id/checkcodingquestion_NeccessaryTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="3dp"
+                android:text="* 필수"
+                android:textColor="#FFBD80"
+                android:textSize="34.82px"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/checkcodingquestion_CategoryTv"
+                app:layout_constraintTop_toTopOf="@id/checkcodingquestion_CategoryTv" />
+
+            <LinearLayout
+                android:id="@+id/checkcodingquestion_spinner_ly"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/checkcodingquestion_NeccessaryTv">
+
+                <Spinner
+                    android:id="@+id/checkcodingquestion_big_category_sp"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="25dp"
+                    android:background="@drawable/bg_category_outline"
+                    android:popupBackground="@drawable/bg_category_outline"
+                    android:layout_gravity="start"
+                    tools:listitem="@layout/item_big_category"/>
+
+                <Spinner
+                    android:id="@+id/checkcodingquestion_small_category_sp"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="15dp"
+                    android:background="@drawable/bg_category_outline"
+                    android:popupBackground="@drawable/bg_category_outline"
+                    tools:listitem="@layout/item_small_category"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/checkcodingquestion_TitleTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="30dp"
+                android:text="제목"
+                android:textColor="@color/black"
+                android:textSize="45px"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/checkcodingquestion_spinner_ly" />
+
+            <TextView
+                android:id="@+id/checkcodingquestion_Neccessary2Tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="3dp"
+                android:text="* 필수"
+                android:textColor="#FFBD80"
+                android:textSize="34.82px"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/checkcodingquestion_TitleTv"
+                app:layout_constraintTop_toTopOf="@id/checkcodingquestion_TitleTv" />
+
+            <EditText
+                android:id="@+id/checkcodingquestion_TitleTextEt"
+                android:layout_width="fill_parent"
+                android:layout_height="33.52dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="25dp"
+                android:background="@drawable/button_customnext"
+                android:hint=" 제목을 입력해주세요."
+                android:inputType="textMultiLine"
+                android:lines="8"
+                android:maxLines="10"
+                android:paddingStart="10dp"
+                android:scrollbars="vertical"
+                android:textColor="@color/black"
+                android:textColorHint="#474A57"
+                android:textSize="34.82px"
+                app:layout_constraintStart_toStartOf="@id/checkcodingquestion_TitleTv"
+                app:layout_constraintTop_toBottomOf="@id/checkcodingquestion_TitleTv" />
+
+            <TextView
+                android:id="@+id/checkcodingquestion_ErrorCodeTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="오류 코드 첨부"
+                android:textColor="@color/black"
+                android:textSize="45px"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/checkcodingquestion_TitleTv"
+                app:layout_constraintTop_toBottomOf="@id/checkcodingquestion_TitleTextEt" />
+
+            <EditText
+                android:id="@+id/checkcodingquestion_ErrorCodeTextEt"
+                android:layout_width="fill_parent"
+                android:layout_height="107px"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="25dp"
+                android:background="@drawable/button_customnext"
+                android:hint=" 복사본이나 깃허브 링크를 올려주세요."
+                android:inputType="textMultiLine"
+                android:lines="8"
+                android:maxLines="10"
+                android:paddingStart="10dp"
+                android:scrollbars="vertical"
+                android:textColor="@color/black"
+                android:textColorHint="#474A57"
+                android:textSize="34.82px"
+                app:layout_constraintStart_toStartOf="@id/checkcodingquestion_TitleTv"
+                app:layout_constraintTop_toBottomOf="@id/checkcodingquestion_ErrorCodeTv" />
+
+
+            <TextView
+                android:id="@+id/checkcodingquestion_StopPartTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="현재 막힌 부분은 어디인가요?"
+                android:textColor="@color/black"
+                android:textSize="45px"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/checkcodingquestion_TitleTv"
+                app:layout_constraintTop_toBottomOf="@id/checkcodingquestion_ErrorCodeTextEt" />
+
+            <TextView
+                android:id="@+id/checkcodingquestion_Neccessary3Tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="3dp"
+                android:text="* 필수"
+                android:textColor="#FFBD80"
+                android:textSize="34.82px"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/checkcodingquestion_StopPartTv"
+                app:layout_constraintTop_toTopOf="@id/checkcodingquestion_StopPartTv" />
+
+            <EditText
+                android:id="@+id/checkcodingquestion_StopPartTextEt"
+                android:layout_width="fill_parent"
+                android:layout_height="195px"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="25dp"
+                android:background="@drawable/button_customnext"
+                android:hint=" 간단하게라도 적어주세요.\n 답변에 큰 도움이 됩니다."
+                android:inputType="textMultiLine"
+                android:lines="8"
+                android:maxLines="10"
+                android:paddingStart="10dp"
+                android:scrollbars="vertical"
+                android:textColor="@color/black"
+                android:textColorHint="#474A57"
+                android:textSize="34.82px"
+                app:layout_constraintStart_toStartOf="@id/checkcodingquestion_TitleTv"
+                app:layout_constraintTop_toBottomOf="@id/checkcodingquestion_StopPartTv" />
+
+            <TextView
+                android:id="@+id/checkcodingquestion_CodingLevelTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="현재 나의 코딩 실력은?"
+                android:textColor="@color/black"
+                android:textSize="45px"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/checkcodingquestion_TitleTv"
+                app:layout_constraintTop_toBottomOf="@id/checkcodingquestion_StopPartTextEt" />
+
+            <EditText
+                android:id="@+id/checkcodingquestion_CodingLevelTextEt"
+                android:layout_width="fill_parent"
+                android:layout_height="195px"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="25dp"
+                android:background="@drawable/button_customnext"
+                android:hint=" ex)저는 자바로 프로그래밍은 해봤지만\n 스프링 부트는 처음이라 잘 모릅니다."
+                android:inputType="textMultiLine"
+                android:lines="8"
+                android:maxLines="10"
+                android:paddingStart="10dp"
+                android:scrollbars="vertical"
+                android:textColor="@color/black"
+                android:textColorHint="#474A57"
+                android:textSize="34.82px"
+                app:layout_constraintStart_toStartOf="@id/checkcodingquestion_TitleTv"
+                app:layout_constraintTop_toBottomOf="@id/checkcodingquestion_CodingLevelTv" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</LinearLayout>
