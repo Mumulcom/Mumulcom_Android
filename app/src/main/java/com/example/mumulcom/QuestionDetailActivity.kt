@@ -73,11 +73,43 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
 
 
 
+            Log.d("lifecycle","QuestionDetailActivity onCreate")
+
 
 
         }
 
     }// end of onCreate
+
+    override fun onStart() {
+        super.onStart()
+
+        Log.d("lifecycle","QuestionDetailActivity onStart")
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("lifecycle","QuestionDetailActivity onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("lifecycle","QuestionDetailActivity onPause")
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("lifecycle","QuestionDetailActivity onStop")
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("lifecycle","QuestionDetailActivity onDestroy")
+
+    }
 
     private fun setLikeQuestion(){
         if(isLiked){ // 좋아요를 했을때
@@ -173,6 +205,11 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
         binding.currentErrorTv.text = result[0].content // 질문 내용
         binding.codingSkillConstraintLayout.visibility = View.GONE
 
+        if(result[0].isLiked =="Y"){
+            isLiked = true
+            binding.clickLikeIv.setImageResource(R.drawable.ic_liked)
+        }
+
         Log.d("개념질문 idx",result[0].questionIdx.toString())
 
     }
@@ -235,6 +272,11 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
         }
 
         Log.d("코딩질문 idx",result[0].questionIdx.toString())
+
+        if(result[0].isLiked =="Y"){
+            isLiked = true
+            binding.clickLikeIv.setImageResource(R.drawable.ic_liked)
+        }
 
 
 

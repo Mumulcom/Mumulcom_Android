@@ -49,8 +49,8 @@ class QuestionBoardActivity : AppCompatActivity(), CategoryQuestionView {
         initRecentOrHotQuestionTextButton() // 최신순 & 핫한순 버튼 초기화
         initCheckCommentButton() // 답변 달린 글만 보기 버튼 초기화
 
-        getCategoryQuestions()
-        initRecyclerView()
+//        getCategoryQuestions()
+//        initRecyclerView()
 
 
 
@@ -65,12 +65,43 @@ class QuestionBoardActivity : AppCompatActivity(), CategoryQuestionView {
         }
 
 
+        Log.d("lifecycle","QuestionBoardActivity onCreate")
+
+
     }// end of onCreate
 
     override fun onStart() {
         super.onStart()
+   //     Log.d("lifecycle","QuestionBoardActivity onStart")
+
+        getCategoryQuestions()
+        initRecyclerView()
 
     }
+
+
+//    override fun onResume() {
+//        super.onResume()
+//        Log.d("lifecycle","QuestionBoardActivity onResume")
+//    }
+//
+//    override fun onPause() {
+//        super.onPause()
+//        Log.d("lifecycle","QuestionBoardActivity onPause")
+//
+//    }
+//
+//    override fun onStop() {
+//        super.onStop()
+//        Log.d("lifecycle","QuestionBoardActivity onStop")
+//
+//    }
+//
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        Log.d("lifecycle","QuestionBoardActivity onDestroy")
+//
+//    }
 
     private fun initRecyclerView(){
         // recyclerView <-> adapter 연결
