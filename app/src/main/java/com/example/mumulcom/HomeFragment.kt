@@ -90,23 +90,40 @@ class HomeFragment : Fragment(), RecentQuestionView {
 
 
     override fun onGetQuestionsLoading() {
+        binding.homeProgressbar.visibility = View.VISIBLE
         Log.d("HomeFragment/API","로딩중...")
+
     }
 
-    override fun onGetQuestionsSuccess(result: ArrayList<Question>?) {
-        if (result != null) {
-            recentQuestionAdapter.addQuestions(result)
-            binding.noMyQuestionTv.visibility = View.GONE
-            binding.recentQuestionVp.visibility = View.VISIBLE
-            binding.homeIndicator.visibility = View.VISIBLE
+    override fun onGetQuestionsSuccess(result: ArrayList<Question>) {
+        binding.homeProgressbar.visibility = View.INVISIBLE
+//        if (result != null) {
+//            recentQuestionAdapter.addQuestions(result)
+//            binding.noMyQuestionTv.visibility = View.GONE
+//            binding.recentQuestionVp.visibility = View.VISIBLE
+//            binding.homeIndicator.visibility = View.VISIBLE
+//
+//
+//        }else{ // 내가 한 질문이 없을 경우
+//            // viewPager 지우고 텍스트 대체
+//            binding.recentQuestionVp.visibility = View.GONE
+//            binding.homeIndicator.visibility = View.GONE
+//            binding.noMyQuestionTv.visibility = View.VISIBLE
+//        }
 
 
-        }else{ // 내가 한 질문이 없을 경우
+        if(result.isEmpty()){ // 내가 한 질문이 없을 경우  -> []
             // viewPager 지우고 텍스트 대체
             binding.recentQuestionVp.visibility = View.GONE
             binding.homeIndicator.visibility = View.GONE
             binding.noMyQuestionTv.visibility = View.VISIBLE
+        }else{
+            recentQuestionAdapter.addQuestions(result)
+            binding.noMyQuestionTv.visibility = View.GONE
+            binding.recentQuestionVp.visibility = View.VISIBLE
+            binding.homeIndicator.visibility = View.VISIBLE
         }
+
 
         // indicator 연결
         binding.homeIndicator.setViewPager(binding.recentQuestionVp)

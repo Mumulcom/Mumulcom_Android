@@ -1,5 +1,6 @@
 package com.example.mumulcom.retrofit
 
+import com.example.mumulcom.data.LikeSend
 import com.example.mumulcom.response.RepliesForQuestionResponse
 import com.example.mumulcom.response.*
 import retrofit2.Call
@@ -47,8 +48,7 @@ interface QuestionRetrofitInterface {
     @POST("/likes/questions/creation") // 해당 질문을 좋아요 했을때 호출 (api 27)
     fun getLikeQuestion(
         @Header("X-ACCESS-TOKEN") X_ACCESS_TOKEN : String,
-        @Body questionIdx : Long,  // 질문 고유 번호 (좋아요를 누른 질문 번호)
-        @Body userIdx : Long   // 유저 고유 번호 (좋아요를 한 유저 번호)
+        @Body likeSend : LikeSend
     ):Call<LikeQuestionResponse>
 
 }

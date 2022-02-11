@@ -8,26 +8,27 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.mumulcom.adapter.ImageViewPagerAdapter
 import com.example.mumulcom.adapter.RepliesForQuestionAdapter
-import com.example.mumulcom.data.DetailCodingQuestion
-import com.example.mumulcom.data.DetailConceptQuestion
-import com.example.mumulcom.data.Reply
+import com.example.mumulcom.data.*
 import com.example.mumulcom.databinding.ActivityQuestionDetailBinding
 import com.example.mumulcom.service.DetailCodingQuestionService
 import com.example.mumulcom.service.DetailConceptQuestionService
+import com.example.mumulcom.service.LikeQuestionService
 import com.example.mumulcom.service.RepliesForQuestionService
 import com.example.mumulcom.view.DetailCodingQuestionView
 import com.example.mumulcom.view.DetailConceptQuestionView
+import com.example.mumulcom.view.LikeQuestionView
 import com.example.mumulcom.view.RepliesForQuestionView
 
 
 // 질문 상세 페이지 (개념/코딩)
 class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
-    DetailConceptQuestionView,
-    RepliesForQuestionView {
+    DetailConceptQuestionView, LikeQuestionView,
+    RepliesForQuestionView {// end of class
     private lateinit var binding : ActivityQuestionDetailBinding
     private lateinit var bigCategoryName : String
     private var questionIdx : Long = 0 // default 값
     private var type : Int = 0
+    private var isLiked = false // 질문에 대한 좋아요 변수
 
     private lateinit var repliesForQuestionAdapter: RepliesForQuestionAdapter
 
@@ -65,13 +66,41 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
         }
 
         binding.clickLikeIv.setOnClickListener {  // 해당 질문에 좋아요를 눌렀을때
-            // TODO 서버에 좋아요한 정보 넘김
+
+            isLiked = !isLiked  //
+
+            setLikeQuestion()
+
+
+
 
 
         }
 
     }// end of onCreate
 
+    private fun setLikeQuestion(){
+        if(isLiked){ // 좋아요를 했을때
+            binding.clickLikeIv.setImageResource(R.drawable.ic_liked)
+
+            // 서버호출
+            setLikeForQuestion()
+
+        }else{ // 좋아요를 취소했을때
+            binding.clickLikeIv.setImageResource(R.drawable.ic_like)
+            //  서버호출
+            setLikeForQuestion()
+        }
+    }
+
+
+    private fun setLikeForQuestion(){
+        val likeQuestionService = LikeQuestionService()
+        likeQuestionService.setLikeQuestionService(this)
+        Log.d("qqq","setLikeForQuestion 호출")
+        likeQuestionService.getLikeQuestion(getJwt(this), LikeSend(questionIdx, getUserIdx(this)))
+
+    }
 
 
 
@@ -240,4 +269,23 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
     }
 
 
-}// end of class
+    // -------------- LikeQuestionView implement : 질문에 대한 좋아요 ---------------
+
+    override fun onGetLikeQuestionLoading() {
+        Log.d("질문에 대한 좋아요/API","로딩중...")
+    }
+
+    override fun onGetLikeQuestionSuccess(result: Like) {
+        Log.d("likeTest","질문을 만든 유저 id : "+result.noticeTargetUserIdx) // 해당 질문을 작성한 유저 id
+        Log.d("likeTest","좋아요 내용 :  "+result.noticeContent)  // 000 글을 좋아요 했습니다./취소 했습니다.
+
+    }
+
+    override fun onGetLikeQuestionFailure(code: Int, message: String) {
+        when(code){
+            400-> Log.d("질문에 대한 좋아요/API",message)
+        }
+    }
+
+
+}
