@@ -237,7 +237,6 @@ class SignUpCategoryActivity : AppCompatActivity(), View.OnClickListener, SignUp
                 Log.d("SingUpCategoryActivity/API", message)
             }
             400 -> {
-                Log.d("SingUpCategoryActivity/API", message)
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             }
         }
