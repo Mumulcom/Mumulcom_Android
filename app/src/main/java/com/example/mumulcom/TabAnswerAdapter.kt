@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.mumulcom.data.Question
 import com.example.mumulcom.databinding.QuestionListItemBinding
 
 class TabAnswerAdapter(var context: Context?)

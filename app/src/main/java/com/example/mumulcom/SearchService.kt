@@ -1,6 +1,8 @@
 package com.example.mumulcom
 
 import android.util.Log
+import com.example.mumulcom.response.CodingQuestionResponse
+import com.example.mumulcom.response.ConceptQuestionResponse
 import retrofit2.Call
 import retrofit2.Response
 

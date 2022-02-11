@@ -8,7 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.example.mumulcom.adapter.RecentQuestionAdapter
+import com.example.mumulcom.data.Question
 import com.example.mumulcom.databinding.FragmentHomeBinding
+import com.example.mumulcom.service.QuestionService
+import com.example.mumulcom.view.RecentQuestionView
 
 
 class HomeFragment : Fragment(), RecentQuestionView {

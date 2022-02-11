@@ -6,7 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mumulcom.adapter.QuestionAdapter
+import com.example.mumulcom.data.Question
 import com.example.mumulcom.databinding.ActivityQuestionBoardBinding
+import com.example.mumulcom.service.CategoryQuestionService
+import com.example.mumulcom.view.CategoryQuestionView
 
 // 카테고리별 질문 목록
 class QuestionBoardActivity : AppCompatActivity(), CategoryQuestionView {
