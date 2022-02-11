@@ -9,7 +9,7 @@ import retrofit2.Response
 class LoginService {
     private lateinit var loginView: LoginView
 
-    fun setLoginView(loginView: MainActivity) {
+    fun setLoginView(loginView: SplashActivity) {
         this.loginView = loginView
     }
 
