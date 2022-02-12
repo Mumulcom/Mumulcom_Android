@@ -3,16 +3,23 @@ package com.example.mumulcom.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mumulcom.R
+import com.example.mumulcom.data.Like
+import com.example.mumulcom.data.LikeReplySend
 import com.example.mumulcom.data.Reply
 import com.example.mumulcom.databinding.QuestionAnswerItemBinding
+import com.example.mumulcom.getJwt
+import com.example.mumulcom.getUserIdx
+import com.example.mumulcom.service.LikeReplyService
+import com.example.mumulcom.view.LikeReplyView
 
-class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<RepliesForQuestionAdapter.ViewHolder>() {
+class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<RepliesForQuestionAdapter.ViewHolder>(),LikeReplyView {
 
 
     private val replyList = ArrayList<Reply>()
@@ -20,6 +27,8 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
     private var isSelect : Boolean = false // 체택하기
     private var isCommentClick : Boolean = false // comment 이미지를 클릭했는지 여부 확인
     private lateinit var imageViewPagerAdapter: ImageViewPagerAdapter
+    private  var replyIdx : Long = -1
+    var likeNumber : Int = 0
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -38,8 +47,14 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
             if(isLike){
                 holder.binding.itemLikeIv.setImageResource(R.drawable.ic_liked)
                 // todo api 호출
-            }else
+                setLikeReply() // 답변에 대한 좋아요 처리
+                likeNumber++
+            }else{
                 holder.binding.itemLikeIv.setImageResource(R.drawable.ic_like)
+                setLikeReply() // 답변에 대한 좋아요 처리
+                likeNumber--
+            }
+
         }
         // 채택하기 처리
         holder.binding.selectAnswerTv.setOnClickListener {
@@ -63,6 +78,9 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
             }
 
         }
+
+
+
 
     }// end of onBindViewHolder
 
@@ -90,6 +108,9 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
             binding.nickNameTv.text = reply.nickname // 닉네임
             binding.createdAtTv.text = reply.createdAt // 작성 날짜
 
+            likeNumber = Integer.parseInt(binding.itemLikeTv.text.toString())
+
+
             if(reply.replyUrl==null){
 //                binding.replyUrl.visibility = View.GONE
                 binding.replyUrl.text = "참고 링크 : 없음."// 참고 링크
@@ -110,6 +131,13 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
                 binding.viewPager.adapter = imageViewPagerAdapter
                 binding.indicator.setViewPager(binding.viewPager)
             }
+            replyIdx =reply.replyIdx // 답변에 대한 고유 번호 저장.
+
+            if(reply.isLiked=="Y"){
+                isLike= true
+                binding.itemLikeIv.setImageResource(R.drawable.ic_liked)
+
+            }
 
 
 
@@ -117,6 +145,30 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
 
     }
 
+
+    private fun setLikeReply(){
+        val likeReplyService = LikeReplyService()
+        likeReplyService.setLikeReplyView(this)
+        likeReplyService.getLikeReply(getJwt(context), LikeReplySend(replyIdx,getUserIdx(context)))
+    }
+
+
+
+    // --------------- LikeReplyView implement : 답변에 대한 좋아요 ----------------------
+    override fun onGetLikeReplyLoading() {
+        Log.d("딥변에 대한 좋아요/API","로딩중...")
+    }
+
+    override fun onGetLikeReplySuccess(result: Like) {
+        Log.d("likeTest","질문을 만든 유저 id : "+result.noticeTargetUserIdx) // 해당 질문을 작성한 유저 id
+        Log.d("likeTest","좋아요 내용 :  "+result.noticeContent)  // 000 글을 좋아요 했습니다./취소 했습니다.
+    }
+
+    override fun onGetLikeReplyFailure(code: Int, message: String) {
+        when(code){
+            400-> Log.d("개념질문 상세페이지/API",message)
+        }
+    }
 
 
 }
