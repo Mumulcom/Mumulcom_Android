@@ -8,7 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.example.mumulcom.RecentQuestionAdapter
+import com.example.mumulcom.Question
 import com.example.mumulcom.databinding.FragmentHomeBinding
+import com.example.mumulcom.QuestionService
+import com.example.mumulcom.RecentQuestionView
 
 
 class HomeFragment : Fragment(), RecentQuestionView {
@@ -86,23 +90,40 @@ class HomeFragment : Fragment(), RecentQuestionView {
 
 
     override fun onGetQuestionsLoading() {
+        binding.homeProgressbar.visibility = View.VISIBLE
         Log.d("HomeFragment/API","로딩중...")
+
     }
 
-    override fun onGetQuestionsSuccess(result: ArrayList<Question>?) {
-        if (result != null) {
-            recentQuestionAdapter.addQuestions(result)
-            binding.noMyQuestionTv.visibility = View.GONE
-            binding.recentQuestionVp.visibility = View.VISIBLE
-            binding.homeIndicator.visibility = View.VISIBLE
+    override fun onGetQuestionsSuccess(result: ArrayList<Question>) {
+        binding.homeProgressbar.visibility = View.INVISIBLE
+//        if (result != null) {
+//            recentQuestionAdapter.addQuestions(result)
+//            binding.noMyQuestionTv.visibility = View.GONE
+//            binding.recentQuestionVp.visibility = View.VISIBLE
+//            binding.homeIndicator.visibility = View.VISIBLE
+//
+//
+//        }else{ // 내가 한 질문이 없을 경우
+//            // viewPager 지우고 텍스트 대체
+//            binding.recentQuestionVp.visibility = View.GONE
+//            binding.homeIndicator.visibility = View.GONE
+//            binding.noMyQuestionTv.visibility = View.VISIBLE
+//        }
 
 
-        }else{ // 내가 한 질문이 없을 경우
+        if(result.isEmpty()){ // 내가 한 질문이 없을 경우  -> []
             // viewPager 지우고 텍스트 대체
             binding.recentQuestionVp.visibility = View.GONE
             binding.homeIndicator.visibility = View.GONE
             binding.noMyQuestionTv.visibility = View.VISIBLE
+        }else{
+            recentQuestionAdapter.addQuestions(result)
+            binding.noMyQuestionTv.visibility = View.GONE
+            binding.recentQuestionVp.visibility = View.VISIBLE
+            binding.homeIndicator.visibility = View.VISIBLE
         }
+
 
         // indicator 연결
         binding.homeIndicator.setViewPager(binding.recentQuestionVp)
@@ -132,7 +153,7 @@ class HomeFragment : Fragment(), RecentQuestionView {
             val intent = Intent(context,QuestionBoardActivity::class.java)
             intent.putExtra("category","앱")
             intent.putExtra("bigCategoryIdx",1)
-            intent.putExtra("smallCategoryIdx",0)
+            //       intent.putExtra("smallCategoryIdx",0)
             startActivity(intent)
         }
         binding.androidTv.setOnClickListener {
@@ -161,7 +182,7 @@ class HomeFragment : Fragment(), RecentQuestionView {
             val intent = Intent(context,QuestionBoardActivity::class.java)
             intent.putExtra("category","웹")
             intent.putExtra("bigCategoryIdx",2)
-            intent.putExtra("smallCategoryIdx",0)
+            //     intent.putExtra("smallCategoryIdx",0)
             startActivity(intent)
         }
         binding.htmlTv.setOnClickListener {
@@ -197,7 +218,7 @@ class HomeFragment : Fragment(), RecentQuestionView {
             val intent = Intent(context,QuestionBoardActivity::class.java)
             intent.putExtra("category","서버")
             intent.putExtra("bigCategoryIdx",3)
-            intent.putExtra("smallCategoryIdx",1)
+            //    intent.putExtra("smallCategoryIdx",1)
             startActivity(intent)
         }
 
@@ -226,7 +247,7 @@ class HomeFragment : Fragment(), RecentQuestionView {
             val intent = Intent(context,QuestionBoardActivity::class.java)
             intent.putExtra("category","프로그래밍 언어")
             intent.putExtra("bigCategoryIdx",4)
-            intent.putExtra("smallCategoryIdx",0)
+            //       intent.putExtra("smallCategoryIdx",0)
             startActivity(intent)
         }
         binding.cTv.setOnClickListener {
