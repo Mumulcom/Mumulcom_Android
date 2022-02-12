@@ -2,6 +2,7 @@ package com.example.mumulcom.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
     private val replyList = ArrayList<Reply>()
     private var isLike : Boolean = false // 좋아요
     private var isSelect : Boolean = false // 체택하기
+    private var isCommentClick : Boolean = false // comment 이미지를 클릭했는지 여부 확인
     private lateinit var imageViewPagerAdapter: ImageViewPagerAdapter
 
 
@@ -49,7 +51,20 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
             holder.binding.selectAnswerTv.visibility = View.VISIBLE
         }
 
-    }
+        // 댓글 처리
+        holder.binding.commentIv.setOnClickListener {
+            isCommentClick=!isCommentClick
+            if(isCommentClick){
+                holder.binding.commentIv.setImageResource(R.drawable.ic_message_select)
+                holder.binding.itemCommentTv.setTextColor(Color.parseColor("#F7B77C"))
+            }else{
+                holder.binding.commentIv.setImageResource(R.drawable.ic_message)
+                holder.binding.itemCommentTv.setTextColor(Color.parseColor("#000000"))
+            }
+
+        }
+
+    }// end of onBindViewHolder
 
     override fun getItemCount(): Int {
         return replyList.size

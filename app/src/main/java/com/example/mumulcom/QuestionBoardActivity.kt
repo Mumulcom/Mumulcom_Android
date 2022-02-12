@@ -27,6 +27,7 @@ class QuestionBoardActivity : AppCompatActivity(), CategoryQuestionView {
     private lateinit var title : String
     private var bigCategoryIdx : Int =0
     private var smallCategoryIdx : Int? = null
+    private var smallCategoryIdx_ : Int?=null
 
     private lateinit var questionAdapter : QuestionAdapter
 
@@ -38,10 +39,16 @@ class QuestionBoardActivity : AppCompatActivity(), CategoryQuestionView {
         val intent = intent
         title = intent.getStringExtra("category")!!
         binding.categoryNameTv.text = title
-        bigCategoryIdx = intent.getIntExtra("categoryIdx",0) // 상위 카테고리 값 받음
-        smallCategoryIdx = intent.getIntExtra("smallCategoryIdx",0) // 하위 카테고리 값 받음
-//        Log.d("QuestionBoard:bigCategory",bigCategoryIdx.toString())
-//        Log.d("QuestionBoard:smallCategoryIdx",smallCategoryIdx.toString())
+        bigCategoryIdx = intent.getIntExtra("bigCategoryIdx",0) // 상위 카테고리 값 받음
+        smallCategoryIdx = intent.getIntExtra("smallCategoryIdx",-1) // 하위 카테고리 값 받음
+
+        if(smallCategoryIdx!==-1){
+            smallCategoryIdx_ = smallCategoryIdx
+        }
+
+        Log.d("QuestionBoard:bigCategoryIdx",bigCategoryIdx.toString())
+        Log.d("QuestionBoard:smallCategoryIdx",smallCategoryIdx.toString())
+        Log.d("QuestionBoard:smallCategoryIdx_",smallCategoryIdx_.toString())
 
 
         initView()  // view 초기화
@@ -132,7 +139,12 @@ class QuestionBoardActivity : AppCompatActivity(), CategoryQuestionView {
         val categoryQuestionService = CategoryQuestionService()
         categoryQuestionService.setCategoryQuestionService(this)
 
-        categoryQuestionService.getCategoryQuestions(type,sort,bigCategoryIdx,smallCategoryIdx,isReplied,0,10)
+        Log.d("value","type "+type.toString())
+        Log.d("value","sort "+sort.toString())
+        Log.d("value","bigCategoryIdx "+bigCategoryIdx.toString())
+        Log.d("value","smallCategoryIdx "+smallCategoryIdx_.toString())
+        Log.d("value","isReplied "+isReplied.toString())
+        categoryQuestionService.getCategoryQuestions(type,sort,bigCategoryIdx,smallCategoryIdx_,isReplied,0,10)
     }
 
 
@@ -142,6 +154,7 @@ class QuestionBoardActivity : AppCompatActivity(), CategoryQuestionView {
     }
 
     override fun onGetQuestionsSuccess(result: ArrayList<Question>?) {
+        Log.d("QuestionBoardActivity/API","데이터 받아옴")
         if (result != null) { // 해당 카테고리에 대한 질문이 있을때 어댑터에 추가
             questionAdapter.addQuestions(result)
         }

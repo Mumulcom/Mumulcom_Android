@@ -111,6 +111,7 @@
             android:layout_height="30dp" />
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/itemLl4"
         android:gravity="center_vertical"
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -118,10 +119,13 @@
         app:layout_constraintTop_toBottomOf="@+id/itemL13"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <ImageView
+            android:id="@+id/commentIv"
             android:layout_width="15dp"
             android:layout_height="15dp"
-            android:src="@drawable/ic_message"/>
+            android:src="@drawable/ic_message" />
+
         <TextView
             android:layout_marginStart="7dp"
             android:id="@+id/itemCommentTv"
@@ -141,6 +145,20 @@
             android:layout_height="wrap_content"
             android:text="10"/>
 
+    </LinearLayout>
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/commentLinearLayout"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemLl4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/commentRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
 
