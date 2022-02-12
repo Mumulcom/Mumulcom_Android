@@ -1,5 +1,6 @@
 package com.example.mumulcom.retrofit
 
+import com.example.mumulcom.data.LikeReplySend
 import com.example.mumulcom.data.LikeSend
 import com.example.mumulcom.response.RepliesForQuestionResponse
 import com.example.mumulcom.response.*
@@ -50,5 +51,17 @@ interface QuestionRetrofitInterface {
         @Header("X-ACCESS-TOKEN") X_ACCESS_TOKEN : String,
         @Body likeSend : LikeSend
     ):Call<LikeQuestionResponse>
+
+    @POST("/scraps/creation") // 해당 질문을 스크랩 했을때 호출 (api 26)
+    fun getScrapQuestion(
+        @Header("X-ACCESS-TOKEN")  X_ACCESS_TOKEN : String,
+        @Body scrapSend : LikeSend
+    ):Call<ScrapQuestionResponse>
+
+    @POST("/likes/replies/creation") // 해당 질문의 답변을 좋아요 했을때 호출 (api 28)
+    fun getLikeReply(
+        @Header("X-ACCESS-TOKEN")  X_ACCESS_TOKEN : String,
+        @Body data : LikeReplySend
+    ):Call<LikeReplyResponse>
 
 }

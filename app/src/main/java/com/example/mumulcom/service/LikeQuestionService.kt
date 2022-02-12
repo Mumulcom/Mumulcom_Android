@@ -11,7 +11,7 @@ import retrofit2.Response
 class LikeQuestionService {
     private lateinit var likeQuestionView: LikeQuestionView
 
-    fun setLikeQuestionService(likeQuestionView: LikeQuestionView){
+    fun setLikeQuestionView(likeQuestionView: LikeQuestionView){
         this.likeQuestionView = likeQuestionView
     }
 

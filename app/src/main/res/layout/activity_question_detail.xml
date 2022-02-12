@@ -115,6 +115,16 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/questionIv"
                         app:layout_constraintBottom_toBottomOf="@+id/questionIv"/>
+                    <ImageView
+                        android:id="@+id/clickScrapIv"
+                        android:layout_marginEnd="15dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_scrap"
+                        app:layout_constraintEnd_toStartOf="@+id/clickLikeIv"
+                        app:layout_constraintTop_toTopOf="@+id/questionIv"
+                        app:layout_constraintBottom_toBottomOf="@+id/questionIv"/>
+
 
                     <TextView
                         android:id="@+id/titleTv"

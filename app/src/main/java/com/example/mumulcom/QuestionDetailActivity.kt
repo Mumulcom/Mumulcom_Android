@@ -10,25 +10,20 @@ import com.example.mumulcom.adapter.ImageViewPagerAdapter
 import com.example.mumulcom.adapter.RepliesForQuestionAdapter
 import com.example.mumulcom.data.*
 import com.example.mumulcom.databinding.ActivityQuestionDetailBinding
-import com.example.mumulcom.service.DetailCodingQuestionService
-import com.example.mumulcom.service.DetailConceptQuestionService
-import com.example.mumulcom.service.LikeQuestionService
-import com.example.mumulcom.service.RepliesForQuestionService
-import com.example.mumulcom.view.DetailCodingQuestionView
-import com.example.mumulcom.view.DetailConceptQuestionView
-import com.example.mumulcom.view.LikeQuestionView
-import com.example.mumulcom.view.RepliesForQuestionView
+import com.example.mumulcom.service.*
+import com.example.mumulcom.view.*
 
 
 // 질문 상세 페이지 (개념/코딩)
 class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
     DetailConceptQuestionView, LikeQuestionView,
-    RepliesForQuestionView {// end of class
+    RepliesForQuestionView ,ScrapQuestionView{// end of class
     private lateinit var binding : ActivityQuestionDetailBinding
     private lateinit var bigCategoryName : String
     private var questionIdx : Long = 0 // default 값
     private var type : Int = 0
     private var isLiked = false // 질문에 대한 좋아요 변수
+    private var isScrap = false // 질문에 대한 scrap 변수
 
     private lateinit var repliesForQuestionAdapter: RepliesForQuestionAdapter
 
@@ -36,6 +31,7 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
         super.onCreate(savedInstanceState)
         binding = ActivityQuestionDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         val intent = intent
         bigCategoryName = intent.getStringExtra("bigCategoryName")!!
@@ -68,15 +64,12 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
         binding.clickLikeIv.setOnClickListener {  // 해당 질문에 좋아요를 눌렀을때
 
             isLiked = !isLiked  //
+            setLikeQuestion() // 질문에 대한 좋아요 처리
+        }
 
-            setLikeQuestion()
-
-
-
-            Log.d("lifecycle","QuestionDetailActivity onCreate")
-
-
-
+        binding.clickScrapIv.setOnClickListener {
+            isScrap = !isScrap
+            setScrapQuestion()// 질문에 대한 스크랩 처리
         }
 
     }// end of onCreate
@@ -111,6 +104,22 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
 
     }
 
+    private fun setScrapQuestion(){
+        if(isScrap){ // 스크랩을 했을때
+            binding.clickScrapIv.setImageResource(R.drawable.ic_scrap_select)
+
+            // 서버호출
+            setScrapForQuestion()
+
+        }else{ // 스크랩를 취소했을때
+            binding.clickScrapIv.setImageResource(R.drawable.ic_scrap)
+            //  서버호출
+            setScrapForQuestion()
+
+        }
+
+    }
+
     private fun setLikeQuestion(){
         if(isLiked){ // 좋아요를 했을때
             binding.clickLikeIv.setImageResource(R.drawable.ic_liked)
@@ -126,10 +135,17 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
     }
 
 
+    private fun setScrapForQuestion(){
+        val scrapQuestionService = ScrapQuestionService()
+        scrapQuestionService.setScrapQuestionView(this)
+        scrapQuestionService.getScrapQuestion(getJwt(this),LikeSend(questionIdx, getUserIdx(this)))
+
+    }
+
+
     private fun setLikeForQuestion(){
         val likeQuestionService = LikeQuestionService()
-        likeQuestionService.setLikeQuestionService(this)
-        Log.d("qqq","setLikeForQuestion 호출")
+        likeQuestionService.setLikeQuestionView(this)
         likeQuestionService.getLikeQuestion(getJwt(this), LikeSend(questionIdx, getUserIdx(this)))
 
     }
@@ -148,7 +164,7 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
 
     private fun getRepliesForQuestion(){// 질문에 대한 답변 받아오는 함수
         val repliesForQuestionService = RepliesForQuestionService()
-        repliesForQuestionService.setRepliesForQuestionService(this)
+        repliesForQuestionService.setRepliesForQuestionView(this)
         repliesForQuestionService.getRepliesForQuestion(questionIdx, getUserIdx(this))
     }
 
@@ -202,6 +218,10 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
 
         }
 
+        if(result[0].userIdx== getUserIdx(this)){ // 내 글을 스크랩 불가
+            binding.clickScrapIv.isClickable = false
+        }
+
         binding.currentErrorTv.text = result[0].content // 질문 내용
         binding.codingSkillConstraintLayout.visibility = View.GONE
 
@@ -209,6 +229,12 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
             isLiked = true
             binding.clickLikeIv.setImageResource(R.drawable.ic_liked)
         }
+
+        if(result[0].isScraped=="Y"){
+            isScrap = true
+            binding.clickScrapIv.setImageResource(R.drawable.ic_scrap_select)
+        }
+
 
         Log.d("개념질문 idx",result[0].questionIdx.toString())
 
@@ -273,9 +299,20 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
 
         Log.d("코딩질문 idx",result[0].questionIdx.toString())
 
+        if(result[0].userIdx== getUserIdx(this)){ // 내 글을 스크랩 불가
+            binding.clickScrapIv.isClickable = false
+        }
+
+
         if(result[0].isLiked =="Y"){
             isLiked = true
             binding.clickLikeIv.setImageResource(R.drawable.ic_liked)
+        }
+
+        Log.d("scraped",result[0].isScraped.toString())
+        if(result[0].isScraped=="Y"){
+            isScrap = true
+            binding.clickScrapIv.setImageResource(R.drawable.ic_scrap_select)
         }
 
 
@@ -326,6 +363,28 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
     override fun onGetLikeQuestionFailure(code: Int, message: String) {
         when(code){
             400-> Log.d("질문에 대한 좋아요/API",message)
+        }
+    }
+
+
+
+
+
+    // ----------------------- ScrapQuestionView implement : 질문에 대한 스크랩 -----------------
+
+
+    override fun onGetScrapLoading() {
+        Log.d("질문에 대한 스크랩/API","로딩중...")
+    }
+
+    override fun onGetScrapSuccess(message: String, result: String) {
+        Log.d("scrapTest",message) // 응답 메시지
+        Log.d("scrapTest",result)  // 스크랩 성공 여부
+    }
+
+    override fun onGetScrapFailure(code: Int, message: String) {
+        when(code){
+            400-> Log.d("질문에 대한 스크랩/API",message)
         }
     }
 
