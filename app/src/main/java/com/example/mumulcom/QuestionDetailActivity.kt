@@ -65,11 +65,16 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
 
             isLiked = !isLiked  //
             setLikeQuestion() // 질문에 대한 좋아요 처리
+//            when(type){
+//                1-> getDetailCodingQuestion() // 코딩 질문
+//                2-> getDetailConceptQuestion() // 개념질문
+//            }
         }
 
         binding.clickScrapIv.setOnClickListener {
             isScrap = !isScrap
             setScrapQuestion()// 질문에 대한 스크랩 처리
+
         }
 
     }// end of onCreate
@@ -111,10 +116,12 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
             // 서버호출
             setScrapForQuestion()
 
+
         }else{ // 스크랩를 취소했을때
             binding.clickScrapIv.setImageResource(R.drawable.ic_scrap)
             //  서버호출
             setScrapForQuestion()
+
 
         }
 
@@ -235,6 +242,8 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
             binding.clickScrapIv.setImageResource(R.drawable.ic_scrap_select)
         }
 
+        binding.replyCountTv.text = result[0].replyCount.toString()  // 답변 수
+        binding.likeCountTv.text = result[0].likeCount.toString() // 좋아요 수
 
         Log.d("개념질문 idx",result[0].questionIdx.toString())
 
@@ -316,6 +325,8 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
         }
 
 
+        binding.replyCountTv.text = result[0].replyCount.toString()  // 답변 수
+        binding.likeCountTv.text = result[0].likeCount.toString() // 좋아요 수
 
     }
 

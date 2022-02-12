@@ -21,7 +21,7 @@ class LikeQuestionService {
         val likeQuestionService = getRetrofit().create(QuestionRetrofitInterface::class.java)
 
         likeQuestionView.onGetLikeQuestionLoading()
-        Log.d("qqq","like로딩 호출")
+        Log.d("qqq","like 로딩 호출")
 
 
         likeQuestionService.getLikeQuestion(X_ACCESS_TOKEN,likeSend)

@@ -107,21 +107,21 @@
                         app:layout_constraintBottom_toBottomOf="@+id/createdAtTv"
                         app:layout_constraintStart_toEndOf="@+id/createdAtTv"
                         app:layout_constraintTop_toTopOf="@+id/createdAtTv" />
-                    <ImageView
-                        android:id="@+id/clickLikeIv"
-                        android:src="@drawable/ic_like"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/questionIv"
-                        app:layout_constraintBottom_toBottomOf="@+id/questionIv"/>
+<!--                    <ImageView-->
+<!--                        android:id="@+id/clickLikeIv"-->
+<!--                        android:src="@drawable/ic_like"-->
+<!--                        android:layout_width="20dp"-->
+<!--                        android:layout_height="20dp"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="@+id/questionIv"-->
+<!--                        app:layout_constraintBottom_toBottomOf="@+id/questionIv"/>-->
                     <ImageView
                         android:id="@+id/clickScrapIv"
                         android:layout_marginEnd="15dp"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/ic_scrap"
-                        app:layout_constraintEnd_toStartOf="@+id/clickLikeIv"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/questionIv"
                         app:layout_constraintBottom_toBottomOf="@+id/questionIv"/>
 
@@ -248,7 +248,45 @@
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
+                        <LinearLayout
+                            android:layout_marginBottom="30dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:id="@+id/replyCountIv"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:src="@drawable/ic_answer_face"/>
+                            <TextView
+                                android:textStyle="bold"
+                                android:textColor="#FF8514"
+                                android:layout_marginStart="7dp"
+                                android:id="@+id/replyCountTv"
+                                android:text="10"
+                                android:textSize="15sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <ImageView
+                                android:layout_marginStart="30dp"
+                                android:id="@+id/clickLikeIv"
+                                android:src="@drawable/ic_like"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"/>
+                            <TextView
+                                android:id="@+id/likeCountTv"
+                                android:layout_marginStart="7dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="15sp"
+                                android:textColor="@color/black"
+                                android:text="31"/>
+
+                        </LinearLayout>
+
                         <View
+                            android:id="@+id/view"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"

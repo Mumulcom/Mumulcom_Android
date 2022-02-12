@@ -7,19 +7,23 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mumulcom.R
+import com.example.mumulcom.data.Comment
 import com.example.mumulcom.data.Like
 import com.example.mumulcom.data.LikeReplySend
 import com.example.mumulcom.data.Reply
 import com.example.mumulcom.databinding.QuestionAnswerItemBinding
 import com.example.mumulcom.getJwt
 import com.example.mumulcom.getUserIdx
+import com.example.mumulcom.service.CommentsForReplyService
 import com.example.mumulcom.service.LikeReplyService
+import com.example.mumulcom.view.CommentsForReplyView
 import com.example.mumulcom.view.LikeReplyView
 
-class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<RepliesForQuestionAdapter.ViewHolder>(),LikeReplyView {
+class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<RepliesForQuestionAdapter.ViewHolder>(),LikeReplyView,CommentsForReplyView {
 
 
     private val replyList = ArrayList<Reply>()
@@ -29,6 +33,8 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
     private lateinit var imageViewPagerAdapter: ImageViewPagerAdapter
     private  var replyIdx : Long = -1
     var likeNumber : Int = 0
+    private lateinit var commentsForReplyAdapter: CommentsForReplyAdapter
+
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -46,15 +52,13 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
             isLike = !isLike
             if(isLike){
                 holder.binding.itemLikeIv.setImageResource(R.drawable.ic_liked)
-                // todo api 호출
                 setLikeReply() // 답변에 대한 좋아요 처리
-                likeNumber++
+            //    likeNumber++
             }else{
                 holder.binding.itemLikeIv.setImageResource(R.drawable.ic_like)
                 setLikeReply() // 답변에 대한 좋아요 처리
-                likeNumber--
+            //    likeNumber--
             }
-
         }
         // 채택하기 처리
         holder.binding.selectAnswerTv.setOnClickListener {
@@ -72,9 +76,18 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
             if(isCommentClick){
                 holder.binding.commentIv.setImageResource(R.drawable.ic_message_select)
                 holder.binding.itemCommentTv.setTextColor(Color.parseColor("#F7B77C"))
+                holder.binding.commentLinearLayout.visibility = View.VISIBLE // 댓글창 염
+                // recyclerView adapter 연결
+                // todo api 연결
+                getCommentsForReply() // 댓글 가져오는 api 호출
+                commentsForReplyAdapter = CommentsForReplyAdapter(context)
+                holder.binding.commentRecyclerView.adapter = commentsForReplyAdapter
+                holder.binding.commentRecyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+
             }else{
                 holder.binding.commentIv.setImageResource(R.drawable.ic_message)
                 holder.binding.itemCommentTv.setTextColor(Color.parseColor("#000000"))
+                holder.binding.commentLinearLayout.visibility = View.GONE // 댓글창 닫음.
             }
 
         }
@@ -82,7 +95,17 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
 
 
 
+
     }// end of onBindViewHolder
+
+
+    private fun getCommentsForReply(){
+        val commentsForReplyService = CommentsForReplyService()
+        commentsForReplyService.setCommentsForReplyView(this)
+        Log.d("replyIdx:",replyIdx.toString())
+        commentsForReplyService.getCommentsForReply(46)
+      //  commentsForReplyService.getCommentsForReply(replyIdx)
+    }
 
     override fun getItemCount(): Int {
         return replyList.size
@@ -131,17 +154,16 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
                 binding.viewPager.adapter = imageViewPagerAdapter
                 binding.indicator.setViewPager(binding.viewPager)
             }
-            replyIdx =reply.replyIdx // 답변에 대한 고유 번호 저장.
 
             if(reply.isLiked=="Y"){
                 isLike= true
                 binding.itemLikeIv.setImageResource(R.drawable.ic_liked)
-
             }
 
+            replyIdx =reply.replyIdx // 답변에 대한 고유 번호 저장. -> 서버에 넘겨서 댓글 받아옴.
 
 
-        }
+        }// end of bind()
 
     }
 
@@ -154,9 +176,14 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
 
 
 
+
+
+
+
+
     // --------------- LikeReplyView implement : 답변에 대한 좋아요 ----------------------
     override fun onGetLikeReplyLoading() {
-        Log.d("딥변에 대한 좋아요/API","로딩중...")
+        Log.d("답변에 대한 좋아요/API","로딩중...")
     }
 
     override fun onGetLikeReplySuccess(result: Like) {
@@ -165,6 +192,27 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
     }
 
     override fun onGetLikeReplyFailure(code: Int, message: String) {
+        when(code){
+            400-> Log.d("개념질문 상세페이지/API",message)
+        }
+    }
+
+
+
+    // ---------------  CommentsForReplyView  implement : 답변에 대한 댓글 ----------------
+
+    override fun onGetCommentsLoading() {
+        Log.d("답변에 대한 댓글 가져오기/API","로딩중...")
+    }
+
+    override fun onGetCommentsSuccess(result: ArrayList<Comment>) {
+        Log.d("답변에 대한 댓글 가져오기/API","성공")
+        commentsForReplyAdapter.addComments(result)
+
+
+    }
+
+    override fun onGetCommentsFailure(code: Int, message: String) {
         when(code){
             400-> Log.d("개념질문 상세페이지/API",message)
         }

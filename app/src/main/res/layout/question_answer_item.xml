@@ -147,6 +147,7 @@
 
     </LinearLayout>
     <LinearLayout
+        android:orientation="vertical"
         android:visibility="gone"
         android:id="@+id/commentLinearLayout"
         android:layout_marginTop="10dp"

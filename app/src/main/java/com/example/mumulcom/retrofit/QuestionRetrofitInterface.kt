@@ -64,4 +64,8 @@ interface QuestionRetrofitInterface {
         @Body data : LikeReplySend
     ):Call<LikeReplyResponse>
 
+    @GET("/replies/rereply/{replyIdx}")
+    fun getCommentsForReply(
+        @Path("replyIdx") replyIdx : Long
+    ):Call<CommentsForReplyResponse>
 }
