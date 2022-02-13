@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/answerBack"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -50,7 +51,7 @@
             <!--        android:visibility="gone"/>-->
 
             <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/answer_Image_Iv"
+                android:id="@+id/answer_image_vp"
                 android:layout_width="310dp"
                 android:layout_height="173dp"
                 app:layout_constraintStart_toStartOf="@id/answer_Back_Iv"
@@ -59,12 +60,13 @@
                 android:background="#C4C4C4"
                 app:layout_constraintTop_toBottomOf="@id/answer_Back_Iv"/>
 
+
             <me.relex.circleindicator.CircleIndicator3
                 android:id="@+id/answer_indicator"
                 app:ci_drawable="@drawable/indicator_background"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/answer_Image_Iv"
+                app:layout_constraintTop_toBottomOf="@id/answer_image_vp"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"/>
 
@@ -75,7 +77,7 @@
                 android:text="질문 : "
                 android:textSize="10.91dp"
                 android:textStyle="normal"
-                app:layout_constraintStart_toStartOf="@id/answer_Image_Iv"
+                app:layout_constraintStart_toStartOf="@id/answer_image_vp"
                 app:layout_constraintTop_toBottomOf="@id/answer_indicator"/>
 
             <TextView
@@ -86,7 +88,7 @@
                 android:textSize="10.91dp"
                 android:textStyle="normal"
                 android:layout_marginTop="20dp"
-                app:layout_constraintStart_toStartOf="@id/answer_Image_Iv"
+                app:layout_constraintStart_toStartOf="@id/answer_image_vp"
                 app:layout_constraintTop_toBottomOf="@id/answer_Question_Tv"/>
 
             <!--    <TextView-->
@@ -121,8 +123,8 @@
                 android:id="@+id/answer_Explanation_Tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/answer_Image_Iv"
-                app:layout_constraintStart_toStartOf="@id/answer_Image_Iv"
+                app:layout_constraintTop_toBottomOf="@id/answer_image_vp"
+                app:layout_constraintStart_toStartOf="@id/answer_image_vp"
                 android:layout_marginTop="110dp"
                 android:textSize="14.84dp"
                 android:text="설명"
@@ -135,7 +137,7 @@
                 android:layout_height="62dp"
                 app:layout_constraintTop_toBottomOf="@id/answer_Explanation_Tv"
                 app:layout_constraintStart_toStartOf="@id/answer_Explanation_Tv"
-                app:layout_constraintEnd_toEndOf="@id/answer_Image_Iv"
+                app:layout_constraintEnd_toEndOf="@id/answer_image_vp"
                 android:layout_marginTop="6.55dp"
                 android:paddingStart="10dp"
                 android:inputType="textMultiLine"
@@ -145,7 +147,7 @@
                 android:textColorHint="#474A57"
                 android:maxLines="10"
                 android:scrollbars="vertical"
-                android:background="@drawable/button_customnext"/>
+                android:background="@drawable/basic_outline_black"/>
 
             <TextView
                 android:id="@+id/answer_Neccessary_Tv"

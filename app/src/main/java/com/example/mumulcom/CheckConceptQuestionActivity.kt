@@ -25,7 +25,7 @@ class CheckConceptQuestionActivity:AppCompatActivity() {
 
     lateinit var binding: ActivityCheckconceptquestionBinding
 
-    private lateinit var getResultText: ActivityResultLauncher<Intent>
+    // private lateinit var getResultText: ActivityResultLauncher<Intent>
     private var albumDatas=ArrayList<Album>()//뷰페이저
 
     private var realUri: String=""
