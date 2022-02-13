@@ -114,6 +114,7 @@ class SignUpCategoryActivity : AppCompatActivity(), View.OnClickListener, SignUp
         }
     }
 
+    // TODO 변수 타입 확인하기..! 에러는 안나는데 경고가 뜸
     private fun selectCategories(view: View, categories: String?) {
 
         if (myCategories.size < 5) {

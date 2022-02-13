@@ -1,8 +1,10 @@
 package com.example.mumulcom
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +23,11 @@ class AnswerActivity:AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAnswerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 화면 배경 누르면 키보드 사라지기
+        binding.answerBack.setOnClickListener {
+            CloseKeyboard()
+        }
 
 //답변하기 부분 사진 추가버튼
         binding.answerImageReferenceIv.setOnClickListener {
@@ -41,8 +48,6 @@ class AnswerActivity:AppCompatActivity() {
                 }
             }
         }
-
-
 //필수 부분 작성되면 답변하기 누르기
         binding.answerAnswerIv.setOnClickListener {
             required()
@@ -80,10 +85,20 @@ class AnswerActivity:AppCompatActivity() {
         }
 
         val ViewPagerAdapter=ViewPagerAdapter(albumDatas)
-        binding.answerImageIv.adapter=ViewPagerAdapter// 뷰페이저 어댑터 생성
-        binding.answerImageIv.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
-        binding.answerIndicator.setViewPager(binding.answerImageIv)
+        binding.answerImageVp.adapter=ViewPagerAdapter// 뷰페이저 어댑터 생성
+        binding.answerImageVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
+        binding.answerIndicator.setViewPager(binding.answerImageVp)
         binding.answerIndicator.createIndicators(5,0);
+    }
+
+    // 키보드 사라지는 함수
+    fun CloseKeyboard() {
+        var view = this.currentFocus
+
+        if(view != null) {
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 
     private fun required() {
@@ -98,8 +113,5 @@ class AnswerActivity:AppCompatActivity() {
         binding.answerAnswerIv.setImageResource(R.drawable.ic_click_answer)
     }
 
-    private fun ImageView.setImageIcon(plus: Int) {
-
-    }
 
 }
