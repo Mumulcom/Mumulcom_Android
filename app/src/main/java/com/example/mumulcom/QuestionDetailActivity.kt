@@ -325,7 +325,7 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
             binding.clickLikeIv.setImageResource(R.drawable.ic_liked)
         }
 
-        Log.d("scraped",result[0].isScraped.toString())
+        Log.d("scraped",result[0].isScraped)
         if(result[0].isScraped=="Y"){
             isScrap = true
             binding.clickScrapIv.setImageResource(R.drawable.ic_scrap_select)

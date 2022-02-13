@@ -72,6 +72,7 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
         val binding: QuestionAnswerItemBinding =  QuestionAnswerItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
 
 
+
         isAdopted = adopt // 이 글 자체가 채택이 된 답변이 있는지를 확인하는 변수  ( Y or N )
         isWriter =  writer // 조회한 사람이 이 글을 작성한 작성자인지 확인 (Ture or False )
 
@@ -92,7 +93,11 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
                 uploadCommentService.getUploadComment(getJwt(context), CommentSend(replyIdx, getUserIdx(context),comment,null))
                 binding.commentEditText.text.clear()
                 getCommentsForReply() // 댓글 가져오는 api 호출
-                commentsForReplyAdapter.notifyDataSetChanged()
+                commentsForReplyAdapter = CommentsForReplyAdapter(context) // recyclerView adapter 연결
+                binding.commentRecyclerView.adapter = commentsForReplyAdapter
+                binding.commentRecyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+           //     commentsForReplyAdapter.notifyDataSetChanged()
+
             }
 
 
@@ -168,7 +173,7 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
     private fun getCommentsForReply(){
         val commentsForReplyService = CommentsForReplyService()
         commentsForReplyService.setCommentsForReplyView(this)
-        Log.d("replyIdx:",replyIdx.toString())
+        Log.d("replyIdx:---",replyIdx.toString())
       //  commentsForReplyService.getCommentsForReply(46)
         commentsForReplyService.getCommentsForReply(replyIdx)
     }
