@@ -1,9 +1,9 @@
 package com.example.mumulcom
 
-import com.example.mumulcom.response.CodingQuestionResponse
-import com.example.mumulcom.response.ConceptQuestionResponse
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 // 검색 결과를 서버에서 받아옴

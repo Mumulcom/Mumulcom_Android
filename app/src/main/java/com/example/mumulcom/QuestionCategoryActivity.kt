@@ -32,33 +32,33 @@ class QuestionCategoryActivity : AppCompatActivity() {
         if (codingQuestionCheck==false&&conceptQuestionCheck==false){
             isSelect=false
             setSelectCompletion()
-            binding.questioncategorySelectCompletionIv.setOnClickListener {
+            binding.questioncategorySelectCompletionIb.setOnClickListener {
                 Toast.makeText(this@QuestionCategoryActivity, "질문 유형을 선택해주세요", Toast.LENGTH_SHORT)
                     .show()
             }
         }
 
         // 코딩 질문 버튼
-        binding.questioncategoryCodingQuestionIv.setOnClickListener {
+        binding.questioncategoryCodingQuestionIb.setOnClickListener {
             codingQuestionCheck = true
             conceptQuestionCheck = false
             initCodingOrConceptQuestionButton()
             isSelect=true
             setSelectCompletion()
-            binding.questioncategorySelectCompletionIv.setOnClickListener {
+            binding.questioncategorySelectCompletionIb.setOnClickListener {
                 startActivity(Intent(this, CheckCodingQuestionActivity::class.java))
             }
         }
 
 
         // 개념 질문 버튼
-        binding.questioncategoryConceptQuestionIv.setOnClickListener {
+        binding.questioncategoryConceptQuestionIb.setOnClickListener {
             conceptQuestionCheck= true
             codingQuestionCheck = false
             isSelect=true
             initCodingOrConceptQuestionButton()
             setSelectCompletion()
-            binding.questioncategorySelectCompletionIv.setOnClickListener {
+            binding.questioncategorySelectCompletionIb.setOnClickListener {
                 startActivity(Intent(this, CheckConceptQuestionActivity::class.java))
             }
         }
@@ -67,12 +67,12 @@ class QuestionCategoryActivity : AppCompatActivity() {
 
     fun setSelectCompletion(){
         if(isSelect){
-            binding.questioncategorySelectCompletionIv.setImageResource(R.drawable.ic_select_complete)
+            binding.questioncategorySelectCompletionIb.setImageResource(R.drawable.ic_select_complete)
 //            binding.questioncategorySelectCompletionIb.setOnClickListener {
 //                startActivity(Intent(this, CheckCodingQuestionActivity::class.java))
 //            }
         }else{
-            binding.questioncategorySelectCompletionIv.setImageResource(R.drawable.ic_bf_selectcompletion)
+            binding.questioncategorySelectCompletionIb.setImageResource(R.drawable.ic_bf_selectcompletion)
         }
     }
 
@@ -81,22 +81,22 @@ class QuestionCategoryActivity : AppCompatActivity() {
 
     fun initCodingOrConceptQuestionButton(){
         if(codingQuestionCheck){
-            binding.questioncategoryCodingQuestionIv.setImageResource(R.drawable.coding_question_check_img)
-            binding.questioncategoryCodingQuestionIv.isEnabled = false // 이미 선택되었으면 선택 못함.
+            binding.questioncategoryCodingQuestionIb.setImageResource(R.drawable.coding_question_check_img)
+            binding.questioncategoryCodingQuestionIb.isEnabled = false // 이미 선택되었으면 선택 못함.
             // 코딩 질문만 보여줌
         }else{
-            binding.questioncategoryCodingQuestionIv.setImageResource(R.drawable.coding_question_img)
-            binding.questioncategoryCodingQuestionIv.isEnabled = true
+            binding.questioncategoryCodingQuestionIb.setImageResource(R.drawable.coding_question_img)
+            binding.questioncategoryCodingQuestionIb.isEnabled = true
         }
 
         if(conceptQuestionCheck){
-            binding.questioncategoryConceptQuestionIv.setImageResource(R.drawable.ic_concept_question_check_img)
-            binding.questioncategoryConceptQuestionIv.isEnabled = false // 이미 선택되었으면 선택 못함.
+            binding.questioncategoryConceptQuestionIb.setImageResource(R.drawable.ic_concept_question_check_img)
+            binding.questioncategoryConceptQuestionIb.isEnabled = false // 이미 선택되었으면 선택 못함.
             // 개념 질문만 보여줌
 
         }else{
-            binding.questioncategoryConceptQuestionIv.setImageResource(R.drawable.ic_concept_question_img)
-            binding.questioncategoryConceptQuestionIv.isEnabled = true
+            binding.questioncategoryConceptQuestionIb.setImageResource(R.drawable.ic_concept_question_img)
+            binding.questioncategoryConceptQuestionIb.isEnabled = true
         }
     }
 }
