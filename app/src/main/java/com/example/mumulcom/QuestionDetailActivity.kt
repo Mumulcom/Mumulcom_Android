@@ -24,7 +24,8 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
     private var type : Int = 0
     private var isLiked = false // 질문에 대한 좋아요 변수
     private var isScrap = false // 질문에 대한 scrap 변수
-    private lateinit var isAdopted : String
+    private  var isAdopted : String = "N"
+    private  var isWriter : Boolean = false
 
     private lateinit var repliesForQuestionAdapter: RepliesForQuestionAdapter
 
@@ -46,8 +47,8 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
             2-> getDetailConceptQuestion() // 개념질문
         }
 
-        getRepliesForQuestion() // 질문에 대한 답변 받아오는 함수
-        initRecyclerView()
+//        getRepliesForQuestion() // 질문에 대한 답변 받아오는 함수
+//        initRecyclerView()
 
 
         binding.backIv.setOnClickListener {  // 뒤로 가기 버튼 클릭시
@@ -82,35 +83,7 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
 
     }// end of onCreate
 
-    override fun onStart() {
-        super.onStart()
 
-        Log.d("lifecycle","QuestionDetailActivity onStart")
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d("lifecycle","QuestionDetailActivity onResume")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d("lifecycle","QuestionDetailActivity onPause")
-
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d("lifecycle","QuestionDetailActivity onStop")
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("lifecycle","QuestionDetailActivity onDestroy")
-
-    }
 
     private fun setScrapQuestion(){
         if(isScrap){ // 스크랩을 했을때
@@ -164,7 +137,7 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
 
     private fun initRecyclerView(){
         // recyclerView <-> adapter 연결
-        repliesForQuestionAdapter = RepliesForQuestionAdapter(this)
+        repliesForQuestionAdapter = RepliesForQuestionAdapter(this,isAdopted,isWriter)
 
         binding.recyclerView.adapter = repliesForQuestionAdapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this,
@@ -204,15 +177,29 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
     override fun onGetDetailConceptQuestionsSuccess(result: ArrayList<DetailConceptQuestion>) {
 //        Log.d("size 확인111",result.size.toString())
 //        Log.d("size 확인111",result[0].nickname)
+
+        isAdopted =result[0].isAdopted  // 채택여부
+
+        if(result[0].userIdx == getUserIdx(this)){
+            isWriter = true
+        }
+
+        getRepliesForQuestion() // 질문에 대한 답변 받아오는 함수
+        initRecyclerView()
+
+
         binding.nickNameTv.text = result[0].nickname // 닉네임
         binding.createdAtTv.text = result[0].createdAt // 작성날짜
         binding.questionIv.setImageResource(R.drawable.ic_concept_question_check_img) // 코딩 이미지로바꿈
         Glide.with(this).load(result[0].profileImgUrl).into(binding.profileIv) // 프로필 이미지
         binding.titleTv.text = result[0].title // 제목
         binding.bigCategoryTv.text = "#"+result[0].bigCategoryName // 상위 카테고리
+
         if(result[0].smallCategoryName!=null){
             binding.smallCategoryTv.text = "#"+result[0].smallCategoryName // 하위 카테고리
         }
+
+
         //  이미지 있으면 그 수만큼 viewpager 어댑터에 넘기고 없으면 이미지 보여주는 부분 gone 처리
         if(result[0].questionImgUrls.size == 0){
             binding.pictureLinearLayout.visibility = View.GONE
@@ -245,7 +232,11 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
             binding.clickScrapIv.setImageResource(R.drawable.ic_scrap_select)
         }
 
-        isAdopted =result[0].isAdopted  // 채택여부
+
+
+        if(result[0].userIdx == getUserIdx(this)){
+            isWriter = true
+        }
 
 
         binding.replyCountTv.text = result[0].replyCount.toString()  // 답변 수
@@ -274,6 +265,17 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
     }
 
     override fun onGetDetailCodingQuestionsSuccess(result: ArrayList<DetailCodingQuestion>) {
+
+        isAdopted =result[0].isAdopted  // 채택여부
+
+        if(result[0].userIdx == getUserIdx(this)){
+            isWriter = true
+        }
+
+
+        getRepliesForQuestion() // 질문에 대한 답변 받아오는 함수
+        initRecyclerView()
+
 
         binding.nickNameTv.text = result[0].nickname // 닉네임
         binding.createdAtTv.text = result[0].createdAt // 작성날짜
@@ -329,7 +331,7 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
             binding.clickScrapIv.setImageResource(R.drawable.ic_scrap_select)
         }
 
-        isAdopted =result[0].isAdopted  // 채택여부
+
 
         binding.replyCountTv.text = result[0].replyCount.toString()  // 답변 수
         binding.likeCountTv.text = result[0].likeCount.toString() // 좋아요 수
@@ -363,6 +365,14 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
                     binding.questionFloatingButton.visibility = View.VISIBLE
                 }
             }
+
+            override fun onClickAdoptButton(isClicked: Boolean) {
+                if(isClicked){
+                    getRepliesForQuestion() // 질문에 대한 답변 받아오는 함수
+                    initRecyclerView()
+                }
+            }
+
 
         })
 

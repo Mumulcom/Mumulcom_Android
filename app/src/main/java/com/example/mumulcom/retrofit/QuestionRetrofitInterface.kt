@@ -1,5 +1,6 @@
 package com.example.mumulcom.retrofit
 
+import com.example.mumulcom.data.CommentSend
 import com.example.mumulcom.data.LikeReplySend
 import com.example.mumulcom.data.LikeSend
 import com.example.mumulcom.response.RepliesForQuestionResponse
@@ -69,6 +70,22 @@ interface QuestionRetrofitInterface {
     fun getCommentsForReply(
         @Path("replyIdx") replyIdx : Long
     ):Call<CommentsForReplyResponse>
+
+
+    @POST("/replies/reply") // 답변에 댓글달때 호출
+    fun getUploadComment(
+        @Header("X-ACCESS-TOKEN")  X_ACCESS_TOKEN : String,
+        @Body commentSend : CommentSend
+    ):Call<UploadCommentResponse>
+
+    @PATCH("/replies/adoption/{userIdx}/{replyIdx}") // 답변을 채택할때 호출
+    fun getAdoptReply(
+        @Header("X-ACCESS-TOKEN")  X_ACCESS_TOKEN : String,
+        @Path("userIdx") userIdx : Long,
+        @Path("replyIdx") replyIdx: Long
+    ):Call<AdoptReplyResponse>
+
+
 
 //    @Multipart
 //    @POST("/questions/concept") // 코딩 질문 하기

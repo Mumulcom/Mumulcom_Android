@@ -8,33 +8,44 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mumulcom.R
-import com.example.mumulcom.data.Comment
-import com.example.mumulcom.data.Like
-import com.example.mumulcom.data.LikeReplySend
-import com.example.mumulcom.data.Reply
+import com.example.mumulcom.data.*
 import com.example.mumulcom.databinding.QuestionAnswerItemBinding
 import com.example.mumulcom.getJwt
 import com.example.mumulcom.getUserIdx
+import com.example.mumulcom.service.AdoptReplyService
 import com.example.mumulcom.service.CommentsForReplyService
 import com.example.mumulcom.service.LikeReplyService
+import com.example.mumulcom.service.UploadCommentService
+import com.example.mumulcom.view.AdoptReplyView
 import com.example.mumulcom.view.CommentsForReplyView
 import com.example.mumulcom.view.LikeReplyView
+import com.example.mumulcom.view.UploadCommentView
 
-class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<RepliesForQuestionAdapter.ViewHolder>(),LikeReplyView,CommentsForReplyView {
+class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer:Boolean):RecyclerView.Adapter<RepliesForQuestionAdapter.ViewHolder>(),
+    LikeReplyView,CommentsForReplyView,UploadCommentView,AdoptReplyView {
 
 
     private val replyList = ArrayList<Reply>()
+
+    private var isWriter : Boolean = false // 조회한 사람이 이 글을 작성한 작성자인지 확인
+
     private var isAdopted : String ="N" // 채택하기
+    private var isClickAdoptButton : Boolean = false // 채택하기 버튼 눌렀는지 확인
+
     private var isLike : Boolean = false // 좋아요
     private var isCommentClick : Boolean = false // comment 이미지를 클릭했는지 여부 확인
     private lateinit var imageViewPagerAdapter: ImageViewPagerAdapter
     private  var replyIdx : Long = -1
-    var likeNumber : Int = 0
     private lateinit var commentsForReplyAdapter: CommentsForReplyAdapter
+    private lateinit var comment : String // 댓글 작성 내용 저장할 변수
+
 
 
 
@@ -42,7 +53,9 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
     // 클릭 인터페이스 정의
     interface RepliesItemClickListener{
         fun onRemoveAnswerButton(isClicked:Boolean)
+        fun onClickAdoptButton(isClicked:Boolean)
     }
+
 
     // 리스너 객체를 전달받는 함수랑 리스너 객체 저장 변수
     private lateinit var repliesItemClickListener : RepliesItemClickListener
@@ -58,8 +71,31 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: QuestionAnswerItemBinding =  QuestionAnswerItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
 
-        binding.commentTv.setOnClickListener {
+
+        isAdopted = adopt // 이 글 자체가 채택이 된 답변이 있는지를 확인하는 변수  ( Y or N )
+        isWriter =  writer // 조회한 사람이 이 글을 작성한 작성자인지 확인 (Ture or False )
+
+        Log.d("adopt",isAdopted)
+        Log.d("writer",isWriter.toString())
+
+        binding.uploadCommentTv.setOnClickListener { // 게시 버튼 누름.
             Log.d("umc","게시를 누름.")
+
+            comment =binding.commentEditText.text.toString() // 입력한 댓글을 가져옴
+            if(comment==""){
+                Toast.makeText(context,"댓글을 입력해주세요",Toast.LENGTH_SHORT).show()
+
+            }else{
+                //  api 에 연결해서 넘겨줌.
+                val uploadCommentService = UploadCommentService()
+                uploadCommentService.setUploadCommentView(this)
+                uploadCommentService.getUploadComment(getJwt(context), CommentSend(replyIdx, getUserIdx(context),comment,null))
+                binding.commentEditText.text.clear()
+                getCommentsForReply() // 댓글 가져오는 api 호출
+                commentsForReplyAdapter.notifyDataSetChanged()
+            }
+
+
         }
         return ViewHolder(binding)
     }
@@ -75,21 +111,23 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
             if(isLike){
                 holder.binding.itemLikeIv.setImageResource(R.drawable.ic_liked)
                 setLikeReply() // 답변에 대한 좋아요 처리
-            //    likeNumber++
+
             }else{
                 holder.binding.itemLikeIv.setImageResource(R.drawable.ic_like)
                 setLikeReply() // 답변에 대한 좋아요 처리
-            //    likeNumber--
+
             }
         }
         // 채택하기 처리
-        holder.binding.selectAnswerTv.setOnClickListener {
-            holder.binding.selectAnswerTv.visibility = View.GONE
-            holder.binding.selectAnswerIv.visibility = View.VISIBLE
-        }
         holder.binding.selectAnswerIv.setOnClickListener {
-            holder.binding.selectAnswerIv.visibility = View.GONE
-            holder.binding.selectAnswerTv.visibility = View.VISIBLE
+            //  채택하는 api 호출
+            val adoptReplyService = AdoptReplyService()
+            adoptReplyService.setAdoptReplyView(this)
+            Log.d("house",replyIdx.toString())
+            adoptReplyService.getAdoptReply(getJwt(context), getUserIdx(context),replyIdx)
+            isClickAdoptButton = true
+            //  답변 api 재호출 (QuestionDetailActivity)
+            repliesItemClickListener.onClickAdoptButton(isClickAdoptButton)
         }
 
         // 댓글 처리
@@ -99,10 +137,10 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
                 holder.binding.commentIv.setImageResource(R.drawable.ic_message_select)
                 holder.binding.itemCommentTv.setTextColor(Color.parseColor("#F7B77C"))
                 holder.binding.commentLinearLayout.visibility = View.VISIBLE // 댓글창 염
-                // recyclerView adapter 연결
-                // todo api 연결
+
+                // api 연결
                 getCommentsForReply() // 댓글 가져오는 api 호출
-                commentsForReplyAdapter = CommentsForReplyAdapter(context)
+                commentsForReplyAdapter = CommentsForReplyAdapter(context) // recyclerView adapter 연결
                 holder.binding.commentRecyclerView.adapter = commentsForReplyAdapter
                 holder.binding.commentRecyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
 
@@ -131,8 +169,8 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
         val commentsForReplyService = CommentsForReplyService()
         commentsForReplyService.setCommentsForReplyView(this)
         Log.d("replyIdx:",replyIdx.toString())
-        commentsForReplyService.getCommentsForReply(46)
-      //  commentsForReplyService.getCommentsForReply(replyIdx)
+      //  commentsForReplyService.getCommentsForReply(46)
+        commentsForReplyService.getCommentsForReply(replyIdx)
     }
 
     override fun getItemCount(): Int {
@@ -159,7 +197,8 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
             binding.nickNameTv.text = reply.nickname // 닉네임
             binding.createdAtTv.text = reply.createdAt // 작성 날짜
 
-            likeNumber = Integer.parseInt(binding.itemLikeTv.text.toString())
+
+
 
 
             if(reply.replyUrl==null){
@@ -170,7 +209,7 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
             }
 
             binding.contentTv.text = reply.content // 답변 내용
-            binding.contentTv.text = reply.reReplyCount.toString() // 대댓글수
+            binding.itemCommentTv.text = reply.reReplyCount.toString() // 대댓글수
             binding.itemLikeTv.text = reply.likeCount.toString() // 좋아요 수
 
             // 답변 이미지 viewpager 연결
@@ -189,11 +228,43 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
             }
 
             replyIdx =reply.replyIdx // 답변에 대한 고유 번호 저장. -> 서버에 넘겨서 댓글 받아옴.
+            Log.d("replyIdx",replyIdx.toString())
 
-//            if(isAdopted=="Y"){ // 이미 답변이 하나라도 채택이 됬다면 채택버튼은 사라짐.
-//                binding.selectAnswerIv.visibility = View.GONE
-//                binding.selectAnswerTv.visibility = View.GONE
-//            }
+            // --------------- 채택하기 처리 -------------------------------
+
+            if(isAdopted=="Y"){
+                if(reply.status=="Y")   {
+                    binding.selectAnswerIv.visibility = View.VISIBLE
+                    binding.selectAnswerIv.setImageResource(R.drawable.ic_adopt_reply_ok)
+                }
+                if(reply.status=="N"){
+                    binding.selectAnswerIv.visibility = View.GONE
+                }
+            }
+
+            if(isWriter){ // 글 작성자가 조회중
+                if(isAdopted=="Y"){
+                    if(reply.status=="Y"){
+                        binding.selectAnswerIv.visibility = View.VISIBLE
+                        binding.selectAnswerIv.setImageResource(R.drawable.ic_adopt_reply_ok)
+                        binding.selectAnswerIv.isEnabled = false
+                    }
+                    if(reply.status=="N"){
+                        binding.selectAnswerIv.visibility = View.GONE
+                    }
+                }else{
+                    binding.selectAnswerIv.visibility = View.VISIBLE
+                    binding.selectAnswerIv.setImageResource(R.drawable.ic_adopt_reply_not)
+                }
+
+            }else{ // 다른 사람이 조회중
+                if(reply.status=="Y"){
+                    binding.selectAnswerIv.visibility= View.VISIBLE
+                    binding.selectAnswerIv.setImageResource(R.drawable.ic_adopt_reply_ok)
+                    binding.selectAnswerIv.isEnabled = false
+                }
+            }
+
 
 
         }// end of bind()
@@ -252,6 +323,52 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
     }
 
 
+
+
+
+
+
+
+
+    // ---------------  UploadComment  implement : 답변에 대한 댓글 달기 ----------------
+
+    override fun onGetUploadCommentLoading() {
+        Log.d("답변에 댓글달기/API","로딩중...")
+    }
+
+    override fun onGetUploadCommentSuccess(result: Like) {
+        Log.d("답변에 댓글달기/API","성공")
+        Log.d("답변에 댓글달기/API",result.noticeContent)
+        Toast.makeText(context,"댓글을 달았습니다.",Toast.LENGTH_SHORT).show()
+
+    }
+
+    override fun onGetUploadCommentFailure(code: Int, message: String) {
+        when(code){
+            400-> Log.d("답변에 댓글달기/API",message)
+        }
+    }
+
+
+    // -------------- AdoptReplyView implement  : 채택하기 ----------------
+
+    override fun onGetAdoptReplyLoading() {
+        Log.d("답변 채택하기/API","로딩중..")
+    }
+
+    override fun onGetAdoptReplySuccess(result: Adopt) {
+        Log.d("답변 채택하기/API","성공")
+        Log.d("답변 채택하기/API",result.noticeMessage)
+        Toast.makeText(context,"해당 답변을 채택했습니다.",Toast.LENGTH_SHORT).show()
+
+        // todo 데이터 reload
+    }
+
+    override fun onGetAdoptReplyFailure(code: Int, message: String) {
+        when(code){
+            400-> Log.d("답변 채택하기/API",message)
+        }
+    }
 
 
 }

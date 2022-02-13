@@ -46,23 +46,15 @@
 
         <!-- 질문 작성자만 보임 -->
         <ImageView
+            android:visibility="gone"
             android:id="@+id/selectAnswerIv"
-            android:layout_width="47.88dp"
-            android:layout_height="21dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="15dp"
-            android:src="@drawable/ic_select_answer"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/selectAnswerTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="15dp"
-            android:text="채택하기"
-            android:textColor="#3F51B5"
-            android:textSize="12sp" />
+            android:src="@drawable/ic_adopt_reply_not" />
+
+
     </LinearLayout>
     <!-- 답변 내용 -->
     <LinearLayout
@@ -189,13 +181,14 @@
                 android:layout_width="268.38dp"
                 android:layout_height="wrap_content">
                 <EditText
-                    android:id="@+id/commentTv"
+                    android:id="@+id/commentEditText"
                     android:padding="7dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/question_list_background"/>
                 <TextView
                     android:id="@+id/uploadCommentTv"
+                    android:padding="4dp"
                     android:textSize="12sp"
                     android:textColor="@color/black"
                     android:text="게시"

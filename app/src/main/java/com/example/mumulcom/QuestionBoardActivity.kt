@@ -74,6 +74,9 @@ class QuestionBoardActivity : AppCompatActivity(), CategoryQuestionView {
 
         Log.d("lifecycle","QuestionBoardActivity onCreate")
 
+        binding.searchIv.setOnClickListener {
+            startActivity(Intent(this, SearchActivity::class.java))
+        }
 
     }// end of onCreate
 
