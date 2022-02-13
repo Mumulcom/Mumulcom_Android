@@ -32,16 +32,17 @@
             android:textColor="@color/home_gray_text_color"
             android:textStyle="bold"
             android:text="이휘정" />
+
         <TextView
             android:id="@+id/itemDateTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/itemIconIv"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10dp"
+            android:layout_toRightOf="@+id/itemIconIv"
+            android:text="12/30,20"
             android:textColor="@color/home_gray_text_color"
-            android:textStyle="bold"
-            android:text="12/30,20"/>
+            android:textStyle="bold" />
     </LinearLayout>
     <LinearLayout
         android:gravity="center"

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mumulcom.data.Question
 import com.example.mumulcom.databinding.FragmentTabMyAnswerBinding
 
 // 내가 단 답변
