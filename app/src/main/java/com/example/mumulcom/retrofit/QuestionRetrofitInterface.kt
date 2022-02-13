@@ -4,6 +4,7 @@ import com.example.mumulcom.data.LikeReplySend
 import com.example.mumulcom.data.LikeSend
 import com.example.mumulcom.response.RepliesForQuestionResponse
 import com.example.mumulcom.response.*
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -68,4 +69,18 @@ interface QuestionRetrofitInterface {
     fun getCommentsForReply(
         @Path("replyIdx") replyIdx : Long
     ):Call<CommentsForReplyResponse>
+
+//    @Multipart
+//    @POST("/questions/concept") // 코딩 질문 하기
+//    fun getMadeConceptQuestion(
+//     @Header("X-ACCESS-TOKEN") jwt : String,
+//     @Part file : MultipartBody.Part,
+//     @Part userIdx : MultipartBody.Part,
+//     @Part currentError : MultipartBody.Part,
+//     @Part myCodingSkill : MultipartBody.Part?,
+//     @Part bigCategoryIdx : MultipartBody.Part,
+//     @Part smallCategoryIdx : MultipartBody.Part?,
+//     @Part title : MultipartBody.Part,
+//     @Part codeQuestionUrl : MultipartBody.Part?,
+//    ):Call<MadeConceptQuestionResponse>
 }

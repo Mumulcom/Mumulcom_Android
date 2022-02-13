@@ -3,6 +3,7 @@ package com.example.mumulcom.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.opengl.Visibility
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -27,8 +28,8 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
 
 
     private val replyList = ArrayList<Reply>()
+    private var isAdopted : String ="N" // 채택하기
     private var isLike : Boolean = false // 좋아요
-    private var isSelect : Boolean = false // 체택하기
     private var isCommentClick : Boolean = false // comment 이미지를 클릭했는지 여부 확인
     private lateinit var imageViewPagerAdapter: ImageViewPagerAdapter
     private  var replyIdx : Long = -1
@@ -37,8 +38,29 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
 
 
 
+
+    // 클릭 인터페이스 정의
+    interface RepliesItemClickListener{
+        fun onRemoveAnswerButton(isClicked:Boolean)
+    }
+
+    // 리스너 객체를 전달받는 함수랑 리스너 객체 저장 변수
+    private lateinit var repliesItemClickListener : RepliesItemClickListener
+
+    fun setRepliesClickListener(repliesItemClickListener: RepliesItemClickListener){
+        this.repliesItemClickListener = repliesItemClickListener
+    }
+
+
+
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: QuestionAnswerItemBinding =  QuestionAnswerItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+
+        binding.commentTv.setOnClickListener {
+            Log.d("umc","게시를 누름.")
+        }
         return ViewHolder(binding)
     }
 
@@ -84,11 +106,17 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
                 holder.binding.commentRecyclerView.adapter = commentsForReplyAdapter
                 holder.binding.commentRecyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
 
+
+
+
             }else{
                 holder.binding.commentIv.setImageResource(R.drawable.ic_message)
                 holder.binding.itemCommentTv.setTextColor(Color.parseColor("#000000"))
                 holder.binding.commentLinearLayout.visibility = View.GONE // 댓글창 닫음.
             }
+            //  답변하기 버튼 gone or visible 변경 (QuestionDetailActivity)
+            repliesItemClickListener.onRemoveAnswerButton(isCommentClick)
+
 
         }
 
@@ -162,6 +190,11 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
 
             replyIdx =reply.replyIdx // 답변에 대한 고유 번호 저장. -> 서버에 넘겨서 댓글 받아옴.
 
+//            if(isAdopted=="Y"){ // 이미 답변이 하나라도 채택이 됬다면 채택버튼은 사라짐.
+//                binding.selectAnswerIv.visibility = View.GONE
+//                binding.selectAnswerTv.visibility = View.GONE
+//            }
+
 
         }// end of bind()
 
@@ -217,6 +250,8 @@ class RepliesForQuestionAdapter(val context: Context):RecyclerView.Adapter<Repli
             400-> Log.d("개념질문 상세페이지/API",message)
         }
     }
+
+
 
 
 }

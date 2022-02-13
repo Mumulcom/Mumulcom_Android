@@ -24,6 +24,7 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
     private var type : Int = 0
     private var isLiked = false // 질문에 대한 좋아요 변수
     private var isScrap = false // 질문에 대한 scrap 변수
+    private lateinit var isAdopted : String
 
     private lateinit var repliesForQuestionAdapter: RepliesForQuestionAdapter
 
@@ -58,6 +59,12 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
             getRepliesForQuestion() // 질문에 대한 답변 받아오는 함수
             initRecyclerView()
 
+            when(type){  // -> 좋아요 업댓
+                1-> getDetailCodingQuestion() // 코딩 질문
+                2-> getDetailConceptQuestion() // 개념질문
+            }
+
+
             binding.refreshLayout.isRefreshing = false
         }
 
@@ -65,16 +72,12 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
 
             isLiked = !isLiked  //
             setLikeQuestion() // 질문에 대한 좋아요 처리
-//            when(type){
-//                1-> getDetailCodingQuestion() // 코딩 질문
-//                2-> getDetailConceptQuestion() // 개념질문
-//            }
+
         }
 
         binding.clickScrapIv.setOnClickListener {
             isScrap = !isScrap
             setScrapQuestion()// 질문에 대한 스크랩 처리
-
         }
 
     }// end of onCreate
@@ -242,6 +245,9 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
             binding.clickScrapIv.setImageResource(R.drawable.ic_scrap_select)
         }
 
+        isAdopted =result[0].isAdopted  // 채택여부
+
+
         binding.replyCountTv.text = result[0].replyCount.toString()  // 답변 수
         binding.likeCountTv.text = result[0].likeCount.toString() // 좋아요 수
 
@@ -268,8 +274,7 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
     }
 
     override fun onGetDetailCodingQuestionsSuccess(result: ArrayList<DetailCodingQuestion>) {
-//        Log.d("size 확인222",result.size.toString())
-//        Log.d("size 확인222",result[0].nickname)
+
         binding.nickNameTv.text = result[0].nickname // 닉네임
         binding.createdAtTv.text = result[0].createdAt // 작성날짜
         Glide.with(this).load(result[0].profileImgUrl).into(binding.profileIv) // 프로필 이미지
@@ -324,6 +329,7 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
             binding.clickScrapIv.setImageResource(R.drawable.ic_scrap_select)
         }
 
+        isAdopted =result[0].isAdopted  // 채택여부
 
         binding.replyCountTv.text = result[0].replyCount.toString()  // 답변 수
         binding.likeCountTv.text = result[0].likeCount.toString() // 좋아요 수
@@ -349,6 +355,16 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
 
     override fun onGetRepliesSuccess(result: ArrayList<Reply>) {
         repliesForQuestionAdapter.addQuestions(result)
+        repliesForQuestionAdapter.setRepliesClickListener(object : RepliesForQuestionAdapter.RepliesItemClickListener{
+            override fun onRemoveAnswerButton(isClicked: Boolean) {
+                if(isClicked){
+                    binding.questionFloatingButton.visibility = View.GONE
+                }else{
+                    binding.questionFloatingButton.visibility = View.VISIBLE
+                }
+            }
+
+        })
 
     }
 
