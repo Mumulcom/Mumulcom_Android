@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mumulcom.databinding.ActivitySplashBinding
+import com.example.mumulcom.login.LoginActivity
 
 class SplashActivity : AppCompatActivity() {
     lateinit var binding:ActivitySplashBinding
