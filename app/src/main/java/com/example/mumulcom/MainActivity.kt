@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.mumulcom.databinding.ActivityMainBinding
 import com.kakao.sdk.user.UserApiClient
 
-// TODO 하단 프로필 사진 연동하기 -> 바텀 네비에 서버에서 받은 값이 들어갈 수 있는가...?
+// TODO 하단 프로필 사진 연동하기 -> 바텀 네비에 spf에 저장된 값이 들어가나..?
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
 

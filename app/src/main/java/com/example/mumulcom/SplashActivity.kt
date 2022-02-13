@@ -6,13 +6,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mumulcom.databinding.ActivitySplashBinding
 import com.kakao.sdk.user.UserApiClient
 
-
-// TODO 로그인 처리, email 값 이미 있으면 -> mainActivity로 바로 넘어가기
 class SplashActivity : AppCompatActivity(), LoginView {
     lateinit var binding:ActivitySplashBinding
 
@@ -61,25 +58,32 @@ class SplashActivity : AppCompatActivity(), LoginView {
     }
 
     override fun onLoginLoading() {
-        //binding.mainLoginLoadingPb.visibility = View.VISIBLE
         Log.d("Login/API","로그인 로딩 중...")
     }
 
-    override fun onLoginSuccess(auth: Auth) {
-        //binding.mainLoginLoadingPb.visibility = View.GONE
+    override fun onLoginSuccess(profile: Profile) {
+        if (profile != null) {
+            saveJwt(this, profile.jwt)
+            saveUserIdx(this, profile.userIdx)
+            saveEmail(this, profile.email)
+            saveName(this, profile.name)
+            saveNickname(this, profile.nickname)
+            saveGroup(this, profile.group)
+            profile.myCategories?.let { saveCategories(this, it) }
+            saveProfileImgUrl(this, profile.profileImgUrl)
 
-        if (auth != null) {
-            saveJwt(this, auth.jwt)
-            saveUserIdx(this, auth.userIdx)
-
-            Log.d("jwt", auth.jwt)
-            Log.d("userIdx", auth.userIdx.toString())
+            Log.d("jwt", profile.jwt)
+            Log.d("userIdx", profile.userIdx.toString())
+            Log.d("email", profile.email)
+            Log.d("name", profile.name)
+            Log.d("nickname", profile.nickname)
+            Log.d("group", profile.group)
+            Log.d("myCategories", profile.myCategories.toString())
+            Log.d("profileImgUrl", profile.profileImgUrl)
         }
     }
 
     override fun onLoginFailure(code: Int, message: String) {
-        //binding.mainLoginLoadingPb.visibility = View.GONE
-
         when(code) {
             3014 -> {   // DB에 없는 이메일일 경우
                 Log.d("SingUpCategoryActivity/API", message)

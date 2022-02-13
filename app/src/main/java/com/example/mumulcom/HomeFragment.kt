@@ -76,7 +76,7 @@ class HomeFragment : Fragment(), RecentQuestionView {
         val questionService = QuestionService()
         questionService.setRecentQuestionView(this)
 
-        // TODO sharedPreference 에 저장된 userIdx 값으로 바꿔서 넣기
+
         questionService.getQuestions(getUserIdx(requireContext()), getJwt(requireContext())) // 현재 로그인한 사용자 정보 넣어줌.
     }
 
@@ -97,19 +97,6 @@ class HomeFragment : Fragment(), RecentQuestionView {
 
     override fun onGetQuestionsSuccess(result: ArrayList<Question>) {
         binding.homeProgressbar.visibility = View.INVISIBLE
-//        if (result != null) {
-//            recentQuestionAdapter.addQuestions(result)
-//            binding.noMyQuestionTv.visibility = View.GONE
-//            binding.recentQuestionVp.visibility = View.VISIBLE
-//            binding.homeIndicator.visibility = View.VISIBLE
-//
-//
-//        }else{ // 내가 한 질문이 없을 경우
-//            // viewPager 지우고 텍스트 대체
-//            binding.recentQuestionVp.visibility = View.GONE
-//            binding.homeIndicator.visibility = View.GONE
-//            binding.noMyQuestionTv.visibility = View.VISIBLE
-//        }
 
 
         if(result.isEmpty()){ // 내가 한 질문이 없을 경우  -> []
@@ -130,6 +117,8 @@ class HomeFragment : Fragment(), RecentQuestionView {
     }
 
     override fun onGetQuestionsFailure(code: Int, message: String) {
+        binding.homeProgressbar.visibility = View.INVISIBLE
+        Log.d("HomeFragment/API","실패 ")
         when(code){
             400-> Log.d("HomeFragment/API",message)
         }
