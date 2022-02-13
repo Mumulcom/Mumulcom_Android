@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:paddingBottom="50dp"
     android:background="@color/background">
 
@@ -46,15 +46,23 @@
 
         <!-- 질문 작성자만 보임 -->
         <ImageView
-            android:visibility="gone"
             android:id="@+id/selectAnswerIv"
+            android:layout_width="47.88dp"
+            android:layout_height="21dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="15dp"
+            android:src="@drawable/ic_select_answer"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/selectAnswerTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="15dp"
-            android:src="@drawable/ic_adopt_reply_not" />
-
-
+            android:text="채택하기"
+            android:textColor="#3F51B5"
+            android:textSize="12sp" />
     </LinearLayout>
     <!-- 답변 내용 -->
     <LinearLayout
@@ -103,7 +111,6 @@
             android:layout_height="30dp" />
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/itemLl4"
         android:gravity="center_vertical"
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -111,13 +118,10 @@
         app:layout_constraintTop_toBottomOf="@+id/itemL13"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <ImageView
-            android:id="@+id/commentIv"
             android:layout_width="15dp"
             android:layout_height="15dp"
-            android:src="@drawable/ic_message" />
-
+            android:src="@drawable/ic_message"/>
         <TextView
             android:layout_marginStart="7dp"
             android:id="@+id/itemCommentTv"
@@ -136,70 +140,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="10"/>
-
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:id="@+id/commentLinearLayout"
-        android:layout_marginTop="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itemLl4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/commentRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_marginTop="20dp"
-            android:paddingEnd="20dp"
-            android:paddingStart="20dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:background="#FFBD80"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/addPhotoIv"
-                app:tint="@color/black"
-                android:layout_marginStart="10dp"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:src="@drawable/ic_add_photo"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/editTextFrameLayout"
-                app:layout_constraintStart_toStartOf="parent"/>
-            <FrameLayout
-                android:id="@+id/editTextFrameLayout"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/addPhotoIv"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_width="268.38dp"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/commentEditText"
-                    android:padding="7dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/question_list_background"/>
-                <TextView
-                    android:id="@+id/uploadCommentTv"
-                    android:padding="4dp"
-                    android:textSize="12sp"
-                    android:textColor="@color/black"
-                    android:text="게시"
-                    android:layout_marginRight="20dp"
-                    android:layout_gravity="right|center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </FrameLayout>
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 

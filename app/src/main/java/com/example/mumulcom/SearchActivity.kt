@@ -10,10 +10,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.mumulcom.adapter.CodingQuestionAdapter
-import com.example.mumulcom.adapter.ConceptQuestionAdapter
-import com.example.mumulcom.data.CodingQuestion
-import com.example.mumulcom.data.ConceptQuestion
 import com.example.mumulcom.databinding.ActivitySearchBinding
 import kotlin.collections.ArrayList
 

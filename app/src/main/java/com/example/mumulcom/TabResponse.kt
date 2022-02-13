@@ -1,6 +1,5 @@
 package com.example.mumulcom
 
-import com.example.mumulcom.data.Question
 import com.google.gson.annotations.SerializedName
 
 data class TabResponse(

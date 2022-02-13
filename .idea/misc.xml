@@ -3,24 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/AndroidProject/MuMul/Mumulcom_Android/app/src/main/res/drawable/ic_answer_answer.xml" value="0.1" />
-        <entry key="..\:/AndroidProject/MuMul/Mumulcom_Android/app/src/main/res/drawable/ic_my_question_no_select.xml" value="0.1" />
-        <entry key="..\:/AndroidProject/MuMul/Mumulcom_Android/app/src/main/res/drawable/ic_my_question_select.xml" value="0.1" />
-        <entry key="..\:/AndroidProject/MuMul/Mumulcom_Android/app/src/main/res/layout/activity_checkcodingquestion.xml" value="0.3164861612515042" />
-        <entry key="..\:/AndroidProject/MuMul/Mumulcom_Android/app/src/main/res/layout/activity_checkconceptquestion.xml" value="0.1" />
-        <entry key="..\:/AndroidProject/MuMul/Mumulcom_Android/app/src/main/res/layout/activity_main.xml" value="0.12222222222222222" />
-        <entry key="..\:/AndroidProject/MuMul/Mumulcom_Android/app/src/main/res/layout/activity_question_board.xml" value="0.29791666666666666" />
-        <entry key="..\:/AndroidProject/MuMul/Mumulcom_Android/app/src/main/res/layout/activity_question_detail.xml" value="0.1" />
-        <entry key="..\:/AndroidProject/MuMul/Mumulcom_Android/app/src/main/res/layout/activity_questioncategory.xml" value="0.29791666666666666" />
-        <entry key="..\:/AndroidProject/MuMul/Mumulcom_Android/app/src/main/res/layout/activity_signup.xml" value="0.19739583333333333" />
-        <entry key="..\:/AndroidProject/MuMul/Mumulcom_Android/app/src/main/res/layout/fragment_home.xml" value="0.3037037037037037" />
-        <entry key="..\:/AndroidProject/MuMul/Mumulcom_Android/app/src/main/res/layout/fragment_scrap.xml" value="0.32447916666666665" />
-        <entry key="..\:/AndroidProject/MuMul/Mumulcom_Android/app/src/main/res/layout/fragment_tab_my_answer.xml" value="0.1925925925925926" />
-        <entry key="..\:/AndroidProject/MuMul/Mumulcom_Android/app/src/main/res/layout/fragment_tab_my_question.xml" value="0.1925925925925926" />
-        <entry key="..\:/AndroidProject/MuMul/Mumulcom_Android/app/src/main/res/layout/question_answer_item.xml" value="0.35669781931464173" />
-        <entry key="..\:/AndroidProject/MuMul/Mumulcom_Android/app/src/main/res/layout/question_list_item.xml" value="0.19739583333333333" />
-        <entry key="..\:/AndroidProject/MuMul/Mumulcom_Android/app/src/main/res/layout/recent_question_list_item.xml" value="0.2" />
-        <entry key="..\:/AndroidProject/MuMul/Mumulcom_Android/app/src/main/res/layout/reply_comment_item.xml" value="0.264" />
         <entry key="..\:/AndroidProject/UMC/Mumulcom_Android/app/src/main/res/drawable/ic_search.xml" value="0.221875" />
         <entry key="..\:/AndroidProject/UMC/Mumulcom_Android/app/src/main/res/drawable/ic_smile.xml" value="0.23854166666666668" />
         <entry key="..\:/AndroidProject/UMC/Mumulcom_Android/app/src/main/res/drawable/indicator_background.xml" value="0.22239583333333332" />
@@ -187,7 +169,7 @@
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
