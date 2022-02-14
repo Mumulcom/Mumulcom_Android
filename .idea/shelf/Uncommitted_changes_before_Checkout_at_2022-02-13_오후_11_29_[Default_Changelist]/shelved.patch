@@ -1,0 +1,1352 @@
+Index: app/src/main/java/com/example/mumulcom/SignUpCategoryActivity.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/SignUpCategoryActivity.kt b/app/src/main/java/com/example/mumulcom/signup/SignUpCategoryActivity.kt
+rename from app/src/main/java/com/example/mumulcom/SignUpCategoryActivity.kt
+rename to app/src/main/java/com/example/mumulcom/signup/SignUpCategoryActivity.kt
+--- a/app/src/main/java/com/example/mumulcom/SignUpCategoryActivity.kt	
++++ b/app/src/main/java/com/example/mumulcom/signup/SignUpCategoryActivity.kt	
+@@ -1,6 +1,5 @@
+-package com.example.mumulcom
++package com.example.mumulcom.signup
+ 
+-import android.app.Dialog
+ import android.content.ContentValues.TAG
+ import android.content.Intent
+ import android.os.Bundle
+@@ -8,6 +7,8 @@
+ import android.view.View
+ import android.widget.Toast
+ import androidx.appcompat.app.AppCompatActivity
++import com.example.mumulcom.MainActivity
++import com.example.mumulcom.R
+ import com.example.mumulcom.databinding.ActivitySignupCategoryBinding
+ 
+ class SignUpCategoryActivity : AppCompatActivity(), View.OnClickListener, SignUpView {
+Index: app/src/main/res/layout/fragment_alarm.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".AlarmFragment\">\r\n\r\n    <ImageView\r\n        android:id=\"@+id/alarm_alarm_iv\"\r\n        android:layout_width=\"30dp\"\r\n        android:layout_height=\"30dp\"\r\n        android:layout_marginTop=\"30dp\"\r\n        android:layout_marginStart=\"20dp\"\r\n        android:src=\"@drawable/ic_bottom_alarm_select\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"/>\r\n\r\n    <androidx.recyclerview.widget.RecyclerView\r\n        android:id=\"@+id/alarm_item_list_rv\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"0dp\"\r\n        android:layout_marginTop=\"25dp\"\r\n        android:clipToPadding=\"false\"\r\n        android:overScrollMode=\"always\"\r\n        android:scrollbars=\"none\"\r\n        app:layoutManager=\"androidx.recyclerview.widget.LinearLayoutManager\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@id/alarm_alarm_iv\"\r\n        tools:listitem=\"@layout/item_alarm\"/>\r\n\r\n    <!-- 프로그래스 바 -->\r\n    <ProgressBar\r\n        android:id=\"@+id/alarm_loading_pb\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginBottom=\"8dp\"\r\n        android:indeterminateTint=\"@color/selected\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"@id/alarm_item_list_rv\"\r\n        android:visibility=\"gone\" />\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/fragment_alarm.xml b/app/src/main/res/layout/fragment_alarm.xml
+--- a/app/src/main/res/layout/fragment_alarm.xml	
++++ b/app/src/main/res/layout/fragment_alarm.xml	
+@@ -4,7 +4,7 @@
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+-    tools:context=".AlarmFragment">
++    tools:context=".alarm.AlarmFragment">
+ 
+     <ImageView
+         android:id="@+id/alarm_alarm_iv"
+Index: app/src/main/java/com/example/mumulcom/TabConceptAnswerView.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/TabConceptAnswerView.kt b/app/src/main/java/com/example/mumulcom/myquestion/TabConceptAnswerView.kt
+rename from app/src/main/java/com/example/mumulcom/TabConceptAnswerView.kt
+rename to app/src/main/java/com/example/mumulcom/myquestion/TabConceptAnswerView.kt
+--- a/app/src/main/java/com/example/mumulcom/TabConceptAnswerView.kt	
++++ b/app/src/main/java/com/example/mumulcom/myquestion/TabConceptAnswerView.kt	
+@@ -1,4 +1,6 @@
+-package com.example.mumulcom
++package com.example.mumulcom.myquestion
++
++import com.example.mumulcom.Question
+ 
+ interface TabConceptAnswerView {
+     fun onGetConceptAnswersLoading()
+Index: app/src/main/java/com/example/mumulcom/HomeFragment.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/HomeFragment.kt b/app/src/main/java/com/example/mumulcom/home/HomeFragment.kt
+rename from app/src/main/java/com/example/mumulcom/HomeFragment.kt
+rename to app/src/main/java/com/example/mumulcom/home/HomeFragment.kt
+--- a/app/src/main/java/com/example/mumulcom/HomeFragment.kt	
++++ b/app/src/main/java/com/example/mumulcom/home/HomeFragment.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.home
+ 
+ import android.content.Intent
+ import android.os.Bundle
+@@ -8,11 +8,11 @@
+ import android.view.ViewGroup
+ import androidx.fragment.app.Fragment
+ import androidx.viewpager2.widget.ViewPager2
+-import com.example.mumulcom.RecentQuestionAdapter
+-import com.example.mumulcom.Question
++import com.example.mumulcom.*
++import com.example.mumulcom.category.QuestionBoardActivity
+ import com.example.mumulcom.databinding.FragmentHomeBinding
+-import com.example.mumulcom.QuestionService
+-import com.example.mumulcom.RecentQuestionView
++import com.example.mumulcom.detailquestion.QuestionDetailActivity
++import com.example.mumulcom.search.SearchActivity
+ 
+ 
+ class HomeFragment : Fragment(), RecentQuestionView {
+@@ -51,7 +51,8 @@
+     private fun initViewPager(){
+ 
+         recentQuestionAdapter = RecentQuestionAdapter(requireContext())
+-        recentQuestionAdapter.setQuestionClickListener(object : RecentQuestionAdapter.QuestionClickListener{
++        recentQuestionAdapter.setQuestionClickListener(object :
++            RecentQuestionAdapter.QuestionClickListener {
+             override fun onItemClick(question: Question) {
+                 startQuestionDetailActivity(question)// 질문 상세 보기 페이지로 이동
+             }
+@@ -63,7 +64,7 @@
+     }
+ 
+     private fun startQuestionDetailActivity(question: Question){
+-        val intent = Intent(requireContext(),QuestionDetailActivity::class.java)
++        val intent = Intent(requireContext(), QuestionDetailActivity::class.java)
+         intent.putExtra("bigCategoryName",question.bigCategoryName) // 상위 카테고리명 넘김
+         intent.putExtra("questionIdx",question.questionIdx) // 질문 고유 번호 넘김
+         intent.putExtra("type", question.type)
+@@ -139,7 +140,7 @@
+         // ------------          앱       -------------------------
+         binding.appAllTv.setOnClickListener {
+             //앱  전체 게시판 클릭시
+-            val intent = Intent(context,QuestionBoardActivity::class.java)
++            val intent = Intent(context, QuestionBoardActivity::class.java)
+             intent.putExtra("category","앱")
+             intent.putExtra("bigCategoryIdx",1)
+             //       intent.putExtra("smallCategoryIdx",0)
+@@ -147,7 +148,7 @@
+         }
+         binding.androidTv.setOnClickListener {
+             // 안드로이드 클릭시
+-            val intent = Intent(context,QuestionBoardActivity::class.java)
++            val intent = Intent(context, QuestionBoardActivity::class.java)
+             intent.putExtra("category","안드로이드")
+             intent.putExtra("bigCategoryIdx",1)
+             intent.putExtra("smallCategoryIdx",1)
+@@ -155,7 +156,7 @@
+         }
+         binding.iosTV.setOnClickListener {
+             // IOS 클릭시
+-            val intent = Intent(context,QuestionBoardActivity::class.java)
++            val intent = Intent(context, QuestionBoardActivity::class.java)
+             intent.putExtra("category","ios")
+             intent.putExtra("bigCategoryIdx",1)
+             intent.putExtra("smallCategoryIdx",2)
+@@ -168,7 +169,7 @@
+ 
+         binding.webAllTv.setOnClickListener {
+             //웹  전체 게시판 클릭시
+-            val intent = Intent(context,QuestionBoardActivity::class.java)
++            val intent = Intent(context, QuestionBoardActivity::class.java)
+             intent.putExtra("category","웹")
+             intent.putExtra("bigCategoryIdx",2)
+             //     intent.putExtra("smallCategoryIdx",0)
+@@ -176,7 +177,7 @@
+         }
+         binding.htmlTv.setOnClickListener {
+             //html  전체 게시판 클릭시
+-            val intent = Intent(context,QuestionBoardActivity::class.java)
++            val intent = Intent(context, QuestionBoardActivity::class.java)
+             intent.putExtra("category","HTML")
+             intent.putExtra("bigCategoryIdx",2)
+             intent.putExtra("smallCategoryIdx",3)
+@@ -184,7 +185,7 @@
+         }
+         binding.cssTv.setOnClickListener {
+             //CSS  전체 게시판 클릭시
+-            val intent = Intent(context,QuestionBoardActivity::class.java)
++            val intent = Intent(context, QuestionBoardActivity::class.java)
+             intent.putExtra("category","CSS")
+             intent.putExtra("bigCategoryIdx",2)
+             intent.putExtra("smallCategoryIdx",4)
+@@ -192,7 +193,7 @@
+         }
+         binding.reactTv.setOnClickListener {
+             // React 게시판 클릭시
+-            val intent = Intent(context,QuestionBoardActivity::class.java)
++            val intent = Intent(context, QuestionBoardActivity::class.java)
+             intent.putExtra("category","React")
+             intent.putExtra("bigCategoryIdx",2)
+             intent.putExtra("smallCategoryIdx",5)
+@@ -204,7 +205,7 @@
+ 
+         binding.serverAllTv.setOnClickListener {
+             //서버  전체 게시판 클릭시
+-            val intent = Intent(context,QuestionBoardActivity::class.java)
++            val intent = Intent(context, QuestionBoardActivity::class.java)
+             intent.putExtra("category","서버")
+             intent.putExtra("bigCategoryIdx",3)
+             //    intent.putExtra("smallCategoryIdx",1)
+@@ -214,7 +215,7 @@
+ 
+         binding.nodeTv.setOnClickListener {
+             // Node Js 게시판 클릭시
+-            val intent = Intent(context,QuestionBoardActivity::class.java)
++            val intent = Intent(context, QuestionBoardActivity::class.java)
+             intent.putExtra("category","Node Js")
+             intent.putExtra("bigCategoryIdx",3)
+             intent.putExtra("smallCategoryIdx",6)
+@@ -223,7 +224,7 @@
+ 
+         binding.springTv.setOnClickListener {
+             //  SPRING   게시판 클릭시
+-            val intent = Intent(context,QuestionBoardActivity::class.java)
++            val intent = Intent(context, QuestionBoardActivity::class.java)
+             intent.putExtra("category","Spring")
+             intent.putExtra("bigCategoryIdx",3)
+             intent.putExtra("smallCategoryIdx",7)
+@@ -233,7 +234,7 @@
+ 
+         binding.languageAllTv.setOnClickListener {
+             //프로그래밍 언어 전체 게시판 클릭시
+-            val intent = Intent(context,QuestionBoardActivity::class.java)
++            val intent = Intent(context, QuestionBoardActivity::class.java)
+             intent.putExtra("category","프로그래밍 언어")
+             intent.putExtra("bigCategoryIdx",4)
+             //       intent.putExtra("smallCategoryIdx",0)
+@@ -241,7 +242,7 @@
+         }
+         binding.cTv.setOnClickListener {
+             // C 게시판 클릭시
+-            val intent = Intent(context,QuestionBoardActivity::class.java)
++            val intent = Intent(context, QuestionBoardActivity::class.java)
+             intent.putExtra("category","프로그래밍 언어")
+             intent.putExtra("bigCategoryIdx",1)
+             intent.putExtra("smallCategoryIdx",8)
+@@ -249,7 +250,7 @@
+         }
+         binding.javaTv.setOnClickListener {
+             // Java 게시판 클릭시
+-            val intent = Intent(context,QuestionBoardActivity::class.java)
++            val intent = Intent(context, QuestionBoardActivity::class.java)
+             intent.putExtra("category","Java")
+             intent.putExtra("bigCategoryIdx",4)
+             intent.putExtra("smallCategoryIdx",9)
+@@ -257,7 +258,7 @@
+         }
+         binding.jSTv.setOnClickListener {
+             // Js 게시판 클릭시
+-            val intent = Intent(context,QuestionBoardActivity::class.java)
++            val intent = Intent(context, QuestionBoardActivity::class.java)
+             intent.putExtra("category","JavaScript")
+             intent.putExtra("bigCategoryIdx",4)
+             intent.putExtra("smallCategoryIdx",10)
+@@ -265,7 +266,7 @@
+         }
+         binding.pythonTv.setOnClickListener {
+             // Python 게시판 클릭시
+-            val intent = Intent(context,QuestionBoardActivity::class.java)
++            val intent = Intent(context, QuestionBoardActivity::class.java)
+             intent.putExtra("category","Python")
+             intent.putExtra("bigCategoryIdx",4)
+             intent.putExtra("smallCategoryIdx",11)
+@@ -274,7 +275,7 @@
+ 
+         binding.cPlusTv.setOnClickListener {
+             // C++  게시판 클릭시
+-            val intent = Intent(context,QuestionBoardActivity::class.java)
++            val intent = Intent(context, QuestionBoardActivity::class.java)
+             intent.putExtra("category","C++")
+             intent.putExtra("bigCategoryIdx",4)
+             intent.putExtra("smallCategoryIdx",12)
+@@ -282,7 +283,7 @@
+         }
+         binding.etcAllTv.setOnClickListener {
+             // 기타 게시판
+-            val intent = Intent(context,QuestionBoardActivity::class.java)
++            val intent = Intent(context, QuestionBoardActivity::class.java)
+             intent.putExtra("category","기타")
+             intent.putExtra("bigCategoryIdx",5)
+ //            intent.putExtra("smallCategoryIdx",1)
+Index: app/src/main/java/com/example/mumulcom/ImageViewPagerAdapter.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/ImageViewPagerAdapter.kt b/app/src/main/java/com/example/mumulcom/detailquestion/ImageViewPagerAdapter.kt
+rename from app/src/main/java/com/example/mumulcom/ImageViewPagerAdapter.kt
+rename to app/src/main/java/com/example/mumulcom/detailquestion/ImageViewPagerAdapter.kt
+--- a/app/src/main/java/com/example/mumulcom/ImageViewPagerAdapter.kt	
++++ b/app/src/main/java/com/example/mumulcom/detailquestion/ImageViewPagerAdapter.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.detailquestion
+ 
+ import android.annotation.SuppressLint
+ import android.content.Context
+Index: app/src/main/java/com/example/mumulcom/Reply.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/Reply.kt b/app/src/main/java/com/example/mumulcom/detailquestion/Reply.kt
+rename from app/src/main/java/com/example/mumulcom/Reply.kt
+rename to app/src/main/java/com/example/mumulcom/detailquestion/Reply.kt
+--- a/app/src/main/java/com/example/mumulcom/Reply.kt	
++++ b/app/src/main/java/com/example/mumulcom/detailquestion/Reply.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.detailquestion
+ 
+ import com.google.gson.annotations.SerializedName
+ 
+Index: app/src/main/java/com/example/mumulcom/Like.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/Like.kt b/app/src/main/java/com/example/mumulcom/detailquestion/Like.kt
+rename from app/src/main/java/com/example/mumulcom/Like.kt
+rename to app/src/main/java/com/example/mumulcom/detailquestion/Like.kt
+--- a/app/src/main/java/com/example/mumulcom/Like.kt	
++++ b/app/src/main/java/com/example/mumulcom/detailquestion/Like.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.detailquestion
+ 
+ import com.google.gson.annotations.SerializedName
+ 
+Index: app/src/main/java/com/example/mumulcom/Alarm.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/Alarm.kt b/app/src/main/java/com/example/mumulcom/alarm/Alarm.kt
+rename from app/src/main/java/com/example/mumulcom/Alarm.kt
+rename to app/src/main/java/com/example/mumulcom/alarm/Alarm.kt
+--- a/app/src/main/java/com/example/mumulcom/Alarm.kt	
++++ b/app/src/main/java/com/example/mumulcom/alarm/Alarm.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.alarm
+ 
+ import com.google.gson.annotations.SerializedName
+ 
+Index: app/src/main/java/com/example/mumulcom/ConceptCameraShootingActivity.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/ConceptCameraShootingActivity.kt b/app/src/main/java/com/example/mumulcom/conceptquestion/ConceptCameraShootingActivity.kt
+rename from app/src/main/java/com/example/mumulcom/ConceptCameraShootingActivity.kt
+rename to app/src/main/java/com/example/mumulcom/conceptquestion/ConceptCameraShootingActivity.kt
+--- a/app/src/main/java/com/example/mumulcom/ConceptCameraShootingActivity.kt	
++++ b/app/src/main/java/com/example/mumulcom/conceptquestion/ConceptCameraShootingActivity.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.conceptquestion
+ 
+ import android.animation.ValueAnimator
+ import android.app.Activity
+@@ -23,6 +23,8 @@
+ import java.text.SimpleDateFormat
+ import android.graphics.Matrix
+ import android.media.ExifInterface
++import com.example.mumulcom.QuestionCategoryActivity
++import com.example.mumulcom.codingquestion.CheckCodingQuestionActivity
+ 
+ 
+ class ConceptCameraShootingActivity: AppCompatActivity() {
+Index: app/src/main/java/com/example/mumulcom/CategoryQuestionResponse.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/CategoryQuestionResponse.kt b/app/src/main/java/com/example/mumulcom/category/CategoryQuestionResponse.kt
+rename from app/src/main/java/com/example/mumulcom/CategoryQuestionResponse.kt
+rename to app/src/main/java/com/example/mumulcom/category/CategoryQuestionResponse.kt
+--- a/app/src/main/java/com/example/mumulcom/CategoryQuestionResponse.kt	
++++ b/app/src/main/java/com/example/mumulcom/category/CategoryQuestionResponse.kt	
+@@ -1,5 +1,6 @@
+-package com.example.mumulcom
++package com.example.mumulcom.category
+ 
++import com.example.mumulcom.Question
+ import com.google.gson.annotations.SerializedName
+ 
+ data class CategoryQuestionResponse(
+Index: app/src/main/java/com/example/mumulcom/CheckCodingQuestionActivity.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/CheckCodingQuestionActivity.kt b/app/src/main/java/com/example/mumulcom/codingquestion/CheckCodingQuestionActivity.kt
+rename from app/src/main/java/com/example/mumulcom/CheckCodingQuestionActivity.kt
+rename to app/src/main/java/com/example/mumulcom/codingquestion/CheckCodingQuestionActivity.kt
+--- a/app/src/main/java/com/example/mumulcom/CheckCodingQuestionActivity.kt	
++++ b/app/src/main/java/com/example/mumulcom/codingquestion/CheckCodingQuestionActivity.kt	
+@@ -1,11 +1,9 @@
+-package com.example.mumulcom
++package com.example.mumulcom.codingquestion
+ 
+ import android.annotation.SuppressLint
+ import android.content.ContentValues
+ import android.content.Context
+ import android.content.Intent
+-import android.graphics.Bitmap
+-import android.graphics.BitmapFactory
+ import android.net.Uri
+ import android.os.Bundle
+ import android.util.Log
+@@ -19,15 +17,13 @@
+ import android.widget.Toast
+ import androidx.appcompat.app.AppCompatActivity
+ import androidx.viewpager2.widget.ViewPager2
++import com.example.mumulcom.*
++import com.example.mumulcom.category.QuestionBoardActivity
+ import com.example.mumulcom.databinding.ActivityCheckcodingquestionBinding
+ import com.google.gson.Gson
+-import okhttp3.MediaType.Companion.toMediaType
+ import okhttp3.MediaType.Companion.toMediaTypeOrNull
+ import okhttp3.MultipartBody
+-import okhttp3.RequestBody.Companion.asRequestBody
+ import okhttp3.RequestBody.Companion.toRequestBody
+-import java.io.ByteArrayOutputStream
+-import java.io.File
+ 
+ 
+ //, CheckCodingQuestionView
+@@ -35,7 +31,7 @@
+ 
+     lateinit var binding: ActivityCheckcodingquestionBinding
+ 
+-    private lateinit var checkCodingService: CheckCodingService
++    private lateinit var checkCodingQuestionService: CheckCodingQuestionService
+     private var images: MutableList<String>? = null  // defalut값은 null, 건너뛰기 가능
+     private var jwt: String = ""
+     private var userIdx: Long = 1
+@@ -92,8 +88,8 @@
+             checkCodingQuestioning()
+ 
+         }
+-        checkCodingService = CheckCodingService()
+-        checkCodingService.setcheckcodingquestionView(this)
++        checkCodingQuestionService = CheckCodingQuestionService()
++        checkCodingQuestionService.setcheckcodingquestionView(this)
+ 
+ //        albumDatas.apply {
+ //            add(Album(R.drawable.ic_image_plus))
+@@ -105,7 +101,7 @@
+ 
+ 
+ 
+-        val ViewPagerAdapter=ViewPagerAdapter(albumDatas)
++        val ViewPagerAdapter= ViewPagerAdapter(albumDatas)
+         binding.checkcodingquestionVp.adapter=ViewPagerAdapter// 뷰페이저 어댑터 생성
+         binding.checkcodingquestionVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
+         binding.checkcodingIndicator.setViewPager(binding.checkcodingquestionVp)
+@@ -127,7 +123,7 @@
+         val fileBody = images.toString().toRequestBody("image/jpeg".toMediaTypeOrNull())
+         val images = MultipartBody.Part.createFormData("images","images.png", fileBody)
+ 
+-        checkCodingService.checkCodingQuestion(jwt, images, codeQuestionReq)   // images, codeQuestionReq
++        checkCodingQuestionService.checkCodingQuestion(jwt, images, codeQuestionReq)   // images, codeQuestionReq
+     }
+ 
+ //    fun sendAddRequest() {
+Index: app/src/main/java/com/example/mumulcom/AlarmFragment.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/AlarmFragment.kt b/app/src/main/java/com/example/mumulcom/alarm/AlarmFragment.kt
+rename from app/src/main/java/com/example/mumulcom/AlarmFragment.kt
+rename to app/src/main/java/com/example/mumulcom/alarm/AlarmFragment.kt
+--- a/app/src/main/java/com/example/mumulcom/AlarmFragment.kt	
++++ b/app/src/main/java/com/example/mumulcom/alarm/AlarmFragment.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.alarm
+ 
+ import android.content.Intent
+ import android.os.Bundle
+@@ -8,7 +8,10 @@
+ import android.view.ViewGroup
+ import androidx.fragment.app.Fragment
+ import androidx.recyclerview.widget.LinearLayoutManager
++import com.example.mumulcom.detailquestion.QuestionDetailActivity
+ import com.example.mumulcom.databinding.FragmentAlarmBinding
++import com.example.mumulcom.getJwt
++import com.example.mumulcom.getUserIdx
+ 
+ // TODO 알림 클릭 시 해당 질문으로 넘어가기.. 클릭 이벤트 오류
+ class AlarmFragment : Fragment(), AlarmView {
+Index: app/src/main/java/com/example/mumulcom/DetailCodingQuestion.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/DetailCodingQuestion.kt b/app/src/main/java/com/example/mumulcom/detailquestion/DetailCodingQuestion.kt
+rename from app/src/main/java/com/example/mumulcom/DetailCodingQuestion.kt
+rename to app/src/main/java/com/example/mumulcom/detailquestion/DetailCodingQuestion.kt
+--- a/app/src/main/java/com/example/mumulcom/DetailCodingQuestion.kt	
++++ b/app/src/main/java/com/example/mumulcom/detailquestion/DetailCodingQuestion.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.detailquestion
+ 
+ import com.google.gson.annotations.SerializedName
+ 
+Index: app/src/main/java/com/example/mumulcom/TabCodingAnswerView.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/TabCodingAnswerView.kt b/app/src/main/java/com/example/mumulcom/myquestion/TabCodingAnswerView.kt
+rename from app/src/main/java/com/example/mumulcom/TabCodingAnswerView.kt
+rename to app/src/main/java/com/example/mumulcom/myquestion/TabCodingAnswerView.kt
+--- a/app/src/main/java/com/example/mumulcom/TabCodingAnswerView.kt	
++++ b/app/src/main/java/com/example/mumulcom/myquestion/TabCodingAnswerView.kt	
+@@ -1,4 +1,6 @@
+-package com.example.mumulcom
++package com.example.mumulcom.myquestion
++
++import com.example.mumulcom.Question
+ 
+ interface TabCodingAnswerView {
+     fun onGetCodingAnswersLoading()
+Index: app/src/main/java/com/example/mumulcom/DetailConceptQuestion.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/DetailConceptQuestion.kt b/app/src/main/java/com/example/mumulcom/detailquestion/DetailConceptQuestion.kt
+rename from app/src/main/java/com/example/mumulcom/DetailConceptQuestion.kt
+rename to app/src/main/java/com/example/mumulcom/detailquestion/DetailConceptQuestion.kt
+--- a/app/src/main/java/com/example/mumulcom/DetailConceptQuestion.kt	
++++ b/app/src/main/java/com/example/mumulcom/detailquestion/DetailConceptQuestion.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.detailquestion
+ 
+ import com.google.gson.annotations.SerializedName
+ 
+Index: app/src/main/java/com/example/mumulcom/SplashActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.mumulcom\r\n\r\nimport android.content.ContentValues\r\nimport android.content.Intent\r\nimport android.os.Bundle\r\nimport android.os.Handler\r\nimport android.os.Looper\r\nimport android.util.Log\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport com.example.mumulcom.databinding.ActivitySplashBinding\r\nimport com.kakao.sdk.user.UserApiClient\r\n\r\nclass SplashActivity : AppCompatActivity(), LoginView {\r\n    lateinit var binding:ActivitySplashBinding\r\n\r\n    private var email: String = \"\"  // 유저 이메일\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        binding = ActivitySplashBinding.inflate(layoutInflater)\r\n        setContentView(binding.root)\r\n\r\n        // 카카오에서 사용자 email 받아오기\r\n        //getUserInfo()\r\n        // 사용자 정보 요청\r\n        UserApiClient.instance.me { kakaoUser, error ->\r\n            if (error != null) {\r\n                Log.e(ContentValues.TAG, \"사용자 정보 요청 실패\", error)\r\n            }\r\n            else if (kakaoUser != null) {\r\n                email = kakaoUser.kakaoAccount?.email.toString()\r\n                Log.i(ContentValues.TAG, \"사용자 정보 요청 성공 - 이메일: $email\")\r\n                // 로그인\r\n                login(email)\r\n            }\r\n        }\r\n\r\n        Handler(Looper.getMainLooper()).postDelayed({\r\n            if (email.isEmpty()) {  // 이메일이 비어있다면 -> 카카오 로그인 또는 회원가입 진행해야함\r\n                Log.d(ContentValues.TAG, \"LoginActivity 실행\")\r\n                val intent = Intent(this, LoginActivity::class.java)\r\n                startActivity(intent)\r\n                finish()\r\n            } else {    // 이메일 값이 있으면\r\n                Log.d(ContentValues.TAG, \"MainActivity 실행\")\r\n                val intent = Intent(this, MainActivity::class.java)\r\n                startActivity(intent)\r\n                finish()\r\n            } }, 3000) //1초가 1000\r\n    }\r\n\r\n    private fun login(email: String) {\r\n        val login = Login(email)\r\n\r\n        val loginService = LoginService()\r\n        loginService.setLoginView(this)\r\n        loginService.login(login)\r\n    }\r\n\r\n    override fun onLoginLoading() {\r\n        Log.d(\"Login/API\",\"로그인 로딩 중...\")\r\n    }\r\n\r\n    override fun onLoginSuccess(profile: Profile) {\r\n        if (profile != null) {\r\n            saveJwt(this, profile.jwt)\r\n            saveUserIdx(this, profile.userIdx)\r\n            saveEmail(this, profile.email)\r\n            saveName(this, profile.name)\r\n            saveNickname(this, profile.nickname)\r\n            saveGroup(this, profile.group)\r\n            profile.myCategories?.let { saveCategories(this, it) }\r\n            saveProfileImgUrl(this, profile.profileImgUrl)\r\n\r\n            Log.d(\"jwt\", profile.jwt)\r\n            Log.d(\"userIdx\", profile.userIdx.toString())\r\n            Log.d(\"email\", profile.email)\r\n            Log.d(\"name\", profile.name)\r\n            Log.d(\"nickname\", profile.nickname)\r\n            Log.d(\"group\", profile.group)\r\n            Log.d(\"myCategories\", profile.myCategories.toString())\r\n            Log.d(\"profileImgUrl\", profile.profileImgUrl)\r\n        }\r\n    }\r\n\r\n    override fun onLoginFailure(code: Int, message: String) {\r\n        when(code) {\r\n            3014 -> {   // DB에 없는 이메일일 경우\r\n                Log.d(\"SingUpCategoryActivity/API\", message)\r\n            }\r\n            400 -> {\r\n                Log.d(\"SingUpCategoryActivity/API\", message)\r\n            }\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/SplashActivity.kt b/app/src/main/java/com/example/mumulcom/SplashActivity.kt
+--- a/app/src/main/java/com/example/mumulcom/SplashActivity.kt	
++++ b/app/src/main/java/com/example/mumulcom/SplashActivity.kt	
+@@ -8,6 +8,11 @@
+ import android.util.Log
+ import androidx.appcompat.app.AppCompatActivity
+ import com.example.mumulcom.databinding.ActivitySplashBinding
++import com.example.mumulcom.login.Login
++import com.example.mumulcom.login.LoginActivity
++import com.example.mumulcom.login.LoginService
++import com.example.mumulcom.login.LoginView
++import com.example.mumulcom.profile.Profile
+ import com.kakao.sdk.user.UserApiClient
+ 
+ class SplashActivity : AppCompatActivity(), LoginView {
+Index: app/src/main/java/com/example/mumulcom/DetailConceptQuestionResponse.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/DetailConceptQuestionResponse.kt b/app/src/main/java/com/example/mumulcom/detailquestion/DetailConceptQuestionResponse.kt
+rename from app/src/main/java/com/example/mumulcom/DetailConceptQuestionResponse.kt
+rename to app/src/main/java/com/example/mumulcom/detailquestion/DetailConceptQuestionResponse.kt
+--- a/app/src/main/java/com/example/mumulcom/DetailConceptQuestionResponse.kt	
++++ b/app/src/main/java/com/example/mumulcom/detailquestion/DetailConceptQuestionResponse.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.detailquestion
+ 
+ 
+ import com.google.gson.annotations.SerializedName
+Index: app/src/main/java/com/example/mumulcom/CodingCameraShootingActivity.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/CodingCameraShootingActivity.kt b/app/src/main/java/com/example/mumulcom/codingquestion/CodingCameraShootingActivity.kt
+rename from app/src/main/java/com/example/mumulcom/CodingCameraShootingActivity.kt
+rename to app/src/main/java/com/example/mumulcom/codingquestion/CodingCameraShootingActivity.kt
+--- a/app/src/main/java/com/example/mumulcom/CodingCameraShootingActivity.kt	
++++ b/app/src/main/java/com/example/mumulcom/codingquestion/CodingCameraShootingActivity.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.codingquestion
+ 
+ import android.animation.ValueAnimator
+ import android.app.Activity
+@@ -19,10 +19,10 @@
+ import androidx.appcompat.app.AppCompatActivity
+ import androidx.core.app.ActivityCompat
+ import androidx.core.content.ContextCompat
+-import com.example.mumulcom.databinding.ActivityConceptcamerashootingBinding
+ import java.text.SimpleDateFormat
+ import android.graphics.Matrix
+ import android.media.ExifInterface
++import com.example.mumulcom.QuestionCategoryActivity
+ import com.example.mumulcom.databinding.ActivityCodingcamerashootingBinding
+ 
+ 
+Index: app/src/main/java/com/example/mumulcom/LoginResponse.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/LoginResponse.kt b/app/src/main/java/com/example/mumulcom/login/LoginResponse.kt
+rename from app/src/main/java/com/example/mumulcom/LoginResponse.kt
+rename to app/src/main/java/com/example/mumulcom/login/LoginResponse.kt
+--- a/app/src/main/java/com/example/mumulcom/LoginResponse.kt	
++++ b/app/src/main/java/com/example/mumulcom/login/LoginResponse.kt	
+@@ -1,5 +1,6 @@
+-package com.example.mumulcom
++package com.example.mumulcom.login
+ 
++import com.example.mumulcom.profile.Profile
+ import com.google.gson.annotations.SerializedName
+ 
+ data class LoginResponse(
+Index: app/src/main/java/com/example/mumulcom/AnswerActivity.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/AnswerActivity.kt b/app/src/main/java/com/example/mumulcom/answer/AnswerActivity.kt
+rename from app/src/main/java/com/example/mumulcom/AnswerActivity.kt
+rename to app/src/main/java/com/example/mumulcom/answer/AnswerActivity.kt
+--- a/app/src/main/java/com/example/mumulcom/AnswerActivity.kt	
++++ b/app/src/main/java/com/example/mumulcom/answer/AnswerActivity.kt	
+@@ -1,14 +1,16 @@
+-package com.example.mumulcom
++package com.example.mumulcom.answer
+ 
+ import android.content.Context
+ import android.content.Intent
+ import android.os.Bundle
+ import android.view.View
+ import android.view.inputmethod.InputMethodManager
+-import android.widget.ImageView
+ import android.widget.Toast
+ import androidx.appcompat.app.AppCompatActivity
+ import androidx.viewpager2.widget.ViewPager2
++import com.example.mumulcom.Album
++import com.example.mumulcom.R
++import com.example.mumulcom.ViewPagerAdapter
+ import com.example.mumulcom.databinding.ActivityAnswerBinding
+ 
+ 
+@@ -77,14 +79,14 @@
+ //            add(Album(Uri.parse("imageUri")))
+ //            add(Album(Uri.parse("imageUri")))
+ //            add(Album(Uri.parse("imageUri")))
+-            add(Album(com.example.mumulcom.R.drawable.ic_gallery))
+-            add(Album(com.example.mumulcom.R.drawable.ic_web))
+-            add(Album(com.example.mumulcom.R.drawable.ic_gallery))
+-            add(Album(com.example.mumulcom.R.drawable.ic_gallery))
+-            add(Album(com.example.mumulcom.R.drawable.ic_gallery))
++            add(Album(R.drawable.ic_gallery))
++            add(Album(R.drawable.ic_web))
++            add(Album(R.drawable.ic_gallery))
++            add(Album(R.drawable.ic_gallery))
++            add(Album(R.drawable.ic_gallery))
+         }
+ 
+-        val ViewPagerAdapter=ViewPagerAdapter(albumDatas)
++        val ViewPagerAdapter= ViewPagerAdapter(albumDatas)
+         binding.answerImageVp.adapter=ViewPagerAdapter// 뷰페이저 어댑터 생성
+         binding.answerImageVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
+         binding.answerIndicator.setViewPager(binding.answerImageVp)
+Index: app/src/main/java/com/example/mumulcom/QuestionBoardActivity.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/QuestionBoardActivity.kt b/app/src/main/java/com/example/mumulcom/category/QuestionBoardActivity.kt
+rename from app/src/main/java/com/example/mumulcom/QuestionBoardActivity.kt
+rename to app/src/main/java/com/example/mumulcom/category/QuestionBoardActivity.kt
+--- a/app/src/main/java/com/example/mumulcom/QuestionBoardActivity.kt	
++++ b/app/src/main/java/com/example/mumulcom/category/QuestionBoardActivity.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.category
+ 
+ import android.content.Intent
+ import android.graphics.Color
+@@ -6,11 +6,10 @@
+ import android.os.Bundle
+ import android.util.Log
+ import androidx.recyclerview.widget.LinearLayoutManager
+-import com.example.mumulcom.QuestionAdapter
+-import com.example.mumulcom.Question
++import com.example.mumulcom.*
+ import com.example.mumulcom.databinding.ActivityQuestionBoardBinding
+-import com.example.mumulcom.CategoryQuestionService
+-import com.example.mumulcom.CategoryQuestionView
++import com.example.mumulcom.detailquestion.QuestionDetailActivity
++import com.example.mumulcom.search.SearchActivity
+ 
+ // 카테고리별 질문 목록
+ class QuestionBoardActivity : AppCompatActivity(), CategoryQuestionView {
+@@ -117,7 +116,7 @@
+     private fun initRecyclerView(){
+         // recyclerView <-> adapter 연결
+         questionAdapter = QuestionAdapter(this)
+-        questionAdapter.setQuestionClickListener(object: QuestionAdapter.QuestionClickListener{
++        questionAdapter.setQuestionClickListener(object: QuestionAdapter.QuestionClickListener {
+             override fun onItemClick(question: Question) {
+                 startQuestionDetailActivity(question)// 질문 상세 보기 페이지로 이동
+             }
+@@ -128,7 +127,7 @@
+ 
+     }
+     private fun startQuestionDetailActivity(question: Question){
+-        val intent = Intent(this,QuestionDetailActivity::class.java)
++        val intent = Intent(this, QuestionDetailActivity::class.java)
+         intent.putExtra("bigCategoryName",question.bigCategoryName) // 상위 카테고리명 넘김
+         intent.putExtra("questionIdx",question.questionIdx) // 질문 고유 번호 넘김
+         intent.putExtra("type",type) // 코딩질문 or 개념질문
+@@ -242,7 +241,7 @@
+         }
+ 
+         binding.questionFloatingButton.setOnClickListener {
+-            startActivity(Intent(this,QuestionCategoryActivity::class.java))
++            startActivity(Intent(this, QuestionCategoryActivity::class.java))
+         }
+     }
+ 
+Index: app/src/main/java/com/example/mumulcom/ConceptQuestionAdapter.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/ConceptQuestionAdapter.kt b/app/src/main/java/com/example/mumulcom/search/ConceptQuestionAdapter.kt
+rename from app/src/main/java/com/example/mumulcom/ConceptQuestionAdapter.kt
+rename to app/src/main/java/com/example/mumulcom/search/ConceptQuestionAdapter.kt
+--- a/app/src/main/java/com/example/mumulcom/ConceptQuestionAdapter.kt	
++++ b/app/src/main/java/com/example/mumulcom/search/ConceptQuestionAdapter.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.search
+ 
+ import android.annotation.SuppressLint
+ import android.content.Context
+@@ -19,18 +19,18 @@
+     }
+ 
+     // 리스너 객체를 전달받는 함수랑 리스너 객체를 저장할 변수
+-    private lateinit var conceptQuestionClickListener : ConceptQuestionAdapter.ConceptQuestionClickListener
++    private lateinit var conceptQuestionClickListener : ConceptQuestionClickListener
+ 
+-    fun setConceptQuestionClickListener(conceptQuestionClickListener: ConceptQuestionAdapter.ConceptQuestionClickListener){
++    fun setConceptQuestionClickListener(conceptQuestionClickListener: ConceptQuestionClickListener){
+         this.conceptQuestionClickListener = conceptQuestionClickListener
+     }
+ 
+-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConceptQuestionAdapter.ConceptQuestionViewHolder {
++    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConceptQuestionViewHolder {
+         val binding:QuestionSearchListItemBinding = QuestionSearchListItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+         return ConceptQuestionViewHolder(binding)
+     }
+ 
+-    override fun onBindViewHolder(holder: ConceptQuestionAdapter.ConceptQuestionViewHolder, position: Int) {
++    override fun onBindViewHolder(holder: ConceptQuestionViewHolder, position: Int) {
+         holder.bind(conceptQuestionList[position])
+         //recyclerView 의 각 아이템을 클릭할때
+         holder.itemView.setOnClickListener {
+Index: app/src/main/java/com/example/mumulcom/QuestionAdapter.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/QuestionAdapter.kt b/app/src/main/java/com/example/mumulcom/category/QuestionAdapter.kt
+rename from app/src/main/java/com/example/mumulcom/QuestionAdapter.kt
+rename to app/src/main/java/com/example/mumulcom/category/QuestionAdapter.kt
+--- a/app/src/main/java/com/example/mumulcom/QuestionAdapter.kt	
++++ b/app/src/main/java/com/example/mumulcom/category/QuestionAdapter.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.category
+ 
+ import android.annotation.SuppressLint
+ import android.content.Context
+@@ -6,6 +6,7 @@
+ import android.view.ViewGroup
+ import androidx.recyclerview.widget.RecyclerView
+ import com.bumptech.glide.Glide
++import com.example.mumulcom.Question
+ import com.example.mumulcom.databinding.QuestionListItemBinding
+ 
+ class QuestionAdapter(val context: Context):RecyclerView.Adapter<QuestionAdapter.ViewHolder>() {
+@@ -26,12 +27,12 @@
+     }
+ 
+ 
+-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestionAdapter.ViewHolder {
++    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+         val binding: QuestionListItemBinding = QuestionListItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+         return ViewHolder(binding)
+     }
+ 
+-    override fun onBindViewHolder(holder: QuestionAdapter.ViewHolder, position: Int) {
++    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+         holder.bind(questionList[position])
+         //recyclerView 의 각 아이템을 클릭할때
+         holder.itemView.setOnClickListener {
+@@ -52,7 +53,7 @@
+     }
+ 
+     inner class ViewHolder(val binding:QuestionListItemBinding):RecyclerView.ViewHolder(binding.root){
+-        fun bind(question:Question){
++        fun bind(question: Question){
+ 
+             Glide.with(context).load(question.profileImgUrl).into(binding.itemIconIv)  // 프로필 이미지
+ 
+Index: app/src/main/java/com/example/mumulcom/RepliesForQuestionView.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/RepliesForQuestionView.kt b/app/src/main/java/com/example/mumulcom/detailquestion/RepliesForQuestionView.kt
+rename from app/src/main/java/com/example/mumulcom/RepliesForQuestionView.kt
+rename to app/src/main/java/com/example/mumulcom/detailquestion/RepliesForQuestionView.kt
+--- a/app/src/main/java/com/example/mumulcom/RepliesForQuestionView.kt	
++++ b/app/src/main/java/com/example/mumulcom/detailquestion/RepliesForQuestionView.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.detailquestion
+ 
+ // 질문에 대한 답변 interface (QuestionDetailActivity  에서 사용)
+ interface RepliesForQuestionView {
+Index: app/src/main/java/com/example/mumulcom/AlarmAdapter.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/AlarmAdapter.kt b/app/src/main/java/com/example/mumulcom/alarm/AlarmAdapter.kt
+rename from app/src/main/java/com/example/mumulcom/AlarmAdapter.kt
+rename to app/src/main/java/com/example/mumulcom/alarm/AlarmAdapter.kt
+--- a/app/src/main/java/com/example/mumulcom/AlarmAdapter.kt	
++++ b/app/src/main/java/com/example/mumulcom/alarm/AlarmAdapter.kt	
+@@ -1,10 +1,11 @@
+-package com.example.mumulcom
++package com.example.mumulcom.alarm
+ 
+ import android.annotation.SuppressLint
+ import android.content.Context
+ import android.view.LayoutInflater
+ import android.view.ViewGroup
+ import androidx.recyclerview.widget.RecyclerView
++import com.example.mumulcom.R
+ import com.example.mumulcom.databinding.ItemAlarmBinding
+ import com.example.mumulcom.databinding.ItemAlarmHeaderBinding
+ 
+@@ -19,9 +20,9 @@
+     }
+ 
+     // 리스너 객체를 전달받는 함수랑 리스너 객체를 저장할 변수
+-    private lateinit var alarmClickListener : AlarmAdapter.AlarmClickListener
++    private lateinit var alarmClickListener : AlarmClickListener
+ 
+-    fun setAlarmClickListener(alarmClickListener: AlarmAdapter.AlarmClickListener){
++    fun setAlarmClickListener(alarmClickListener: AlarmClickListener){
+         this.alarmClickListener = alarmClickListener
+     }
+ 
+Index: app/src/main/java/com/example/mumulcom/QuestionDetailActivity.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/QuestionDetailActivity.kt b/app/src/main/java/com/example/mumulcom/detailquestion/QuestionDetailActivity.kt
+rename from app/src/main/java/com/example/mumulcom/QuestionDetailActivity.kt
+rename to app/src/main/java/com/example/mumulcom/detailquestion/QuestionDetailActivity.kt
+--- a/app/src/main/java/com/example/mumulcom/QuestionDetailActivity.kt	
++++ b/app/src/main/java/com/example/mumulcom/detailquestion/QuestionDetailActivity.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.detailquestion
+ 
+ import androidx.appcompat.app.AppCompatActivity
+ import android.os.Bundle
+@@ -6,7 +6,9 @@
+ import android.view.View
+ import androidx.recyclerview.widget.LinearLayoutManager
+ import com.bumptech.glide.Glide
++import com.example.mumulcom.R
+ import com.example.mumulcom.databinding.ActivityQuestionDetailBinding
++import com.example.mumulcom.getUserIdx
+ 
+ 
+ // 질문 상세 페이지 (개념/코딩)
+Index: app/src/main/java/com/example/mumulcom/TabService.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/TabService.kt b/app/src/main/java/com/example/mumulcom/myquestion/TabService.kt
+rename from app/src/main/java/com/example/mumulcom/TabService.kt
+rename to app/src/main/java/com/example/mumulcom/myquestion/TabService.kt
+--- a/app/src/main/java/com/example/mumulcom/TabService.kt	
++++ b/app/src/main/java/com/example/mumulcom/myquestion/TabService.kt	
+@@ -1,5 +1,6 @@
+-package com.example.mumulcom
++package com.example.mumulcom.myquestion
+ 
++import com.example.mumulcom.getRetrofit
+ import retrofit2.Call
+ import retrofit2.Response
+ 
+Index: app/src/main/java/com/example/mumulcom/SignUpView.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/SignUpView.kt b/app/src/main/java/com/example/mumulcom/signup/SignUpView.kt
+rename from app/src/main/java/com/example/mumulcom/SignUpView.kt
+rename to app/src/main/java/com/example/mumulcom/signup/SignUpView.kt
+--- a/app/src/main/java/com/example/mumulcom/SignUpView.kt	
++++ b/app/src/main/java/com/example/mumulcom/signup/SignUpView.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.signup
+ 
+ interface SignUpView {
+     fun onSignUpLoading()
+Index: app/src/main/java/com/example/mumulcom/AlarmListItem.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/AlarmListItem.kt b/app/src/main/java/com/example/mumulcom/alarm/AlarmListItem.kt
+rename from app/src/main/java/com/example/mumulcom/AlarmListItem.kt
+rename to app/src/main/java/com/example/mumulcom/alarm/AlarmListItem.kt
+--- a/app/src/main/java/com/example/mumulcom/AlarmListItem.kt	
++++ b/app/src/main/java/com/example/mumulcom/alarm/AlarmListItem.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.alarm
+ 
+ open class AlarmListItem(
+     val itemType: Int
+Index: app/src/main/java/com/example/mumulcom/User.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/User.kt b/app/src/main/java/com/example/mumulcom/signup/User.kt
+rename from app/src/main/java/com/example/mumulcom/User.kt
+rename to app/src/main/java/com/example/mumulcom/signup/User.kt
+--- a/app/src/main/java/com/example/mumulcom/User.kt	
++++ b/app/src/main/java/com/example/mumulcom/signup/User.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.signup
+ 
+ import com.google.gson.annotations.SerializedName
+ 
+Index: app/src/main/java/com/example/mumulcom/CodingQuestion.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/CodingQuestion.kt b/app/src/main/java/com/example/mumulcom/search/CodingQuestion.kt
+rename from app/src/main/java/com/example/mumulcom/CodingQuestion.kt
+rename to app/src/main/java/com/example/mumulcom/search/CodingQuestion.kt
+--- a/app/src/main/java/com/example/mumulcom/CodingQuestion.kt	
++++ b/app/src/main/java/com/example/mumulcom/search/CodingQuestion.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.search
+ 
+ import com.google.gson.annotations.SerializedName
+ 
+Index: app/src/main/java/com/example/mumulcom/AlarmResponse.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/AlarmResponse.kt b/app/src/main/java/com/example/mumulcom/alarm/AlarmResponse.kt
+rename from app/src/main/java/com/example/mumulcom/AlarmResponse.kt
+rename to app/src/main/java/com/example/mumulcom/alarm/AlarmResponse.kt
+--- a/app/src/main/java/com/example/mumulcom/AlarmResponse.kt	
++++ b/app/src/main/java/com/example/mumulcom/alarm/AlarmResponse.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.alarm
+ 
+ import com.google.gson.annotations.SerializedName
+ 
+Index: app/src/main/java/com/example/mumulcom/TabQuestionFragment.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/TabQuestionFragment.kt b/app/src/main/java/com/example/mumulcom/myquestion/TabQuestionFragment.kt
+rename from app/src/main/java/com/example/mumulcom/TabQuestionFragment.kt
+rename to app/src/main/java/com/example/mumulcom/myquestion/TabQuestionFragment.kt
+--- a/app/src/main/java/com/example/mumulcom/TabQuestionFragment.kt	
++++ b/app/src/main/java/com/example/mumulcom/myquestion/TabQuestionFragment.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.myquestion
+ 
+ import android.content.Intent
+ import android.os.Bundle
+@@ -8,7 +8,9 @@
+ import android.view.ViewGroup
+ import androidx.fragment.app.Fragment
+ import androidx.recyclerview.widget.LinearLayoutManager
++import com.example.mumulcom.*
+ import com.example.mumulcom.databinding.FragmentTabMyQuestionBinding
++import com.example.mumulcom.detailquestion.QuestionDetailActivity
+ 
+ class TabQuestionFragment : Fragment(), TabCodingQuestionView, TabConceptQuestionView {
+     lateinit var binding: FragmentTabMyQuestionBinding
+@@ -58,7 +60,8 @@
+     private fun initCodingRecyclerView() {
+         getTabCodingQuestion(jwt, userIdx, isReplied)
+         tabQuestionAdapter = TabQuestionAdapter(context)
+-        tabQuestionAdapter.setTabQuestionClickListener(object: TabQuestionAdapter.TabQuestionClickListener {
++        tabQuestionAdapter.setTabQuestionClickListener(object:
++            TabQuestionAdapter.TabQuestionClickListener {
+             override fun onItemClick(question: Question) {
+                 startCodingQuestionDetailActivity(question)// 질문 상세 보기 페이지로 이동
+             }
+@@ -78,7 +81,8 @@
+     private fun initConceptRecyclerView() {
+         getTabConceptQuestion(jwt, userIdx, isReplied)
+         tabConceptQuestionAdapter = TabQuestionAdapter(context)
+-        tabConceptQuestionAdapter.setTabQuestionClickListener(object: TabQuestionAdapter.TabQuestionClickListener {
++        tabConceptQuestionAdapter.setTabQuestionClickListener(object:
++            TabQuestionAdapter.TabQuestionClickListener {
+             override fun onItemClick(question: Question) {
+                 startConceptQuestionDetailActivity(question)// 질문 상세 보기 페이지로 이동
+             }
+Index: app/src/main/java/com/example/mumulcom/SearchCodingQuestionView.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/SearchCodingQuestionView.kt b/app/src/main/java/com/example/mumulcom/search/SearchCodingQuestionView.kt
+rename from app/src/main/java/com/example/mumulcom/SearchCodingQuestionView.kt
+rename to app/src/main/java/com/example/mumulcom/search/SearchCodingQuestionView.kt
+--- a/app/src/main/java/com/example/mumulcom/SearchCodingQuestionView.kt	
++++ b/app/src/main/java/com/example/mumulcom/search/SearchCodingQuestionView.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.search
+ 
+ interface SearchCodingQuestionView {
+     fun onGetCodingQuestionsLoading()
+Index: app/src/main/java/com/example/mumulcom/SignUpResponse.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/SignUpResponse.kt b/app/src/main/java/com/example/mumulcom/signup/SignUpResponse.kt
+rename from app/src/main/java/com/example/mumulcom/SignUpResponse.kt
+rename to app/src/main/java/com/example/mumulcom/signup/SignUpResponse.kt
+--- a/app/src/main/java/com/example/mumulcom/SignUpResponse.kt	
++++ b/app/src/main/java/com/example/mumulcom/signup/SignUpResponse.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.signup
+ 
+ import com.google.gson.annotations.SerializedName
+ 
+Index: app/src/main/java/com/example/mumulcom/ScrapService.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/ScrapService.kt b/app/src/main/java/com/example/mumulcom/scrap/ScrapService.kt
+rename from app/src/main/java/com/example/mumulcom/ScrapService.kt
+rename to app/src/main/java/com/example/mumulcom/scrap/ScrapService.kt
+--- a/app/src/main/java/com/example/mumulcom/ScrapService.kt	
++++ b/app/src/main/java/com/example/mumulcom/scrap/ScrapService.kt	
+@@ -1,6 +1,6 @@
+-package com.example.mumulcom
++package com.example.mumulcom.scrap
+ 
+-import android.util.Log
++import com.example.mumulcom.getRetrofit
+ import retrofit2.Call
+ import retrofit2.Response
+ 
+Index: app/src/main/java/com/example/mumulcom/alarm/AlarmDateItem.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/alarm/AlarmDateItem.kt b/app/src/main/java/com/example/mumulcom/alarm/AlarmDateItem.kt
+new file mode 100644
+--- /dev/null	
++++ b/app/src/main/java/com/example/mumulcom/alarm/AlarmDateItem.kt	
+@@ -0,0 +1,5 @@
++package com.example.mumulcom.alarm
++
++class AlarmDateItem(
++    val diffTime: String
++) : AlarmListItem(TYPE_DATE)
+\ No newline at end of file
+Index: app/src/main/java/com/example/mumulcom/SearchConceptQuestionView.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/SearchConceptQuestionView.kt b/app/src/main/java/com/example/mumulcom/search/SearchConceptQuestionView.kt
+rename from app/src/main/java/com/example/mumulcom/SearchConceptQuestionView.kt
+rename to app/src/main/java/com/example/mumulcom/search/SearchConceptQuestionView.kt
+--- a/app/src/main/java/com/example/mumulcom/SearchConceptQuestionView.kt	
++++ b/app/src/main/java/com/example/mumulcom/search/SearchConceptQuestionView.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.search
+ 
+ interface SearchConceptQuestionView {
+     fun onGetConceptQuestionsLoading()
+Index: app/src/main/java/com/example/mumulcom/CategoryQuestionView.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/CategoryQuestionView.kt b/app/src/main/java/com/example/mumulcom/category/CategoryQuestionView.kt
+rename from app/src/main/java/com/example/mumulcom/CategoryQuestionView.kt
+rename to app/src/main/java/com/example/mumulcom/category/CategoryQuestionView.kt
+--- a/app/src/main/java/com/example/mumulcom/CategoryQuestionView.kt	
++++ b/app/src/main/java/com/example/mumulcom/category/CategoryQuestionView.kt	
+@@ -1,4 +1,6 @@
+-package com.example.mumulcom
++package com.example.mumulcom.category
++
++import com.example.mumulcom.Question
+ 
+ interface CategoryQuestionView {
+     fun onGetQuestionsLoading()
+Index: app/src/main/java/com/example/mumulcom/QuestionFragment.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/QuestionFragment.kt b/app/src/main/java/com/example/mumulcom/myquestion/QuestionFragment.kt
+rename from app/src/main/java/com/example/mumulcom/QuestionFragment.kt
+rename to app/src/main/java/com/example/mumulcom/myquestion/QuestionFragment.kt
+--- a/app/src/main/java/com/example/mumulcom/QuestionFragment.kt	
++++ b/app/src/main/java/com/example/mumulcom/myquestion/QuestionFragment.kt	
+@@ -1,11 +1,11 @@
+-package com.example.mumulcom
++package com.example.mumulcom.myquestion
+ 
+ import android.os.Bundle
+ import android.view.LayoutInflater
+ import android.view.View
+ import android.view.ViewGroup
+-import androidx.core.graphics.drawable.toDrawable
+ import androidx.fragment.app.Fragment
++import com.example.mumulcom.R
+ import com.example.mumulcom.databinding.FragmentQuestionBinding
+ import com.google.android.material.tabs.TabLayoutMediator
+ 
+@@ -13,7 +13,10 @@
+ 
+     lateinit var binding: FragmentQuestionBinding
+     private var tabTitle = arrayOf("내가 한 질문", "내가 단 답변")
+-    private var tabIcon = arrayOf(R.drawable.tab_question_icon_selector, R.drawable.tab_answer_icon_selector)
++    private var tabIcon = arrayOf(
++        R.drawable.tab_question_icon_selector,
++        R.drawable.tab_answer_icon_selector
++    )
+ 
+     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+     ): View? {
+Index: app/src/main/java/com/example/mumulcom/ScrapFragment.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/ScrapFragment.kt b/app/src/main/java/com/example/mumulcom/scrap/ScrapFragment.kt
+rename from app/src/main/java/com/example/mumulcom/ScrapFragment.kt
+rename to app/src/main/java/com/example/mumulcom/scrap/ScrapFragment.kt
+--- a/app/src/main/java/com/example/mumulcom/ScrapFragment.kt	
++++ b/app/src/main/java/com/example/mumulcom/scrap/ScrapFragment.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.scrap
+ 
+ import android.annotation.SuppressLint
+ import android.content.ContentValues.TAG
+@@ -14,7 +14,9 @@
+ import android.widget.TextView
+ import androidx.fragment.app.Fragment
+ import androidx.recyclerview.widget.LinearLayoutManager
++import com.example.mumulcom.*
+ import com.example.mumulcom.databinding.FragmentScrapBinding
++import com.example.mumulcom.detailquestion.QuestionDetailActivity
+ 
+ 
+ class ScrapFragment : Fragment(), ScrapCodingView, ScrapConceptView {
+@@ -170,7 +172,9 @@
+     private fun setupBigCategorySpinner() {
+         // 상위 카테고리들 (앱, 웹, 서버, 프로그래밍 언어, 기타)
+         val bigCategoryArray = resources.getStringArray(R.array.big_category)
+-        bigCategoryAdapter = object : ArrayAdapter<String>(requireContext(), R.layout.item_big_category){
++        bigCategoryAdapter = object : ArrayAdapter<String>(requireContext(),
++            R.layout.item_big_category
++        ){
+             @SuppressLint("CutPasteId")
+             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                 val v = super.getView(position, convertView, parent)
+@@ -354,7 +358,9 @@
+ 
+     // big category spinner에 arrayadapter 연결
+     private fun setupSmallCategorySpinner(array: Array<String>) {
+-        smallCategoryAdapter = object : ArrayAdapter<String>(requireContext(), R.layout.item_small_category){
++        smallCategoryAdapter = object : ArrayAdapter<String>(requireContext(),
++            R.layout.item_small_category
++        ){
+             @SuppressLint("CutPasteId")
+             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                 val v = super.getView(position, convertView, parent)
+Index: app/src/main/java/com/example/mumulcom/TabAnswerAdapter.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/TabAnswerAdapter.kt b/app/src/main/java/com/example/mumulcom/myquestion/TabAnswerAdapter.kt
+rename from app/src/main/java/com/example/mumulcom/TabAnswerAdapter.kt
+rename to app/src/main/java/com/example/mumulcom/myquestion/TabAnswerAdapter.kt
+--- a/app/src/main/java/com/example/mumulcom/TabAnswerAdapter.kt	
++++ b/app/src/main/java/com/example/mumulcom/myquestion/TabAnswerAdapter.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.myquestion
+ 
+ import android.annotation.SuppressLint
+ import android.content.Context
+@@ -6,6 +6,7 @@
+ import android.view.ViewGroup
+ import androidx.recyclerview.widget.RecyclerView
+ import com.bumptech.glide.Glide
++import com.example.mumulcom.Question
+ import com.example.mumulcom.databinding.QuestionListItemBinding
+ 
+ class TabAnswerAdapter(var context: Context?)
+@@ -19,9 +20,9 @@
+     }
+ 
+     // 리스너 객체를 전달받는 함수랑 리스너 객체를 저장할 변수
+-    private lateinit var tabAnswerClickListener : TabAnswerAdapter.TabAnswerClickListener
++    private lateinit var tabAnswerClickListener : TabAnswerClickListener
+ 
+-    fun setTabAnswerClickListener(tabAnswerClickListener: TabAnswerAdapter.TabAnswerClickListener){
++    fun setTabAnswerClickListener(tabAnswerClickListener: TabAnswerClickListener){
+         this.tabAnswerClickListener = tabAnswerClickListener
+     }
+ 
+@@ -30,7 +31,7 @@
+         return TabAnswerViewHolder(binding)
+     }
+ 
+-    override fun onBindViewHolder(holder: TabAnswerAdapter.TabAnswerViewHolder, position: Int) {
++    override fun onBindViewHolder(holder: TabAnswerViewHolder, position: Int) {
+         holder.bind(questionList[position])
+         //recyclerView 의 각 아이템을 클릭할때
+         holder.itemView.setOnClickListener {
+Index: app/src/main/java/com/example/mumulcom/RepliesForQuestionService.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/RepliesForQuestionService.kt b/app/src/main/java/com/example/mumulcom/detailquestion/RepliesForQuestionService.kt
+rename from app/src/main/java/com/example/mumulcom/RepliesForQuestionService.kt
+rename to app/src/main/java/com/example/mumulcom/detailquestion/RepliesForQuestionService.kt
+--- a/app/src/main/java/com/example/mumulcom/RepliesForQuestionService.kt	
++++ b/app/src/main/java/com/example/mumulcom/detailquestion/RepliesForQuestionService.kt	
+@@ -1,7 +1,9 @@
+-package com.example.mumulcom
++package com.example.mumulcom.detailquestion
+ 
+ 
+ import android.util.Log
++import com.example.mumulcom.QuestionRetrofitInterface
++import com.example.mumulcom.getRetrofit
+ import retrofit2.Call
+ import retrofit2.Response
+ 
+Index: app/src/main/java/com/example/mumulcom/LoginActivity.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/LoginActivity.kt b/app/src/main/java/com/example/mumulcom/login/LoginActivity.kt
+rename from app/src/main/java/com/example/mumulcom/LoginActivity.kt
+rename to app/src/main/java/com/example/mumulcom/login/LoginActivity.kt
+--- a/app/src/main/java/com/example/mumulcom/LoginActivity.kt	
++++ b/app/src/main/java/com/example/mumulcom/login/LoginActivity.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.login
+ 
+ import android.content.ContentValues.TAG
+ import android.content.Intent
+@@ -7,7 +7,10 @@
+ import android.util.Log
+ import android.widget.ImageButton
+ import android.widget.Toast
++import com.example.mumulcom.MainActivity
++import com.example.mumulcom.R
+ import com.example.mumulcom.databinding.ActivityLoginBinding
++import com.example.mumulcom.signup.SignUpActivity
+ import com.kakao.sdk.auth.model.OAuthToken
+ import com.kakao.sdk.common.model.AuthErrorCause.*
+ import com.kakao.sdk.user.UserApiClient
+Index: app/src/main/java/com/example/mumulcom/LoginService.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/LoginService.kt b/app/src/main/java/com/example/mumulcom/login/LoginService.kt
+rename from app/src/main/java/com/example/mumulcom/LoginService.kt
+rename to app/src/main/java/com/example/mumulcom/login/LoginService.kt
+--- a/app/src/main/java/com/example/mumulcom/LoginService.kt	
++++ b/app/src/main/java/com/example/mumulcom/login/LoginService.kt	
+@@ -1,7 +1,9 @@
+-package com.example.mumulcom
++package com.example.mumulcom.login
+ 
+ import android.annotation.SuppressLint
+ import android.util.Log
++import com.example.mumulcom.SplashActivity
++import com.example.mumulcom.getRetrofit
+ import retrofit2.Call
+ import retrofit2.Callback
+ import retrofit2.Response
+Index: app/src/main/java/com/example/mumulcom/SignUpService.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/SignUpService.kt b/app/src/main/java/com/example/mumulcom/signup/SignUpService.kt
+rename from app/src/main/java/com/example/mumulcom/SignUpService.kt
+rename to app/src/main/java/com/example/mumulcom/signup/SignUpService.kt
+--- a/app/src/main/java/com/example/mumulcom/SignUpService.kt	
++++ b/app/src/main/java/com/example/mumulcom/signup/SignUpService.kt	
+@@ -1,7 +1,8 @@
+-package com.example.mumulcom
++package com.example.mumulcom.signup
+ 
+ import android.annotation.SuppressLint
+ import android.util.Log
++import com.example.mumulcom.getRetrofit
+ import retrofit2.Call
+ import retrofit2.Callback
+ import retrofit2.Response
+Index: app/src/main/java/com/example/mumulcom/AlarmView.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/AlarmView.kt b/app/src/main/java/com/example/mumulcom/alarm/AlarmView.kt
+rename from app/src/main/java/com/example/mumulcom/AlarmView.kt
+rename to app/src/main/java/com/example/mumulcom/alarm/AlarmView.kt
+--- a/app/src/main/java/com/example/mumulcom/AlarmView.kt	
++++ b/app/src/main/java/com/example/mumulcom/alarm/AlarmView.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.alarm
+ 
+ interface AlarmView {
+     fun onGetAlarmLoading()
+Index: app/src/main/java/com/example/mumulcom/detailquestion/LikeQuestionResponse.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/detailquestion/LikeQuestionResponse.kt b/app/src/main/java/com/example/mumulcom/detailquestion/LikeQuestionResponse.kt
+new file mode 100644
+--- /dev/null	
++++ b/app/src/main/java/com/example/mumulcom/detailquestion/LikeQuestionResponse.kt	
+@@ -0,0 +1,4 @@
++package com.example.mumulcom.detailquestion
++
++class LikeQuestionResponse {
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/mumulcom/DetailCodingQuestionView.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/DetailCodingQuestionView.kt b/app/src/main/java/com/example/mumulcom/detailquestion/DetailCodingQuestionView.kt
+rename from app/src/main/java/com/example/mumulcom/DetailCodingQuestionView.kt
+rename to app/src/main/java/com/example/mumulcom/detailquestion/DetailCodingQuestionView.kt
+--- a/app/src/main/java/com/example/mumulcom/DetailCodingQuestionView.kt	
++++ b/app/src/main/java/com/example/mumulcom/detailquestion/DetailCodingQuestionView.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.detailquestion
+ 
+ 
+ interface DetailCodingQuestionView {
+Index: app/src/main/java/com/example/mumulcom/SignUpNicknameCheckInterface.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/SignUpNicknameCheckInterface.kt b/app/src/main/java/com/example/mumulcom/signup/SignUpNicknameCheckInterface.kt
+rename from app/src/main/java/com/example/mumulcom/SignUpNicknameCheckInterface.kt
+rename to app/src/main/java/com/example/mumulcom/signup/SignUpNicknameCheckInterface.kt
+--- a/app/src/main/java/com/example/mumulcom/SignUpNicknameCheckInterface.kt	
++++ b/app/src/main/java/com/example/mumulcom/signup/SignUpNicknameCheckInterface.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.signup
+ 
+ import retrofit2.Call
+ import retrofit2.http.GET
+Index: app/src/main/java/com/example/mumulcom/CodingQuestionResponse.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/CodingQuestionResponse.kt b/app/src/main/java/com/example/mumulcom/search/CodingQuestionResponse.kt
+rename from app/src/main/java/com/example/mumulcom/CodingQuestionResponse.kt
+rename to app/src/main/java/com/example/mumulcom/search/CodingQuestionResponse.kt
+--- a/app/src/main/java/com/example/mumulcom/CodingQuestionResponse.kt	
++++ b/app/src/main/java/com/example/mumulcom/search/CodingQuestionResponse.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.search
+ 
+ import com.google.gson.annotations.SerializedName
+ 
+Index: app/src/main/res/layout/activity_search.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    android:id=\"@+id/search_ly\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".SearchActivity\">\r\n\r\n    <LinearLayout\r\n        android:id=\"@+id/search_view_ly\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:orientation=\"horizontal\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\">\r\n\r\n        <ImageView\r\n            android:id=\"@+id/search_back_iv\"\r\n            android:layout_width=\"35dp\"\r\n            android:layout_height=\"match_parent\"\r\n            android:layout_marginStart=\"5dp\"\r\n            android:layout_marginTop=\"10dp\"\r\n            android:padding=\"10dp\"\r\n            android:src=\"@drawable/ic_back_black\" />\r\n\r\n        <androidx.appcompat.widget.SearchView\r\n            android:id=\"@+id/search_view\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_marginStart=\"10dp\"\r\n            android:layout_marginTop=\"16dp\"\r\n            android:layout_marginEnd=\"15dp\"\r\n            android:background=\"@drawable/bg_search_outline\"\r\n            app:iconifiedByDefault=\"false\"\r\n            app:queryHint=\"검색어를 입력하세요\"\r\n            app:closeIcon=\"@drawable/ic_search_close\"\r\n            app:searchIcon=\"@null\" />\r\n    </LinearLayout>\r\n\r\n    <RadioGroup\r\n        android:id=\"@+id/search_radio_group\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:orientation=\"horizontal\"\r\n        android:layout_marginStart=\"20dp\"\r\n        android:layout_marginTop=\"25dp\"\r\n        app:layout_constraintTop_toBottomOf=\"@id/search_view_ly\"\r\n        app:layout_constraintStart_toStartOf=\"parent\">\r\n\r\n        <!-- default 값으로 코딩 질문 설정 -->\r\n        <RadioButton\r\n            android:id=\"@+id/search_coding_btn\"\r\n            android:layout_width=\"120dp\"\r\n            android:layout_height=\"35dp\"\r\n            android:layout_marginEnd=\"15dp\"\r\n            android:background=\"@drawable/selector_radio_button\"\r\n            android:button=\"@null\"\r\n            android:checked=\"true\"/>\r\n\r\n        <RadioButton\r\n            android:id=\"@+id/search_concept_btn\"\r\n            android:layout_width=\"120dp\"\r\n            android:layout_height=\"35dp\"\r\n            android:background=\"@drawable/selector_radio_button2\"\r\n            android:button=\"@null\" />\r\n\r\n    </RadioGroup>\r\n\r\n    <androidx.recyclerview.widget.RecyclerView\r\n        android:id=\"@+id/search_query_result_rv\"\r\n        android:layout_width=\"0dp\"\r\n        android:layout_height=\"0dp\"\r\n        android:layout_marginTop=\"25dp\"\r\n        android:paddingStart=\"20dp\"\r\n        android:paddingEnd=\"20dp\"\r\n        android:clipToPadding=\"false\"\r\n        android:overScrollMode=\"never\"\r\n        android:scrollbars=\"none\"\r\n        app:layoutManager=\"androidx.recyclerview.widget.LinearLayoutManager\"\r\n        app:layout_constraintHorizontal_bias=\"0.0\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@id/search_radio_group\"\r\n        tools:listitem=\"@layout/question_search_list_item\"/>\r\n\r\n    <!-- 프로그래스 바 -->\r\n    <ProgressBar\r\n        android:id=\"@+id/search_loading_pb\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginBottom=\"8dp\"\r\n        android:indeterminateTint=\"@color/selected\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"@id/search_query_result_rv\"\r\n        android:visibility=\"gone\" />\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/activity_search.xml b/app/src/main/res/layout/activity_search.xml
+--- a/app/src/main/res/layout/activity_search.xml	
++++ b/app/src/main/res/layout/activity_search.xml	
+@@ -6,7 +6,7 @@
+     android:id="@+id/search_ly"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+-    tools:context=".SearchActivity">
++    tools:context=".search.SearchActivity">
+ 
+     <LinearLayout
+         android:id="@+id/search_view_ly"
+Index: app/src/main/java/com/example/mumulcom/SignupNicknameView.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/mumulcom/SignupNicknameView.kt b/app/src/main/java/com/example/mumulcom/signup/SignupNicknameView.kt
+rename from app/src/main/java/com/example/mumulcom/SignupNicknameView.kt
+rename to app/src/main/java/com/example/mumulcom/signup/SignupNicknameView.kt
+--- a/app/src/main/java/com/example/mumulcom/SignupNicknameView.kt	
++++ b/app/src/main/java/com/example/mumulcom/signup/SignupNicknameView.kt	
+@@ -1,4 +1,4 @@
+-package com.example.mumulcom
++package com.example.mumulcom.signup
+ 
+ interface SignupNicknameView {
+     fun getNicknameCheckLoading()
+Index: app/src/main/res/layout/activity_login.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".LoginActivity\">\r\n\r\n    <ImageView\r\n        android:id=\"@+id/login_title_iv\"\r\n        android:layout_width=\"320dp\"\r\n        android:layout_height=\"320dp\"\r\n        android:src=\"@drawable/ic_mumulcom_title\"\r\n        android:background=\"@android:color/transparent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintBottom_toTopOf=\"@id/login_kakao_ib\"/>\r\n\r\n    <ImageButton\r\n        android:id=\"@+id/login_kakao_ib\"\r\n        android:layout_width=\"300dp\"\r\n        android:layout_height=\"45dp\"\r\n        android:background=\"@android:color/transparent\"\r\n        android:src=\"@drawable/kakao_login_medium_wide\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@id/login_title_iv\" />\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/activity_login.xml b/app/src/main/res/layout/activity_login.xml
+--- a/app/src/main/res/layout/activity_login.xml	
++++ b/app/src/main/res/layout/activity_login.xml	
+@@ -5,7 +5,7 @@
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+-    tools:context=".LoginActivity">
++    tools:context=".login.LoginActivity">
+ 
+     <ImageView
+         android:id="@+id/login_title_iv"
+Index: app/src/main/res/layout/fragment_question.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".QuestionFragment\"\r\n    android:orientation=\"vertical\">\r\n\r\n    <!-- 탭 눌렀을 때 회색 -> 투명하게 바꾸고 싶으면\r\n        app:tabRippleColor=\"@color/colorTransparent\" -->\r\n    <com.google.android.material.tabs.TabLayout\r\n        android:id=\"@+id/question_tab_tl\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"40dp\"\r\n        android:layout_marginTop=\"25dp\"\r\n        android:background=\"@drawable/bg_tab_corner\"\r\n        android:layout_gravity=\"center_horizontal\"\r\n        app:tabIndicator=\"@drawable/bg_tab_indicator_corner\"\r\n        app:tabIndicatorColor=\"@color/tab\"\r\n        app:tabIndicatorHeight=\"40dp\"\r\n        app:tabIndicatorAnimationMode=\"elastic\"\r\n        app:tabMode=\"auto\"\r\n        app:tabInlineLabel=\"true\"\r\n        app:tabTextColor=\"@color/black\"\r\n        app:tabTextAppearance=\"@style/tab_text\"\r\n        app:tabSelectedTextColor=\"@color/white\"\r\n        app:tabIconTint=\"@color/tab_color_selector\" />\r\n\r\n    <androidx.viewpager2.widget.ViewPager2\r\n        android:id=\"@+id/question_tab_vp\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\"/>\r\n\r\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/fragment_question.xml b/app/src/main/res/layout/fragment_question.xml
+--- a/app/src/main/res/layout/fragment_question.xml	
++++ b/app/src/main/res/layout/fragment_question.xml	
+@@ -5,7 +5,7 @@
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+-    tools:context=".QuestionFragment"
++    tools:context=".myquestion.QuestionFragment"
+     android:orientation="vertical">
+ 
+     <!-- 탭 눌렀을 때 회색 -> 투명하게 바꾸고 싶으면

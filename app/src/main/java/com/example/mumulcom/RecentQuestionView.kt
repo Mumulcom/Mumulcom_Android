@@ -1,6 +1,5 @@
 package com.example.mumulcom
 
-import com.example.mumulcom.Question
 
 
 // 최근 질문 4개 에 대한 interface (HomeFragment에서 사용)

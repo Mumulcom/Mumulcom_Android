@@ -11,7 +11,10 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.mumulcom.R
 import com.example.mumulcom.databinding.QuestionAnswerItemBinding
+import com.example.mumulcom.getJwt
+import com.example.mumulcom.getUserIdx
 
 class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer:Boolean):RecyclerView.Adapter<RepliesForQuestionAdapter.ViewHolder>(),
     LikeReplyView, CommentsForReplyView, UploadCommentView, AdoptReplyView {
@@ -38,7 +41,7 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
     // 클릭 인터페이스 정의
     interface RepliesItemClickListener{
         fun onRemoveAnswerButton(isClicked:Boolean)
-     //   fun onClickAdoptButton(isClicked:Boolean)
+        //   fun onClickAdoptButton(isClicked:Boolean)
     }
 
 
@@ -81,7 +84,7 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
                 commentsForReplyAdapter = CommentsForReplyAdapter(context) // recyclerView adapter 연결
                 binding.commentRecyclerView.adapter = commentsForReplyAdapter
                 binding.commentRecyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
-           //     commentsForReplyAdapter.notifyDataSetChanged()
+                //     commentsForReplyAdapter.notifyDataSetChanged()
 
             }
 
@@ -117,7 +120,7 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
             adoptReplyService.getAdoptReply(getJwt(context), getUserIdx(context),replyIdx)
             isClickAdoptButton = true
             //  답변 api 재호출 (QuestionDetailActivity)
-          //  repliesItemClickListener.onClickAdoptButton(isClickAdoptButton)
+            //  repliesItemClickListener.onClickAdoptButton(isClickAdoptButton)
             holder.binding.selectAnswerIv.setImageResource(R.drawable.ic_adopt_reply_ok)
         }
 
@@ -160,7 +163,7 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
         val commentsForReplyService = CommentsForReplyService()
         commentsForReplyService.setCommentsForReplyView(this)
         Log.d("replyIdx:---",replyIdx.toString())
-      //  commentsForReplyService.getCommentsForReply(46)
+        //  commentsForReplyService.getCommentsForReply(46)
         commentsForReplyService.getCommentsForReply(replyIdx)
     }
 

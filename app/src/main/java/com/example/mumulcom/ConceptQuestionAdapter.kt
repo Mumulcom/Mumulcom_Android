@@ -19,18 +19,18 @@ class ConceptQuestionAdapter(var context: Context)
     }
 
     // 리스너 객체를 전달받는 함수랑 리스너 객체를 저장할 변수
-    private lateinit var conceptQuestionClickListener : ConceptQuestionClickListener
+    private lateinit var conceptQuestionClickListener : ConceptQuestionAdapter.ConceptQuestionClickListener
 
-    fun setConceptQuestionClickListener(conceptQuestionClickListener: ConceptQuestionClickListener){
+    fun setConceptQuestionClickListener(conceptQuestionClickListener: ConceptQuestionAdapter.ConceptQuestionClickListener){
         this.conceptQuestionClickListener = conceptQuestionClickListener
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConceptQuestionViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConceptQuestionAdapter.ConceptQuestionViewHolder {
         val binding:QuestionSearchListItemBinding = QuestionSearchListItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ConceptQuestionViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ConceptQuestionViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ConceptQuestionAdapter.ConceptQuestionViewHolder, position: Int) {
         holder.bind(conceptQuestionList[position])
         //recyclerView 의 각 아이템을 클릭할때
         holder.itemView.setOnClickListener {

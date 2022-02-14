@@ -1,7 +1,8 @@
 package com.example.mumulcom
 
-
 import android.util.Log
+import com.example.mumulcom.getRetrofit
+import com.example.mumulcom.QuestionRetrofitInterface
 import retrofit2.Call
 import retrofit2.Response
 

@@ -6,14 +6,17 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.mumulcom.R
 import com.example.mumulcom.databinding.ActivityQuestionDetailBinding
+import com.example.mumulcom.getJwt
+import com.example.mumulcom.getUserIdx
 
 
 // 질문 상세 페이지 (개념/코딩)
 class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
     DetailConceptQuestionView, LikeQuestionView,
     RepliesForQuestionView, ScrapQuestionView {// end of class
-    private lateinit var binding : ActivityQuestionDetailBinding
+private lateinit var binding : ActivityQuestionDetailBinding
     private lateinit var bigCategoryName : String
     private var questionIdx : Long = 0 // default 값
     private var type : Int = 0
@@ -82,14 +85,14 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
 
     private fun setScrapQuestion(){
         if(isScrap){ // 스크랩을 했을때
-            binding.clickScrapIv.setImageResource(R.drawable.ic_scrap_select)
+            binding.clickScrapIv.setImageResource(R.drawable.ic_scrap)
 
             // 서버호출
             setScrapForQuestion()
 
 
         }else{ // 스크랩를 취소했을때
-            binding.clickScrapIv.setImageResource(R.drawable.ic_scrap)
+            binding.clickScrapIv.setImageResource(R.drawable.ic_bottom_scrap_no_select)
             //  서버호출
             setScrapForQuestion()
 
@@ -217,8 +220,6 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
         binding.currentErrorTv.text = result[0].content // 질문 내용
         binding.codingSkillConstraintLayout.visibility = View.GONE
 
-
-
         if(result[0].isLiked =="Y"){
             isLiked = true
             binding.clickLikeIv.setImageResource(R.drawable.ic_liked)
@@ -226,7 +227,7 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
 
         if(result[0].isScraped=="Y"){
             isScrap = true
-            binding.clickScrapIv.setImageResource(R.drawable.ic_scrap_select)
+            binding.clickScrapIv.setImageResource(R.drawable.ic_scrap)
         }
 
 
@@ -325,7 +326,7 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
         Log.d("scraped",result[0].isScraped)
         if(result[0].isScraped=="Y"){
             isScrap = true
-            binding.clickScrapIv.setImageResource(R.drawable.ic_scrap_select)
+            binding.clickScrapIv.setImageResource(R.drawable.ic_scrap)
         }
 
 
@@ -354,8 +355,7 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
 
     override fun onGetRepliesSuccess(result: ArrayList<Reply>) {
         repliesForQuestionAdapter.addQuestions(result)
-        repliesForQuestionAdapter.setRepliesClickListener(object :
-            RepliesForQuestionAdapter.RepliesItemClickListener {
+        repliesForQuestionAdapter.setRepliesClickListener(object : RepliesForQuestionAdapter.RepliesItemClickListener{
             override fun onRemoveAnswerButton(isClicked: Boolean) {
                 if(isClicked){
                     binding.questionFloatingButton.visibility = View.GONE

@@ -78,7 +78,7 @@ class QuestionBoardActivity : AppCompatActivity(), CategoryQuestionView {
 
     override fun onStart() {
         super.onStart()
-   //     Log.d("lifecycle","QuestionBoardActivity onStart")
+        //     Log.d("lifecycle","QuestionBoardActivity onStart")
 
         getCategoryQuestions()
         initRecyclerView()
@@ -206,7 +206,7 @@ class QuestionBoardActivity : AppCompatActivity(), CategoryQuestionView {
 
 
         // 답변 단글만 보기
-        binding.ifAnswerIsCheckIv.setOnClickListener {
+        binding.questionBoardReplyLy.setOnClickListener {
             isReplied = !isReplied
             initCheckCommentButton()
             getCategoryQuestions()

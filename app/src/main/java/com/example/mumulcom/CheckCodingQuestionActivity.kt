@@ -2,37 +2,52 @@ package com.example.mumulcom
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
-import androidx.activity.result.ActivityResultLauncher
-import androidx.appcompat.app.AppCompatActivity
-
-import android.view.View
-import android.widget.Toast
-import androidx.viewpager2.widget.ViewPager2
-import com.example.mumulcom.databinding.ActivityCheckcodingquestionBinding
-import kotlin.collections.ArrayList
 import android.util.Log
 import android.util.TypedValue
+import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.viewpager2.widget.ViewPager2
+import com.example.mumulcom.databinding.ActivityCheckcodingquestionBinding
+import com.google.gson.Gson
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 
-//import android.R
-
-
-class CheckCodingQuestionActivity:AppCompatActivity() {
+//, CheckCodingQuestionView
+class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView {
 
     lateinit var binding: ActivityCheckcodingquestionBinding
 
-    private lateinit var getResultText: ActivityResultLauncher<Intent>
-
-    private var albumDatas=ArrayList<Album>()//뷰페이저
-
+    private lateinit var checkCodingService: CheckCodingService
+    private var images: MutableList<String>? = null  // defalut값은 null, 건너뛰기 가능
+    private var jwt: String = ""
+    private var userIdx: Long = 1
+    private lateinit var title:String
+    private lateinit var currentError:String
+    private lateinit var myCodingSkill:String
+    private lateinit var codeQuestionUrl:String
+    private var bigCategoryIdx:Long=1
+    private var smallCategoryIdx:Long=1
     private var bigCategory: String? = null    // 선택한 상위 카테고리
     private var smallCategory: String? = null  // 선택한 하위 카테고리
+
+    private var albumDatas=ArrayList<Album>()//뷰페이저
+    private lateinit var checkCodingQuestionView: CheckCodingQuestionView
+
+    var realUri: Uri? = null
 
     // 스피너 어댑터
     private lateinit var bigCategoryAdapter: ArrayAdapter<String>
@@ -44,12 +59,21 @@ class CheckCodingQuestionActivity:AppCompatActivity() {
         binding = ActivityCheckcodingquestionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // jwt = getJwt(this)
+        // userIdx = getUserIdx(this)
+
+        jwt = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4Ijo3NSwiaWF0IjoxNjQ0NjQ5NzQ1LCJleHAiOjE2NDYxMjA5NzR9.WHV5dJciYzL3AixOfySplBCa2E9Xpz_FjuTXH8egCpU"
+        userIdx= 75
+        Log.d("jwt", jwt)
+
+
         // 카테고리 초기화
         setupBigCategorySpinner()
         setupBigCategorySpinnerHandler()
 
+        // 화면 배경 누르면 키보드 사라지기
         binding.checkcodingquestionBackIv.setOnClickListener {
-            startActivity(Intent(this, CodingCameraShootingActivity::class.java))
+            CloseKeyboard()
         }
 
         binding.checkcodingquestionBackIv.setOnClickListener {
@@ -61,29 +85,109 @@ class CheckCodingQuestionActivity:AppCompatActivity() {
         }
 
         binding.checkcodingquestionQuestionIv.setOnClickListener {
-            required()
+            checkCodingQuestioning()
+
         }
+        checkCodingService = CheckCodingService()
+        checkCodingService.setcheckcodingquestionView(this)
 
-
-//        //뷰페이저 데이터
 //        albumDatas.apply {
-//            add(Album(Uri.parse(intent.getStringExtra("uri"))))
+//            add(Album(R.drawable.ic_image_plus))
+//            add(Album(R.drawable.ic_image_plus))
+//            add(Album(R.drawable.ic_image_plus))
+//            add(Album(R.drawable.ic_image_plus))
+//            add(Album(R.drawable.ic_image_plus))
 //        }
 
 
-        val ViewPagerAdapter= ViewPagerAdapter(albumDatas)
+
+        val ViewPagerAdapter=ViewPagerAdapter(albumDatas)
         binding.checkcodingquestionVp.adapter=ViewPagerAdapter// 뷰페이저 어댑터 생성
         binding.checkcodingquestionVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
         binding.checkcodingIndicator.setViewPager(binding.checkcodingquestionVp)
         binding.checkcodingIndicator.createIndicators(5,0);
     }
 
-    private fun required() {
-        /*if (selectDatas.isEmpty()||selectBottomDatas.isEmpty()){
+//    data class ListData(var image: Int){
+//
+//    }
+
+    //formdata
+    fun sendAddRequest() {
+        val gson = Gson()
+        val data = gson.toJson(getCoding())
+        Log.d("TAG-JSON", data.toString())
+        val codeQuestionReqBody = data.toString().toRequestBody("dddddddssdfsdfsfdsfsdf".toMediaTypeOrNull())
+        val codeQuestionReq = MultipartBody.Part.createFormData("codeQuestionReq", codeQuestionReqBody.toString())
+
+        val fileBody = images.toString().toRequestBody("image/jpeg".toMediaTypeOrNull())
+        val images = MultipartBody.Part.createFormData("images","images.png", fileBody)
+
+        checkCodingService.checkCodingQuestion(jwt, images, codeQuestionReq)   // images, codeQuestionReq
+    }
+
+//    fun sendAddRequest() {
+//        //val data = gson.toJson(getCoding())
+//        val codeQuestionReqBody = getCoding().toString().toRequestBody("text/plain".toMediaTypeOrNull())
+//        //val codeQuestionReqBody = RequestBody.create(MediaType.parse("application/json"), data)
+//        val codeQuestionReq = MultipartBody.Part.createFormData("codeQuestionReq", codeQuestionReqBody)
+//
+//        val fileBody = images.toString().toRequestBody("image/jpeg".toMediaTypeOrNull())
+//        //val fileBody = "".toRequestBody("".toMediaTypeOrNull())
+//        val images = MultipartBody.Part.createFormData("images","images.png", fileBody)
+//        Log.d("file", fileBody.toString())
+//        Log.d("codeQuestionReq", codeQuestionReq.toString())
+//
+////        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_image_plus)
+////        val stream = ByteArrayOutputStream()
+////        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+////        val filebody = stream.toByteArray()
+//
+//
+//        Log.d("userIdx : ", userIdx.toString())
+//        Log.d("title : ", title)
+//        Log.d("currentError : ", currentError)
+//        Log.d("myCodingSkill : ", myCodingSkill)
+//        Log.d("codeQuestionUrl : ", codeQuestionUrl)
+//        Log.d("bigCategoryIdx : ", bigCategoryIdx.toString())
+//        Log.d("smallCategoryIdx :", smallCategoryIdx.toString())
+//        checkCodingService.checkCodingQuestion(jwt, images, codeQuestionReq)   // images, codeQuestionReq
+//    }
+
+
+
+    private fun getCoding(): CheckCoding {  // view에서 받은 값들
+
+//        val images:String= binding.checkcodingquestionVp.toString()
+        title=binding.checkcodingquestionTitleTextEt.text.toString()
+        currentError=binding.checkcodingquestionStopPartTextEt.text.toString()
+        myCodingSkill=binding.checkcodingquestionCodingLevelTextEt.text.toString()
+        codeQuestionUrl=binding.checkcodingquestionErrorCodeTextEt.text.toString()
+        bigCategoryIdx=binding.checkcodingquestionBigCategorySp.selectedItemPosition.toLong()+1
+        smallCategoryIdx=binding.checkcodingquestionSmallCategorySp.selectedItemPosition.toLong()+1
+
+//        Log.d("images : ", images)
+        /* Log.d("userIdx : ", userIdx.toString())
+         Log.d("title : ", title)
+         Log.d("currentError : ", currentError)
+         Log.d("myCodingSkill : ", myCodingSkill)
+         Log.d("codeQuestionUrl : ", codeQuestionUrl)*/
+//        Log.d("bigCategoryIdx : ", bigCategoryIdx.toString())
+//        Log.d("smallCategoryIdx :", smallCategoryIdx.toString())
+
+        return CheckCoding(userIdx, title, currentError, myCodingSkill, codeQuestionUrl, bigCategoryIdx, smallCategoryIdx)
+    }
+
+
+
+
+    private fun checkCodingQuestioning(
+    ) {
+        if(binding.checkcodingquestionSmallCategorySp.isEnabled()==false){
             Toast.makeText(this, "카테고리를 선택해주세요.", Toast.LENGTH_SHORT).show()
 
             return
-        }*/
+        }
         if (binding.checkcodingquestionTitleTextEt.text.isEmpty()) {
 
             Toast.makeText(this, "제목을 작성해주세요.", Toast.LENGTH_SHORT).show()
@@ -96,8 +200,61 @@ class CheckCodingQuestionActivity:AppCompatActivity() {
 
             return
         }
-        binding.checkcodingquestionQuestionIv.setImageResource(R.drawable.ic_click_question)
+
+        sendAddRequest()
+        Log.d("CHECKCODING/API-MAIN", "메인")
     }
+
+    //응답
+    override fun onCheckCodingQuestionLoading() {
+        Toast.makeText(this, "잠시만 기다려주세요", Toast.LENGTH_LONG).show()
+    }
+
+    override fun onCheckCodingQuestionSuccess(result: String) {
+        Toast.makeText(this, "성공", Toast.LENGTH_LONG).show()
+        startActivity(Intent(this, QuestionBoardActivity::class.java))
+    }
+
+    override fun onCheckCodingQuestionFailure(code:Int, message: String) {
+        when(code){
+            400 -> Toast.makeText(this, "네트워크 연결을 실패했습니다", Toast.LENGTH_LONG).show()
+        }
+    }
+
+//    private fun startBoard(){
+//        getCoding()
+//            fun onItemClick(checkCodingQuestion: CheckCodingQuestion) {
+//                startQuestionBoardActivity(checkCodingQuestion)  // 이동
+//            }
+//    }
+//       fun startQuestionBoardActivity(checkCodingQuestion: CheckCodingQuestion) {
+//            val intent = Intent(this, QuestionBoardActivity::class.java)
+//            intent.putExtra("title", checkCodingQuestion.title)
+//            intent.putExtra("currentError", checkCodingQuestion.currentError)
+//            intent.putExtra("myCodingSkill", checkCodingQuestion.myCodingSkill)
+//            intent.putExtra("codeQuestionUrl", checkCodingQuestion.codeQuestionUrl)
+//            intent.putExtra("bigCategoryName", checkCodingQuestion.bigCategoryName)
+//            intent.putExtra("smallCategoryName", checkCodingQuestion.smallCategoryName)
+//            startActivity(intent)
+//        }
+
+
+    // 키보드 사라지는 함수
+    fun CloseKeyboard() {
+        var view = this.currentFocus
+
+        if(view != null) {
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+    }
+
+
+
+
+
+
+
 
 
     /********************* 스피너 ********************/

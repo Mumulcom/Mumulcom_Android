@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+
 import com.example.mumulcom.databinding.FragmentHomeBinding
+
 
 
 class HomeFragment : Fragment(), RecentQuestionView {
@@ -139,7 +141,7 @@ class HomeFragment : Fragment(), RecentQuestionView {
             val intent = Intent(context, QuestionBoardActivity::class.java)
             intent.putExtra("category","앱")
             intent.putExtra("bigCategoryIdx",1)
-     //       intent.putExtra("smallCategoryIdx",0)
+            //       intent.putExtra("smallCategoryIdx",0)
             startActivity(intent)
         }
         binding.androidTv.setOnClickListener {
@@ -168,7 +170,7 @@ class HomeFragment : Fragment(), RecentQuestionView {
             val intent = Intent(context, QuestionBoardActivity::class.java)
             intent.putExtra("category","웹")
             intent.putExtra("bigCategoryIdx",2)
-       //     intent.putExtra("smallCategoryIdx",0)
+            //     intent.putExtra("smallCategoryIdx",0)
             startActivity(intent)
         }
         binding.htmlTv.setOnClickListener {
@@ -204,7 +206,7 @@ class HomeFragment : Fragment(), RecentQuestionView {
             val intent = Intent(context, QuestionBoardActivity::class.java)
             intent.putExtra("category","서버")
             intent.putExtra("bigCategoryIdx",3)
-        //    intent.putExtra("smallCategoryIdx",1)
+            //    intent.putExtra("smallCategoryIdx",1)
             startActivity(intent)
         }
 
@@ -233,7 +235,7 @@ class HomeFragment : Fragment(), RecentQuestionView {
             val intent = Intent(context, QuestionBoardActivity::class.java)
             intent.putExtra("category","프로그래밍 언어")
             intent.putExtra("bigCategoryIdx",4)
-     //       intent.putExtra("smallCategoryIdx",0)
+            //       intent.putExtra("smallCategoryIdx",0)
             startActivity(intent)
         }
         binding.cTv.setOnClickListener {

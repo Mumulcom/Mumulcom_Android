@@ -26,12 +26,12 @@ class QuestionAdapter(val context: Context):RecyclerView.Adapter<QuestionAdapter
     }
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestionAdapter.ViewHolder {
         val binding: QuestionListItemBinding = QuestionListItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: QuestionAdapter.ViewHolder, position: Int) {
         holder.bind(questionList[position])
         //recyclerView 의 각 아이템을 클릭할때
         holder.itemView.setOnClickListener {
@@ -52,7 +52,7 @@ class QuestionAdapter(val context: Context):RecyclerView.Adapter<QuestionAdapter
     }
 
     inner class ViewHolder(val binding:QuestionListItemBinding):RecyclerView.ViewHolder(binding.root){
-        fun bind(question: Question){
+        fun bind(question:Question){
 
             Glide.with(context).load(question.profileImgUrl).into(binding.itemIconIv)  // 프로필 이미지
 

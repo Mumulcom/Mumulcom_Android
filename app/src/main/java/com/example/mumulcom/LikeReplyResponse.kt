@@ -1,6 +1,6 @@
 package com.example.mumulcom
 
-import com.example.mumulcom.Like
+
 import com.google.gson.annotations.SerializedName
 
 class LikeReplyResponse(

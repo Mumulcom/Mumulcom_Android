@@ -1,6 +1,5 @@
 package com.example.mumulcom
 
-import com.example.mumulcom.Question
 
 interface TabConceptQuestionView {
     fun onGetConceptQuestionsLoading()

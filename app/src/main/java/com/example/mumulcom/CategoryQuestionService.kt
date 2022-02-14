@@ -13,7 +13,7 @@ class CategoryQuestionService {
     }
 
     // 서버에서 카테고리별 question 가져오는 부분
-    fun getCategoryQuestions(type:Int=1,sort:Int=1,bigCategoryIdx:Int,smallCategoryIdx:Int?=null,isReplied:Boolean=false,lastQuestionIdx:Int,perPage:Int){
+    fun getCategoryQuestions(type:Int=1,sort:Int=1,bigCategoryIdx:Int,smallCategoryIdx:Int?,isReplied:Boolean=false,lastQuestionIdx:Int,perPage:Int){
         val categoryQuestionService = getRetrofit().create(QuestionRetrofitInterface::class.java)
 
         categoryQuestionView.onGetQuestionsLoading()

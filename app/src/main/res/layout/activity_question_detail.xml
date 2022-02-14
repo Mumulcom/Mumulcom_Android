@@ -107,20 +107,20 @@
                         app:layout_constraintBottom_toBottomOf="@+id/createdAtTv"
                         app:layout_constraintStart_toEndOf="@+id/createdAtTv"
                         app:layout_constraintTop_toTopOf="@+id/createdAtTv" />
-<!--                    <ImageView-->
-<!--                        android:id="@+id/clickLikeIv"-->
-<!--                        android:src="@drawable/ic_like"-->
-<!--                        android:layout_width="20dp"-->
-<!--                        android:layout_height="20dp"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintTop_toTopOf="@+id/questionIv"-->
-<!--                        app:layout_constraintBottom_toBottomOf="@+id/questionIv"/>-->
+                    <!--                    <ImageView-->
+                    <!--                        android:id="@+id/clickLikeIv"-->
+                    <!--                        android:src="@drawable/ic_like"-->
+                    <!--                        android:layout_width="20dp"-->
+                    <!--                        android:layout_height="20dp"-->
+                    <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+                    <!--                        app:layout_constraintTop_toTopOf="@+id/questionIv"-->
+                    <!--                        app:layout_constraintBottom_toBottomOf="@+id/questionIv"/>-->
                     <ImageView
                         android:id="@+id/clickScrapIv"
                         android:layout_marginEnd="15dp"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/ic_scrap"
+                        android:src="@drawable/ic_bottom_scrap_no_select"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/questionIv"
                         app:layout_constraintBottom_toBottomOf="@+id/questionIv"/>

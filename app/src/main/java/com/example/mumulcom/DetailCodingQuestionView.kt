@@ -1,8 +1,4 @@
 package com.example.mumulcom
-
-
-
-
 interface DetailCodingQuestionView {
     fun onGetDetailCodingQuestionsLoading()
     fun onGetDetailCodingQuestionsSuccess(result: ArrayList<DetailCodingQuestion>)

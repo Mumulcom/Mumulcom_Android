@@ -1,6 +1,5 @@
 package com.example.mumulcom
 
-import com.example.mumulcom.Like
 
 interface UploadCommentView {
     fun onGetUploadCommentLoading()

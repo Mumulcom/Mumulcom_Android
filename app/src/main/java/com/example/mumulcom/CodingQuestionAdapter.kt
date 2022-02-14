@@ -19,18 +19,18 @@ class CodingQuestionAdapter(var context: Context)
     }
 
     // 리스너 객체를 전달받는 함수랑 리스너 객체를 저장할 변수
-    private lateinit var codingQuestionClickListener : CodingQuestionClickListener
+    private lateinit var codingQuestionClickListener : CodingQuestionAdapter.CodingQuestionClickListener
 
-    fun setCodingQuestionClickListener(codingQuestionClickListener: CodingQuestionClickListener){
+    fun setCodingQuestionClickListener(codingQuestionClickListener: CodingQuestionAdapter.CodingQuestionClickListener){
         this.codingQuestionClickListener = codingQuestionClickListener
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CodingQuestionViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CodingQuestionAdapter.CodingQuestionViewHolder {
         val binding:QuestionSearchListItemBinding = QuestionSearchListItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return CodingQuestionViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: CodingQuestionViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CodingQuestionAdapter.CodingQuestionViewHolder, position: Int) {
         holder.bind(codingQuestionList[position])
         //recyclerView 의 각 아이템을 클릭할때
         holder.itemView.setOnClickListener {
