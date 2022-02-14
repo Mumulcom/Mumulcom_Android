@@ -1,5 +1,6 @@
 package com.example.mumulcom
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -77,6 +78,10 @@ private lateinit var binding : ActivityQuestionDetailBinding
         binding.clickScrapIv.setOnClickListener {
             isScrap = !isScrap
             setScrapQuestion()// 질문에 대한 스크랩 처리
+        }
+
+        binding.questionFloatingButton.setOnClickListener {
+            startActivity(Intent(this,AnswerActivity::class.java))
         }
 
     }// end of onCreate
