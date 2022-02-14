@@ -1,7 +1,6 @@
 package com.example.mumulcom
 
-import com.example.mumulcom.getRetrofit
-import com.example.mumulcom.QuestionRetrofitInterface
+
 import retrofit2.Call
 import retrofit2.Response
 
@@ -27,6 +26,7 @@ class UploadCommentService {
 
                     when(resp.code){
                         1000-> uploadCommentView.onGetUploadCommentSuccess(resp.result)
+                        2800 -> uploadCommentView.onGetUploadCommentFailure(resp.code,resp.message)
                         else-> uploadCommentView.onGetUploadCommentFailure(resp.code,resp.message)
                     }
 
