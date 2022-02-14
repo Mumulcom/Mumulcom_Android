@@ -1,4 +1,4 @@
-package com.example.mumulcom.signup
+package com.example.mumulcom
 
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
@@ -16,7 +16,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.mumulcom.R
 import com.example.mumulcom.databinding.ActivitySignupBinding
 import com.kakao.sdk.user.UserApiClient
 import java.util.regex.Pattern

@@ -1,4 +1,4 @@
-package com.example.mumulcom.signup
+package com.example.mumulcom
 
 import retrofit2.Call
 import retrofit2.http.Body

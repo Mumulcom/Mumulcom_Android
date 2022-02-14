@@ -39,8 +39,8 @@
         <activity android:name=".QuestionCategoryActivity"/>
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".signup.SignUpActivity" />
-        <activity android:name=".signup.SignUpCategoryActivity" />
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".SignUpCategoryActivity" />
         <activity android:name=".search.SearchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />

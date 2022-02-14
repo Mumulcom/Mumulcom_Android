@@ -1,4 +1,4 @@
-package com.example.mumulcom.signup
+package com.example.mumulcom
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,8 +6,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.mumulcom.MainActivity
-import com.example.mumulcom.R
 import com.example.mumulcom.databinding.ActivitySignupCategoryBinding
 
 class SignUpCategoryActivity : AppCompatActivity(), View.OnClickListener, SignUpView {

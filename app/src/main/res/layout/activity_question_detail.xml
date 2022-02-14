@@ -212,7 +212,7 @@
                             android:id="@+id/codingSkillConstraintLayout"
                             android:layout_marginBottom="20dp"
                             android:padding="10dp"
-                            android:background="@drawable/button_customnext"
+                            android:background="@drawable/basic_outline_black"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
                             <TextView

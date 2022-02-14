@@ -8,7 +8,7 @@ import android.widget.Toast
 import com.example.mumulcom.MainActivity
 import com.example.mumulcom.R
 import com.example.mumulcom.databinding.ActivityLoginBinding
-import com.example.mumulcom.signup.SignUpActivity
+import com.example.mumulcom.SignUpActivity
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause.*
 import com.kakao.sdk.user.UserApiClient

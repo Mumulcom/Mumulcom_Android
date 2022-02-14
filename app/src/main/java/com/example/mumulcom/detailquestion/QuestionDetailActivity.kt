@@ -220,6 +220,8 @@ class QuestionDetailActivity : AppCompatActivity(), DetailCodingQuestionView,
         binding.currentErrorTv.text = result[0].content // 질문 내용
         binding.codingSkillConstraintLayout.visibility = View.GONE
 
+
+
         if(result[0].isLiked =="Y"){
             isLiked = true
             binding.clickLikeIv.setImageResource(R.drawable.ic_liked)

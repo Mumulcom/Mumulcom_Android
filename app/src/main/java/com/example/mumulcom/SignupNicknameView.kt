@@ -1,4 +1,4 @@
-package com.example.mumulcom.signup
+package com.example.mumulcom
 
 interface SignupNicknameView {
     fun getNicknameCheckLoading()

@@ -91,28 +91,7 @@ class QuestionBoardActivity : AppCompatActivity(), CategoryQuestionView {
     }
 
 
-//    override fun onResume() {
-//        super.onResume()
-//        Log.d("lifecycle","QuestionBoardActivity onResume")
-//    }
-//
-//    override fun onPause() {
-//        super.onPause()
-//        Log.d("lifecycle","QuestionBoardActivity onPause")
-//
-//    }
-//
-//    override fun onStop() {
-//        super.onStop()
-//        Log.d("lifecycle","QuestionBoardActivity onStop")
-//
-//    }
-//
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        Log.d("lifecycle","QuestionBoardActivity onDestroy")
-//
-//    }
+
 
     private fun initRecyclerView(){
         // recyclerView <-> adapter 연결

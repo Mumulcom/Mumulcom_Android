@@ -1,8 +1,7 @@
-package com.example.mumulcom.signup
+package com.example.mumulcom
 
 import android.annotation.SuppressLint
 import android.util.Log
-import com.example.mumulcom.getRetrofit
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
