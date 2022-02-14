@@ -20,10 +20,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.example.mumulcom.databinding.ActivityCheckcodingquestionBinding
-import com.google.gson.Gson
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.toRequestBody
 
 
 //, CheckCodingQuestionView
@@ -113,18 +109,18 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView {
 //    }
 
     //formdata
-    fun sendAddRequest() {
-        val gson = Gson()
-        val data = gson.toJson(getCoding())
-        Log.d("TAG-JSON", data.toString())
-        val codeQuestionReqBody = data.toString().toRequestBody("dddddddssdfsdfsfdsfsdf".toMediaTypeOrNull())
-        val codeQuestionReq = MultipartBody.Part.createFormData("codeQuestionReq", codeQuestionReqBody.toString())
-
-        val fileBody = images.toString().toRequestBody("image/jpeg".toMediaTypeOrNull())
-        val images = MultipartBody.Part.createFormData("images","images.png", fileBody)
-
-        checkCodingService.checkCodingQuestion(jwt, images, codeQuestionReq)   // images, codeQuestionReq
-    }
+//    fun sendAddRequest() {
+//        val gson = Gson()
+//        val data = gson.toJson(getCoding())
+//        Log.d("TAG-JSON", data.toString())
+//        val codeQuestionReqBody = data.toString().toRequestBody("dddddddssdfsdfsfdsfsdf".toMediaTypeOrNull())
+//        val codeQuestionReq = MultipartBody.Part.createFormData("codeQuestionReq", codeQuestionReqBody.toString())
+//
+//        val fileBody = images.toString().toRequestBody("image/jpeg".toMediaTypeOrNull())
+//        val images = MultipartBody.Part.createFormData("images","images.png", fileBody)
+//
+//        checkCodingService.checkCodingQuestion(jwt, images, codeQuestionReq)   // images, codeQuestionReq
+//    }
 
 //    fun sendAddRequest() {
 //        //val data = gson.toJson(getCoding())
@@ -201,7 +197,7 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView {
             return
         }
 
-        sendAddRequest()
+      //  sendAddRequest()
         Log.d("CHECKCODING/API-MAIN", "메인")
     }
 
