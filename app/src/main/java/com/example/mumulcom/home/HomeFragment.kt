@@ -13,7 +13,7 @@ import com.example.mumulcom.category.QuestionBoardActivity
 import com.example.mumulcom.Question
 import com.example.mumulcom.databinding.FragmentHomeBinding
 import com.example.mumulcom.detailquestion.QuestionDetailActivity
-import com.example.mumulcom.search.SearchActivity
+import com.example.mumulcom.SearchActivity
 
 
 class HomeFragment : Fragment(), RecentQuestionView {

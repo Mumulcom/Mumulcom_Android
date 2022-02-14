@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mumulcom.QuestionCategoryActivity
 import com.example.mumulcom.detailquestion.QuestionDetailActivity
 import com.example.mumulcom.R
-import com.example.mumulcom.search.SearchActivity
+import com.example.mumulcom.SearchActivity
 import com.example.mumulcom.Question
 import com.example.mumulcom.databinding.ActivityQuestionBoardBinding
 
