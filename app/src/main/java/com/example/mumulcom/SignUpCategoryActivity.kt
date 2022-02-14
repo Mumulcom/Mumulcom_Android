@@ -61,15 +61,8 @@ class SignUpCategoryActivity : AppCompatActivity(), View.OnClickListener, SignUp
     }
 
     // 각 버튼의 클릭 이벤트
-<<<<<<< HEAD
-    override fun onClick(view: View?)
-    {
-        when (view!!.id)
-        {
-=======
     override fun onClick(view: View?) {
         when (view!!.id) {
->>>>>>> c9c6645c2288902261c58bc3d4a66285be3c920b
             R.id.signup_category_android_bt -> {
                 categories = "안드로이드"
                 selectCategories(view, categories)

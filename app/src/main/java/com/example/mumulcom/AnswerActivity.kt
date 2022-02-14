@@ -77,13 +77,12 @@ class AnswerActivity:AppCompatActivity() {
 //            add(Album(Uri.parse("imageUri")))
 //            add(Album(Uri.parse("imageUri")))
 //            add(Album(Uri.parse("imageUri")))
-            add(Album(R.drawable.ic_gallery))
-            add(Album(R.drawable.ic_web))
-            add(Album(R.drawable.ic_gallery))
-            add(Album(R.drawable.ic_gallery))
-            add(Album(R.drawable.ic_gallery))
+            add(Album(com.example.mumulcom.R.drawable.ic_gallery))
+            add(Album(com.example.mumulcom.R.drawable.ic_web))
+            add(Album(com.example.mumulcom.R.drawable.ic_gallery))
+            add(Album(com.example.mumulcom.R.drawable.ic_gallery))
+            add(Album(com.example.mumulcom.R.drawable.ic_gallery))
         }
-
 
         val ViewPagerAdapter=ViewPagerAdapter(albumDatas)
         binding.answerImageVp.adapter=ViewPagerAdapter// 뷰페이저 어댑터 생성

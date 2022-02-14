@@ -16,6 +16,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity

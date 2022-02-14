@@ -3,6 +3,8 @@ package com.example.mumulcom
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +35,7 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
     private  var replyIdx : Long = -1
     private lateinit var commentsForReplyAdapter: CommentsForReplyAdapter
     private lateinit var comment : String // 댓글 작성 내용 저장할 변수
+//    private lateinit var uploadCommentService : UploadCommentService
 
 
 
@@ -59,7 +62,8 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: QuestionAnswerItemBinding =  QuestionAnswerItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
 
-
+        val uploadCommentService = UploadCommentService()
+        uploadCommentService.setUploadCommentView(this)
 
         isAdopted = adopt // 이 글 자체가 채택이 된 답변이 있는지를 확인하는 변수  ( Y or N )
         isWriter =  writer // 조회한 사람이 이 글을 작성한 작성자인지 확인 (Ture or False )
@@ -76,15 +80,20 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
 
             }else{
                 //  api 에 연결해서 넘겨줌.
-                val uploadCommentService = UploadCommentService()
-                uploadCommentService.setUploadCommentView(this)
+
+
                 uploadCommentService.getUploadComment(getJwt(context), CommentSend(replyIdx, getUserIdx(context),comment,null))
+
+                Handler(Looper.getMainLooper()).postDelayed({
+                    getCommentsForReply() // 댓글 가져오는 api 호출
+                    commentsForReplyAdapter = CommentsForReplyAdapter(context) // recyclerView adapter 연결
+                    binding.commentRecyclerView.adapter = commentsForReplyAdapter
+                    binding.commentRecyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+                //    commentsForReplyAdapter.notifyDataSetChanged()
+                },500)
+
+
                 binding.commentEditText.text.clear()
-                getCommentsForReply() // 댓글 가져오는 api 호출
-                commentsForReplyAdapter = CommentsForReplyAdapter(context) // recyclerView adapter 연결
-                binding.commentRecyclerView.adapter = commentsForReplyAdapter
-                binding.commentRecyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
-                //     commentsForReplyAdapter.notifyDataSetChanged()
 
             }
 
@@ -340,6 +349,7 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
     override fun onGetUploadCommentFailure(code: Int, message: String) {
         when(code){
             400-> Log.d("답변에 댓글달기/API",message)
+            2800 -> Toast.makeText(context,message,Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -355,7 +365,6 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
         Log.d("답변 채택하기/API",result.noticeMessage)
         Toast.makeText(context,"해당 답변을 채택했습니다.",Toast.LENGTH_SHORT).show()
 
-        // todo 데이터 reload
     }
 
     override fun onGetAdoptReplyFailure(code: Int, message: String) {

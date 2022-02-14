@@ -55,6 +55,7 @@ class HomeFragment : Fragment(), RecentQuestionView {
                 startQuestionDetailActivity(question)// 질문 상세 보기 페이지로 이동
             }
 
+
         })
         binding.recentQuestionVp.adapter = recentQuestionAdapter
         binding.recentQuestionVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
