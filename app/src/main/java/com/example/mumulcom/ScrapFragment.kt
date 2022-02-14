@@ -14,7 +14,6 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.mumulcom.detailquestion.QuestionDetailActivity
 import com.example.mumulcom.databinding.FragmentScrapBinding
 
 

@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mumulcom.databinding.FragmentAlarmBinding
-import com.example.mumulcom.detailquestion.QuestionDetailActivity
 
 class AlarmFragment : Fragment(), AlarmView {
     lateinit var binding: FragmentAlarmBinding

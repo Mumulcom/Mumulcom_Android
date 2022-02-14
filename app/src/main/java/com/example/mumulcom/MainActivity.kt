@@ -6,13 +6,6 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mumulcom.databinding.ActivityMainBinding
-import com.example.mumulcom.home.HomeFragment
-import com.example.mumulcom.login.Auth
-import com.example.mumulcom.login.Login
-import com.example.mumulcom.login.LoginService
-import com.example.mumulcom.login.LoginView
-import com.example.mumulcom.myquestion.QuestionFragment
-import com.example.mumulcom.profile.ProfileFragment
 import com.kakao.sdk.user.UserApiClient
 
 // TODO 하단 프로필 사진 연동하기 -> 바텀 네비에 서버에서 받은 값이 들어갈 수 있는가...?

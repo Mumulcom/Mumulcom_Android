@@ -1,13 +1,5 @@
 package com.example.mumulcom
 
-import com.example.mumulcom.category.CategoryQuestionResponse
-import com.example.mumulcom.home.QuestionResponse
-import com.example.mumulcom.detailquestion.CommentSend
-import com.example.mumulcom.detailquestion.LikeReplySend
-import com.example.mumulcom.detailquestion.LikeSend
-import com.example.mumulcom.detailquestion.*
-import com.example.mumulcom.detailquestion.RepliesForQuestionResponse
-import com.example.mumulcom.detailquestion.ScrapQuestionResponse
 import retrofit2.Call
 import retrofit2.http.*
 
