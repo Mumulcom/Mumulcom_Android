@@ -7,14 +7,14 @@ import retrofit2.http.*
 
 
 //인터페이스 생성
-interface CheckCodingQuestionRetrofitInterface {
+interface CheckConceptQuestionRetrofitInterface {
 
 
-    @POST("/questions/coding")
-    fun checkCodingQuestion(
+    @POST("/questions/concept")
+    fun checkConceptQuestion(
         @Header("X-ACCESS-TOKEN") jwt: String,
-        @Body checkCoding: CheckCoding
-    ): Call<CheckCodingQuestionResponse>
+        @Body checkConcept: CheckConcept
+    ): Call<CheckConceptQuestionResponse>
 }
 
 
