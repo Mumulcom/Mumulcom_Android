@@ -3,6 +3,25 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/drawable/basic_outline_black.xml" value="0.1845" />
+        <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/drawable/bg_signup_group_outline.xml" value="0.1845" />
+        <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/drawable/ic_bottom_question_no_select.xml" value="0.1" />
+        <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/drawable/ic_signup_category_no_select.xml" value="0.141" />
+        <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/drawable/main_btm_color_selector.xml" value="0.1845" />
+        <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/drawable/main_btm_home_selector.xml" value="0.1845" />
+        <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/drawable/main_btm_question_selector.xml" value="0.1845" />
+        <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/layout/activity_answer.xml" value="0.125" />
+        <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/layout/activity_login.xml" value="0.171875" />
+        <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/layout/activity_main.xml" value="0.171875" />
+        <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/layout/activity_search.xml" value="0.125" />
+        <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/layout/activity_signup.xml" value="0.2" />
+        <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/layout/activity_signup_category.xml" value="0.11203703703703703" />
+        <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/layout/dialog_signup.xml" value="0.11203703703703703" />
+        <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/layout/item_spinner.xml" value="0.171875" />
+        <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/layout/question_answer_item.xml" value="0.125" />
+        <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/layout/question_list_item.xml" value="0.125" />
+        <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/menu/bottom_nav_menu.xml" value="0.171875" />
+        <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1345" />
         <entry key="..\:/AndroidProject/UMC/Mumulcom_Android/app/src/main/res/drawable/ic_search.xml" value="0.221875" />
         <entry key="..\:/AndroidProject/UMC/Mumulcom_Android/app/src/main/res/drawable/ic_smile.xml" value="0.23854166666666668" />
         <entry key="..\:/AndroidProject/UMC/Mumulcom_Android/app/src/main/res/drawable/indicator_background.xml" value="0.22239583333333332" />
