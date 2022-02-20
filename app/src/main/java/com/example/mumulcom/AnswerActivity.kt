@@ -12,7 +12,9 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.example.mumulcom.databinding.ActivityAnswerBinding
+import com.example.test.AnswerQuestionVPAdater
 import com.example.test.ViewPagerAdapter
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
@@ -29,13 +31,14 @@ class AnswerActivity:AppCompatActivity(), AnswerView {
     lateinit var photoAdapter:PhotoAdapter//리사이클러뷰
     private var images = arrayListOf<String>()
     var photoList = arrayListOf<Photo>()
+    var answerList = arrayListOf<Album>()//답변하기에 떠있는 질문창
     private var jwt: String = ""
     private var userIdx: Long = 1
     private lateinit var title: String
     private var questionIdx: Long=0
     private lateinit var replyUrl: String
     private lateinit var content:String
-    lateinit var viewPagerAdapter: ViewPagerAdapter
+    lateinit var answerQuestionVPAdater: AnswerQuestionVPAdater
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>//이동(카메라 앨범)
     var count=0//이미지 수
 
@@ -75,15 +78,17 @@ class AnswerActivity:AppCompatActivity(), AnswerView {
 //            intent.action = Intent.ACTION_GET_CONTENT
         }
 
+        //답변하기 리사이클러뷰
         photoAdapter = PhotoAdapter(this, photoList)
         binding.answerImageReferenceVp.adapter = photoAdapter
 
-        // 뷰페이저 어댑터 생성
-        viewPagerAdapter = ViewPagerAdapter(this, photoList)
-        binding.answerImageVp.adapter = viewPagerAdapter
+        // 뷰페이저 어댑터 생성+답변하기에 질문쪽
+        answerQuestionVPAdater = AnswerQuestionVPAdater(this, answerList)
+        binding.answerImageVp.adapter = answerQuestionVPAdater
         binding.answerImageVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
         binding.answerIndicator.setViewPager(binding.answerImageVp)
         binding.answerIndicator.createIndicators(5, 0)
+
 
 
         firestore.collection("answer-images").addSnapshotListener {
@@ -113,8 +118,14 @@ class AnswerActivity:AppCompatActivity(), AnswerView {
         }
 
         binding.answerBackIv.setOnClickListener {
+//            firestore.collection("answer-images").document().delete().addOnSuccessListener {
+//                Log.d("delete", "삭제성공")
+//            }.addOnFailureListener {
+//                Log.d("delete", "삭제실패")
+//            }
             finish()
         }
+
     }
 
     // 키보드 사라지는 함수
