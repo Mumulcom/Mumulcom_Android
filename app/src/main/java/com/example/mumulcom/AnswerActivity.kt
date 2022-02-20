@@ -11,7 +11,9 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewpager2.widget.ViewPager2
 import com.example.mumulcom.databinding.ActivityAnswerBinding
+import com.example.test.ViewPagerAdapter
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -33,7 +35,7 @@ class AnswerActivity:AppCompatActivity(), AnswerView {
     private var questionIdx: Long=0
     private lateinit var replyUrl: String
     private lateinit var content:String
-
+    lateinit var viewPagerAdapter: ViewPagerAdapter
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>//이동(카메라 앨범)
     var count=0//이미지 수
 
@@ -76,7 +78,10 @@ class AnswerActivity:AppCompatActivity(), AnswerView {
         photoAdapter = PhotoAdapter(this, photoList)
         binding.answerImageReferenceVp.adapter = photoAdapter
 
-        //인디케이터
+        // 뷰페이저 어댑터 생성
+        viewPagerAdapter = ViewPagerAdapter(this, photoList)
+        binding.answerImageVp.adapter = viewPagerAdapter
+        binding.answerImageVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
         binding.answerIndicator.setViewPager(binding.answerImageVp)
         binding.answerIndicator.createIndicators(5, 0)
 
@@ -104,6 +109,10 @@ class AnswerActivity:AppCompatActivity(), AnswerView {
 //필수 부분 작성되면 답변하기 누르기
         binding.answerAnswerIv.setOnClickListener {
             required()
+            finish()
+        }
+
+        binding.answerBackIv.setOnClickListener {
             finish()
         }
     }

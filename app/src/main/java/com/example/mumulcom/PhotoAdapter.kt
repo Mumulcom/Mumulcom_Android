@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.mumulcom.databinding.ItemPhotoBinding
 import com.example.mumulcom.databinding.ItemSliderBinding
 
+//답변하기 작성자가 넣는 이미지
 class PhotoAdapter(var context: Context, private val photoList:ArrayList<Photo>) : RecyclerView.Adapter<PhotoAdapter.ViewHolder>(){
 
     var onItemClickListener:OnItemClickListener?=null

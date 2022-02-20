@@ -54,10 +54,9 @@ class AnswerCameraShootingActivity: AppCompatActivity() {
         setContentView(binding.root)
 
         //백버튼 다시 질문 유형 선택으로
-        binding.answercameraCamerashootingturnIb.setOnClickListener {
+        binding.answercameraCamerashootingBackIb.setOnClickListener {
             startActivity(Intent(this, AnswerActivity::class.java))
         }
-
 
         //삭제버튼+이미지 삭제하고 체크 버튼 누르면 토스트 메세지 띄우기
         binding.answercameraCamerashootingturnIb.setOnClickListener {

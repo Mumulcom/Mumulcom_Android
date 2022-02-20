@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/answercamera_camerashootingBackIb"
-        app:layout_constraintBottom_toTopOf="@id/answercamera_camerashootingCameraIv"
+        app:layout_constraintBottom_toTopOf="@id/answercamera_camerashootingGalleryIv"
         android:layout_marginBottom="10dp"
         android:background="#E5E5E5"/>
 
