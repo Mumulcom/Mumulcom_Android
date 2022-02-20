@@ -7,40 +7,41 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.mumulcom.Album
 import com.example.mumulcom.Photo
 import com.example.mumulcom.R
 
-class ViewPagerAdapter(var context: Context, var photoList: ArrayList<Photo>) : RecyclerView.Adapter<ViewPagerAdapter.ViewHolder>(){
+//코딩질문 개념질문 답변하기 작성자 어댑터
+class AnswerQuestionVPAdater(var context: Context, var answerList: ArrayList<Album>) : RecyclerView.Adapter<AnswerQuestionVPAdater.ViewHolder>(){
 
     var onItemClickListener:OnItemClickListener?=null
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         var imageIv: ImageView =itemView.findViewById(R.id.imageSlider)
 
-        fun bind(photo:Photo){
-            Glide.with(context).load(photo.imageUrl).into(imageIv)
+        fun bind(album: Album){
+            Glide.with(context).load(album.imageUrl).into(imageIv)
             imageIv.setOnClickListener {
                 if(onItemClickListener!=null)
-                    onItemClickListener?.onItemClick(photo)
+                    onItemClickListener?.onItemClick(album)
             }
         }
     }
 
     interface OnItemClickListener{
-        fun onItemClick(photo:Photo)
+        fun onItemClick(album: Album)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnswerQuestionVPAdater.ViewHolder {
         var view=LayoutInflater.from(context).inflate(R.layout.item_slider,parent,false)
         return ViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-        return photoList.size
+        return answerList.size
     }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var photo= photoList.get(position)
-        holder.bind(photo)
+    override fun onBindViewHolder(holder: AnswerQuestionVPAdater.ViewHolder, position: Int) {
+        var album= answerList.get(position)
+        holder.bind(album)
     }
 }
