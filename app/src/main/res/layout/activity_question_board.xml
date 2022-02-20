@@ -29,8 +29,8 @@
 
             <ImageView
                 android:id="@+id/backIv"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@drawable/ic_back_black" />
 
             <TextView
@@ -40,7 +40,8 @@
                 android:layout_centerInParent="true"
                 android:text="안드로이드"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/searchIv"
