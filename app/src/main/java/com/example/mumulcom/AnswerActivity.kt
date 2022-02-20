@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.example.mumulcom.databinding.ActivityAnswerBinding
 import com.example.test.AnswerQuestionVPAdater
 import com.example.test.ViewPagerAdapter
+import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -24,8 +25,8 @@ import com.google.firebase.storage.FirebaseStorage
 class AnswerActivity:AppCompatActivity(), AnswerView {
     lateinit var binding: ActivityAnswerBinding
 
-    lateinit var storage: FirebaseStorage
-    lateinit var firestore: FirebaseFirestore//파이어스토리지
+    private lateinit var storage: FirebaseStorage
+    private lateinit var firestore: FirebaseFirestore //파이어스토리지
     val IMAGE_PICK=1111
     var selectImage:Uri?=null
     lateinit var photoAdapter:PhotoAdapter//리사이클러뷰
@@ -46,6 +47,8 @@ class AnswerActivity:AppCompatActivity(), AnswerView {
         super.onCreate(savedInstanceState)
         binding = ActivityAnswerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        FirebaseApp.initializeApp(this)
 
         // jwt = getJwt(this)
         // userIdx = getUserIdx(this)
