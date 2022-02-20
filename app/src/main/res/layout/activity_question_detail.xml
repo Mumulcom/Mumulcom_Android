@@ -27,8 +27,8 @@
 
             <ImageView
                 android:id="@+id/backIv"
-                android:layout_width="28px"
-                android:layout_height="56px"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@drawable/ic_back_black" />
 
             <TextView
@@ -38,7 +38,8 @@
                 android:layout_centerInParent="true"
                 android:text="앱"
                 android:textColor="@color/black"
-                android:textSize="41.78px" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
         </RelativeLayout>
 
