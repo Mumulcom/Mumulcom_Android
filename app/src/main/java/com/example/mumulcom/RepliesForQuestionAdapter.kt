@@ -217,7 +217,7 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
             // 답변 이미지 viewpager 연결
             imageViewPagerAdapter = ImageViewPagerAdapter(context)
             if(reply.replyImgUrl.size==0){
-                binding.itemL13.visibility = View.GONE
+                binding.itemLl3.visibility = View.GONE
             }else{
                 imageViewPagerAdapter.addQuestions(reply.replyImgUrl)
                 binding.viewPager.adapter = imageViewPagerAdapter
