@@ -79,11 +79,11 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:src="@drawable/ic_image_plus"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
+                        app:layout_constraintBottom_toBottomOf="@+id/checkcodingquestion_Vp"
+                        app:layout_constraintEnd_toEndOf="@+id/checkcodingquestion_Vp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
+                        />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <me.relex.circleindicator.CircleIndicator3

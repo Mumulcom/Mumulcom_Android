@@ -36,7 +36,7 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView {
     private lateinit var myCodingSkill: String
     private lateinit var codeQuestionUrl: String
     private var bigCategoryIdx: Long = 0
-    private var smallCategoryIdx: Long = 0
+    private var smallCategoryIdx: Long? = 0
 
     private var bigCategory: String? = null    // 선택한 상위 카테고리
     private var smallCategory: String? = null  // 선택한 하위 카테고리
@@ -392,31 +392,31 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView {
                     if (bigCategory=="앱") {
                         smallCategoryIdx =
                             binding.checkcodingquestionSmallCategorySp.selectedItemPosition.toLong() + 1
-                        Log.i(ContentValues.TAG, "하위 카테고리 넘버 확인: $smallCategoryIdx")
+                        Log.d("category test", "하위 카테고리 넘버 확인: $smallCategoryIdx")
                     }
                     if (bigCategory=="웹") {
                         smallCategoryIdx =
                             binding.checkcodingquestionSmallCategorySp.selectedItemPosition.toLong() + 3
-                        Log.i(ContentValues.TAG, "하위 카테고리 넘버 확인: $smallCategoryIdx")
+                        Log.d("category test", "하위 카테고리 넘버 확인: $smallCategoryIdx")
                     }
                     if (bigCategory=="서버") {
                         smallCategoryIdx =
                             binding.checkcodingquestionSmallCategorySp.selectedItemPosition.toLong() + 6
-                        Log.i(ContentValues.TAG, "하위 카테고리 넘버 확인: $smallCategoryIdx")
+                        Log.d("category test", "하위 카테고리 넘버 확인: $smallCategoryIdx")
                     }
                     if (bigCategory=="프로그래밍 언어") {
                         smallCategoryIdx =
                             binding.checkcodingquestionSmallCategorySp.selectedItemPosition.toLong() + 8
-                        Log.i(ContentValues.TAG, "하위 카테고리 넘버 확인: $smallCategoryIdx")
+                        Log.d("category test", "하위 카테고리 넘버 확인: $smallCategoryIdx")
                     }
                     if (bigCategory=="기타") {
-                        smallCategoryIdx =binding.checkcodingquestionSmallCategorySp.selectedItemPosition.toLong()
-                        Log.i(ContentValues.TAG, "하위 카테고리 넘버 확인: $smallCategoryIdx")
+                        smallCategoryIdx =null
+                        Log.d("category test", "하위 카테고리 넘버 확인: $smallCategoryIdx")
                     }
-                    Log.i(ContentValues.TAG, "하위 카테고리 확인: $smallCategory")
+//                    Log.i(ContentValues.TAG, "하위 카테고리 확인: $smallCategory")
                 } else {
                     smallCategory = null
-                    Log.i(ContentValues.TAG, "하위 카테고리 확인: $smallCategory")
+                    Log.d("category test","하위 카테고리 넘버 확인: $smallCategory")
                     // Toast.makeText(context, "상위 카테고리를 선택해주세요!", Toast.LENGTH_SHORT).show()
                 }
 
@@ -424,6 +424,8 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView {
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
         }
+
+     //   Log.d("category test"," : $smallCategoryIdx ")
     }
 
 }
