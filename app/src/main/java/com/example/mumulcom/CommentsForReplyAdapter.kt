@@ -2,6 +2,7 @@ package com.example.mumulcom
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,12 @@ class CommentsForReplyAdapter(val context: Context): RecyclerView.Adapter<Commen
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(commentList[position])
+
+        holder.binding.replyImgIv.setOnClickListener {
+            val intent = Intent(context,ImageActivity::class.java)
+            intent.putExtra("imgUrl",commentList[position].imageUrl)
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {
