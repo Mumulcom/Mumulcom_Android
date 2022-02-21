@@ -9,7 +9,7 @@
         android:id="@+id/itemPhoto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#C4C4C4"
+        android:background="@color/primary"
         android:layout_marginStart="5dp"
         />
 
