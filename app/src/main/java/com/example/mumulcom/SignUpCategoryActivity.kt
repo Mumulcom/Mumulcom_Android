@@ -12,13 +12,12 @@ import com.example.mumulcom.databinding.ActivitySignupCategoryBinding
 class SignUpCategoryActivity : AppCompatActivity(), View.OnClickListener, SignUpView {
     lateinit var binding: ActivitySignupCategoryBinding
 
-    private lateinit var email: String
-    private lateinit var name: String
-    private lateinit var nickname: String
-    private lateinit var group: String
+    private var email: String = ""
+    private var name: String = ""
+    private var nickname: String = ""
+    private var group: String = ""
 
     private var categories: String? = null
-
     private var myCategories: MutableList<String> = mutableListOf()   // defalut값은 null, 건너뛰기 가능
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -199,8 +198,6 @@ class SignUpCategoryActivity : AppCompatActivity(), View.OnClickListener, SignUp
         signUpService.setSignUpView(this)
 
         signUpService.signUp(SignUp(email, name, nickname, group, myCategories))
-
-        Log.d("SIGNUPACT/ASNYC", "Hello, $name")
     }
 
     override fun onSignUpLoading() {
@@ -208,7 +205,7 @@ class SignUpCategoryActivity : AppCompatActivity(), View.OnClickListener, SignUp
         Log.d("SingUpCategoryActivity/API", "회원가입 로딩 중...")
     }
 
-    override fun onSignUpSuccess() {
+    override fun onSignUpSuccess(user: User) {
         binding.signupLoadingPb.visibility = View.GONE
         Log.d(
             TAG, "email : $email " +
@@ -217,6 +214,24 @@ class SignUpCategoryActivity : AppCompatActivity(), View.OnClickListener, SignUp
                     "\ngroup: $group " +
                     "\nmyCategories: $myCategories"
         )
+
+        saveJwt(this, user.jwt)
+        saveUserIdx(this, user.userIdx)
+        saveEmail(this, user.email)
+        saveName(this, user.name)
+        saveNickname(this, user.nickname)
+        saveGroup(this, user.group)
+        user.myCategories?.let { saveCategories(this, it) }
+        saveProfileImgUrl(this, user.profileImgUrl)
+
+        Log.d("jwt", user.jwt)
+        Log.d("userIdx", user.userIdx.toString())
+        Log.d("email", user.email)
+        Log.d("name", user.name)
+        Log.d("nickname", user.nickname)
+        Log.d("group", user.group)
+        Log.d("myCategories", user.myCategories.toString())
+        Log.d("profileImgUrl", user.profileImgUrl)
 
         startMainActivity()
         finish()
