@@ -45,7 +45,7 @@ class ProfileFragment : Fragment(), ProfileView {
 
         // 회원탈퇴
         binding.profileWithdrawArrowIv.setOnClickListener {
-            withdrawDialogPopup(jwt, userIdx)   // 확인창 띄우기
+            withdrawDialogPopup()   // 확인창 띄우기
         }
 
         return binding.root
@@ -127,8 +127,8 @@ class ProfileFragment : Fragment(), ProfileView {
         customDialog.show(childFragmentManager, "Logout Dialog")
     }
 
-    private fun withdrawDialogPopup(jwt: String, userIdx: Long) {
-        val customDialog = WithdrawDialog(jwt, userIdx)
+    private fun withdrawDialogPopup() {
+        val customDialog = WithdrawDialog()
         customDialog.show(childFragmentManager, "Withdraw Dialog")
     }
 }
