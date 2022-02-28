@@ -11,28 +11,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.pm.PermissionInfoCompat
 import androidx.fragment.app.DialogFragment
 import com.example.mumulcom.databinding.DialogBinding
 import com.kakao.sdk.user.UserApiClient
-import io.reactivex.internal.util.BackpressureHelper
-import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.Header
-import retrofit2.http.PATCH
-import retrofit2.http.Path
-import kotlin.concurrent.fixedRateTimer
 
-class WithdrawDialog(jwt: String, userIdx: Long): DialogFragment(), WithdrawView {
+class WithdrawDialog: DialogFragment(), WithdrawView {
     private var _binding: DialogBinding? = null
     private val binding get() = _binding!!
 
-    private var _jwt = jwt
-    private var _userIdx = userIdx
+    private var jwt: String = ""
+    private var userIdx: Long = 0
 
     @SuppressLint("SetTextI18n")
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = DialogBinding.inflate(inflater, container, false)
+
+        jwt = getJwt(requireContext())
+        userIdx = getUserIdx(requireContext())
 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.setCancelable(false)
@@ -52,7 +47,7 @@ class WithdrawDialog(jwt: String, userIdx: Long): DialogFragment(), WithdrawView
                 if (error != null) {
                     Log.d(ContentValues.TAG, "회원탈퇴 실패")
                 }else {
-                    withdraw(_jwt, _userIdx)  // 회원 탈퇴 API
+                    withdraw(jwt, userIdx)  // 회원 탈퇴 API
                 }
             }
         }
@@ -78,17 +73,14 @@ class WithdrawDialog(jwt: String, userIdx: Long): DialogFragment(), WithdrawView
     override fun onWithdrawSuccess(profile: Profile) {
         Log.d("Withdraw/API","성공")
 
-        if (profile != null) {
-            saveEmail(requireContext(), profile.email)
-            saveName(requireContext(), profile.name)
-            saveNickname(requireContext(), profile.nickname)
-            saveGroup(requireContext(), profile.group)
-            profile.myCategories?.let { saveCategories(requireContext(), it) }
-            saveProfileImgUrl(requireContext(), profile.profileImgUrl)
-        }
+        // jwt값은 null로
+        // 닉네임과 프로필 변경
+        saveJwt(requireContext(), "")
+        saveNickname(requireContext(), profile.nickname)
+        saveProfileImgUrl(requireContext(), profile.profileImgUrl)
 
         Toast.makeText(requireContext(), "회원탈퇴 되었습니다.", Toast.LENGTH_SHORT).show()
-        val intent = Intent(requireContext(), LoginActivity::class.java)
+        val intent = Intent(requireContext(), SplashActivity::class.java)
         startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
     }
 
