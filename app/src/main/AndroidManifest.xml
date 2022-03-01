@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.mumulcom">
     <!-- 인터넷 사용 권한 설정 -->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 카메라 권한 -->
@@ -42,6 +41,7 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".SignUpCategoryActivity" />
+        <activity android:name=".ProfileModifyActivity" />
         <activity android:name=".SearchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -52,7 +52,9 @@
         <activity android:name=".CheckCodingQuestionActivity" />
         <activity android:name=".CheckConceptQuestionActivity" />
         <activity android:name=".CodingCameraShootingActivity" />
-        <activity android:name=".ConceptCameraShootingActivity" /> <!-- 카카오 로그인 -->
+        <activity android:name=".ConceptCameraShootingActivity" />
+
+        <!-- 카카오 로그인 -->
         <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -65,7 +67,9 @@
                     android:host="oauth"
                     android:scheme="kakao0b9d6f7c3471d52a8c2d761dda556e34" />
             </intent-filter>
-        </activity> <!-- 갤러리 이미지 주고받기 -->
+        </activity>
+
+        <!-- 갤러리 이미지 주고받기 -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.mumulcom"

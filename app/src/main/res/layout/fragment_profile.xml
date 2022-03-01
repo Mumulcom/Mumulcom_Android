@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profile_rv"
     android:scrollbars="none"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -20,7 +21,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:orientation="horizontal"
-            android:background="@drawable/ic_profile_bg_1"
+            tools:background="@drawable/ic_profile_bg_1"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" >
@@ -28,47 +29,40 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/profile_ly"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent"
+                android:paddingTop="30dp"
+                android:paddingBottom="30dp"
+                android:paddingStart="30dp">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/profile_nickname_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginStart="30dp"
-                    android:gravity="start"
-                    android:orientation="vertical"
+                    tools:text="Nickname"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
                     app:layout_constraintStart_toStartOf="@id/profile_ly"
-                    app:layout_constraintTop_toTopOf="@id/profile_ly" >
+                    app:layout_constraintTop_toTopOf="@id/profile_ly"/>
 
-                    <TextView
-                        android:id="@+id/profile_nickname_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:text="Nickname"
-                        android:textSize="24sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"/>
-
-                    <TextView
-                        android:id="@+id/profile_email_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        tools:text="user@email.com"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
-                        android:maxWidth="200dp"
-                        android:maxLines="1"
-                        android:ellipsize="end"/>
-
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/profile_email_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    tools:text="user@email.com"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:maxWidth="200dp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    app:layout_constraintTop_toBottomOf="@id/profile_nickname_tv"
+                    app:layout_constraintStart_toStartOf="@id/profile_nickname_tv"/>
 
                 <ImageView
                     android:id="@+id/profile_setting_iv"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginBottom="30dp"
-                    android:layout_marginStart="30dp"
                     android:src="@drawable/ic_profile_setting"
                     app:layout_constraintStart_toStartOf="@id/profile_ly"
                     app:layout_constraintBottom_toBottomOf="@id/profile_ly"/>
@@ -76,8 +70,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
-
-
 
 
 
@@ -399,6 +391,18 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
+
+        <!-- 프로그래스 바 -->
+        <ProgressBar
+            android:id="@+id/profile_loading_pb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@color/selected"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
