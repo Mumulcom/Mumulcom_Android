@@ -2,6 +2,7 @@ package com.example.mumulcom
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
@@ -10,6 +11,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat.requestPermissions
+import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -98,8 +103,14 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
 
 
         }
+
+     
+
+
         return ViewHolder(binding)
     }
+
+
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(replyList[position])
@@ -197,9 +208,6 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
             Glide.with(context).load(reply.profileImgUrl).into(binding.profileIv) // 프로필 이미지
             binding.nickNameTv.text = reply.nickname // 닉네임
             binding.createdAtTv.text = reply.createdAt // 작성 날짜
-
-
-
 
 
             if(reply.replyUrl==null){
