@@ -40,6 +40,8 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
     private lateinit var commentsForReplyAdapter: CommentsForReplyAdapter
     private lateinit var comment : String // 댓글 작성 내용 저장할 변수
 
+    private var imgUrl : String? = null
+
 
 
 
@@ -49,6 +51,8 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
     interface RepliesItemClickListener{
         fun onRemoveAnswerButton(isClicked:Boolean)
         //   fun onClickAdoptButton(isClicked:Boolean)
+        fun onAccessAlbum()
+        fun getImageUrl():String?
     }
 
 
@@ -75,8 +79,15 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
         Log.d("adopt",isAdopted)
         Log.d("writer",isWriter.toString())
 
+        binding.addPhotoIv.setOnClickListener { // 사진 추가 버튼 클릭.
+             repliesItemClickListener.onAccessAlbum()
+        }
+
         binding.uploadCommentTv.setOnClickListener { // 게시 버튼 누름.
             Log.d("umc","게시를 누름.")
+
+            imgUrl=repliesItemClickListener.getImageUrl()
+            Log.d("imgUrl",imgUrl.toString())
 
             comment =binding.commentEditText.text.toString() // 입력한 댓글을 가져옴
             if(comment==""){
@@ -85,8 +96,7 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
             }else{
                 //  api 에 연결해서 넘겨줌.
 
-
-                uploadCommentService.getUploadComment(getJwt(context), CommentSend(replyIdx, getUserIdx(context),comment,null))
+                uploadCommentService.getUploadComment(getJwt(context), CommentSend(replyIdx, getUserIdx(context),comment,imgUrl))
 
                 Handler(Looper.getMainLooper()).postDelayed({
                     getCommentsForReply() // 댓글 가져오는 api 호출
@@ -104,7 +114,7 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
 
         }
 
-     
+
 
 
         return ViewHolder(binding)

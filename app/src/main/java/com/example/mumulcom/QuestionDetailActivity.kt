@@ -1,10 +1,20 @@
 package com.example.mumulcom
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.mumulcom.R
@@ -25,6 +35,12 @@ private lateinit var binding : ActivityQuestionDetailBinding
     private var isScrap = false // 질문에 대한 scrap 변수
     private  var isAdopted : String = "N"
     private  var isWriter : Boolean = false
+    private lateinit var images : ArrayList<String>
+    private var myCodingSkill : String? = null
+    private var content : String? = null
+
+    private var selectedUri : Uri? =null // 댓글에 대한 첨부 이미지 변수
+    private lateinit var resultLauncher : ActivityResultLauncher<Intent>
 
     private lateinit var repliesForQuestionAdapter: RepliesForQuestionAdapter
 
@@ -33,6 +49,8 @@ private lateinit var binding : ActivityQuestionDetailBinding
         binding = ActivityQuestionDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+        Toast.makeText(this,"QuestionDetailActivity onCreate",Toast.LENGTH_SHORT).show()
 
         val intent = intent
         bigCategoryName = intent.getStringExtra("bigCategoryName")!!
@@ -81,12 +99,42 @@ private lateinit var binding : ActivityQuestionDetailBinding
         }
 
         binding.questionFloatingButton.setOnClickListener {
-            startActivity(Intent(this,AnswerActivity::class.java))
+            val intent = Intent(this,AnswerActivity::class.java)
+            intent.putExtra("questionIdx",questionIdx) //  type : Long
+            intent.putStringArrayListExtra("images",images)  //type : arrayList<string>
+            intent.putExtra("myCodingSkill",myCodingSkill)
+            intent.putExtra("content",content)
+            startActivity(intent)
         }
+
+
+        resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+                result->
+            if(result.resultCode== Activity.RESULT_OK){
+                val intent = result.data
+                selectedUri = intent?.data
+                if(selectedUri!=null){
+                    Toast.makeText(this ,"사진을 추가했습니다.",Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(this ,"사진을 가져오지 못했습니다.",Toast.LENGTH_SHORT).show()
+                }
+
+
+            }else return@registerForActivityResult
+        }
+
+
+
 
     }// end of onCreate
 
+    override fun onStart() {
+        super.onStart()
 
+        Toast.makeText(this,"QuestionDetailActivity onStart",Toast.LENGTH_SHORT).show()
+        // todo api 호출을 여기서 하는걸로 바꾸기
+
+    }
 
     private fun setScrapQuestion(){
         if(isScrap){ // 스크랩을 했을때
@@ -96,10 +144,12 @@ private lateinit var binding : ActivityQuestionDetailBinding
             setScrapForQuestion()
 
 
+
         }else{ // 스크랩를 취소했을때
             binding.clickScrapIv.setImageResource(R.drawable.ic_bottom_scrap_no_select)
             //  서버호출
             setScrapForQuestion()
+
 
 
         }
@@ -113,10 +163,33 @@ private lateinit var binding : ActivityQuestionDetailBinding
             // 서버호출
             setLikeForQuestion()
 
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                when(type){  // -> 좋아요 업댓
+                    1-> getDetailCodingQuestion() // 코딩 질문
+                    2-> getDetailConceptQuestion() // 개념질문
+                }
+            },500)
+
+            Toast.makeText(this,"해당 질문에 좋아요를 눌렀습니다.",Toast.LENGTH_SHORT).show()
+
+
+
         }else{ // 좋아요를 취소했을때
             binding.clickLikeIv.setImageResource(R.drawable.ic_like)
             //  서버호출
             setLikeForQuestion()
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                when(type){  // -> 좋아요 업댓
+                    1-> getDetailCodingQuestion() // 코딩 질문
+                    2-> getDetailConceptQuestion() // 개념질문
+                }
+            },500)
+
+            Toast.makeText(this,"해당 질문에 좋아요를 취소했습니다.",Toast.LENGTH_SHORT).show()
+
+
         }
     }
 
@@ -217,6 +290,7 @@ private lateinit var binding : ActivityQuestionDetailBinding
             Log.d("이미지test","어댑터로 넘김")
 
         }
+        images = result[0].questionImgUrls
 
         if(result[0].userIdx== getUserIdx(this)){ // 내 글을 스크랩 불가
             binding.clickScrapIv.isClickable = false
@@ -224,6 +298,8 @@ private lateinit var binding : ActivityQuestionDetailBinding
 
         binding.currentErrorTv.text = result[0].content // 질문 내용
         binding.codingSkillConstraintLayout.visibility = View.GONE
+
+        content = result[0].content
 
         if(result[0].isLiked =="Y"){
             isLiked = true
@@ -307,7 +383,13 @@ private lateinit var binding : ActivityQuestionDetailBinding
             Log.d("이미지test","어댑터로 넘김")
 
         }
+
+        images = result[0].questionImgUrls
+
+
         binding.currentErrorTv.text = result[0].currentError // 질문 내용
+
+
 
 
         if(result[0].myCodingSkill == null){ // 내 코딩 실력
@@ -315,6 +397,7 @@ private lateinit var binding : ActivityQuestionDetailBinding
         }else{
             binding.myCodingSkillTv.text = result[0].myCodingSkill
         }
+        myCodingSkill = result[0].myCodingSkill
 
         Log.d("코딩질문 idx",result[0].questionIdx.toString())
 
@@ -338,6 +421,9 @@ private lateinit var binding : ActivityQuestionDetailBinding
 
         binding.replyCountTv.text = result[0].replyCount.toString()  // 답변 수
         binding.likeCountTv.text = result[0].likeCount.toString() // 좋아요 수
+
+
+        content = result[0].currentError
 
     }
 
@@ -369,17 +455,68 @@ private lateinit var binding : ActivityQuestionDetailBinding
                 }
             }
 
-//            override fun onClickAdoptButton(isClicked: Boolean) {
-//                if(isClicked){
-//                    getRepliesForQuestion() // 질문에 대한 답변 받아오는 함수
-//                    initRecyclerView()
-//                }
-//            }
+            override fun onAccessAlbum(){
+                getPhoto()
+            }
 
-
+            override fun getImageUrl(): String? {
+                Log.d("imgUrl--",selectedUri.toString())
+                return selectedUri.toString()
+            }
         })
 
+
     }
+    private fun getPhoto(){
+        when{
+            ContextCompat.checkSelfPermission(
+                this@QuestionDetailActivity,android.Manifest.permission.READ_EXTERNAL_STORAGE
+            )==PackageManager.PERMISSION_GRANTED->{
+                navigatePhoto() // 엘범에서 사진 선택
+            }
+            shouldShowRequestPermissionRationale(android.Manifest.permission.READ_EXTERNAL_STORAGE)->{
+                // 교육용 팝업 확인후 권한 팝업 띄움
+                showPermissionContextPopup()
+            }
+            else->{
+                requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),1010)
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when(requestCode){
+            1010->
+                if(grantResults.isNotEmpty() && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                    navigatePhoto()
+                }else{
+                    Toast.makeText(this, "앨범에 대한 접근 권한을 거부하셨습니다.", Toast.LENGTH_SHORT).show()
+                }
+        }
+    }
+
+
+    private fun navigatePhoto() { // 갤러리에서 사진 가져오는 함수
+        // SAF 기능 구현
+        val intent = Intent(Intent.ACTION_GET_CONTENT) // ACTION_GET_CONTENT 은 SAF 기능을 실행시켜 content 를 가져온다.
+        intent.type = "image/*"
+        resultLauncher.launch(intent)
+
+    }
+    private fun showPermissionContextPopup(){
+        AlertDialog.Builder(this)
+            .setTitle("권한 팝업")
+            .setMessage("앨범 접근에 대한 권한을 허락해주세요.")
+            .setPositiveButton("동의") { _, _ ->
+                requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1010)
+            }
+            .create()
+            .show()
+    }
+
+
 
     override fun onGetRepliesFailure(code: Int, message: String) {
         when(code){
