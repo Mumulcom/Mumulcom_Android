@@ -23,11 +23,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.example.mumulcom.R
 import com.example.mumulcom.databinding.ActivityQuestionDetailBinding
-import com.example.mumulcom.getJwt
-import com.example.mumulcom.getUserIdx
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -76,10 +72,10 @@ private lateinit var binding : ActivityQuestionDetailBinding
         binding.categoryNameTv.text = bigCategoryName
         Log.d("type확인 ",type.toString())
 
-        when(type){
-            1-> getDetailCodingQuestion() // 코딩 질문
-            2-> getDetailConceptQuestion() // 개념질문
-        }
+//        when(type){
+//            1-> getDetailCodingQuestion() // 코딩 질문
+//            2-> getDetailConceptQuestion() // 개념질문
+//        }
 
 //        getRepliesForQuestion() // 질문에 대한 답변 받아오는 함수
 //        initRecyclerView()
@@ -159,6 +155,10 @@ private lateinit var binding : ActivityQuestionDetailBinding
         super.onStart()
 //        Toast.makeText(this,"QuestionDetailActivity onStart",Toast.LENGTH_SHORT).show()
         // todo api 호출을 여기서 하는걸로 바꾸기
+        when(type){
+            1-> getDetailCodingQuestion() // 코딩 질문
+            2-> getDetailConceptQuestion() // 개념질문
+        }
 
     }
 
