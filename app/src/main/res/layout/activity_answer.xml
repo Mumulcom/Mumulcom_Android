@@ -134,6 +134,13 @@
                     app:layout_constraintStart_toStartOf="@id/answer_image_vp"
                     android:visibility="visible"/>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_marginTop="7dp"
+                    android:background="#C4C4C4"/>
+
+
                 <TextView
                     android:id="@+id/answer_CodingLevel_content_Tv"
                     android:layout_width="wrap_content"

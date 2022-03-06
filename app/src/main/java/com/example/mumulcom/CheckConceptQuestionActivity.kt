@@ -108,9 +108,6 @@ class CheckConceptQuestionActivity:AppCompatActivity(), CheckConceptQuestionView
             finish()
         }
 
-        binding.checkconceptquestionQuestionIv.setOnClickListener {
-            checkConceptQuestion()
-        }
     }
 
     private fun getConcept(): CheckConcept {  // view에서 받은 값들
@@ -209,6 +206,7 @@ class CheckConceptQuestionActivity:AppCompatActivity(), CheckConceptQuestionView
                 Log.d("SEND/path", imagePath)
                 count++
                 Log.d("path/count", count.toString())
+                images.add(imagePath)
             }
             Log.d("GETGET", photoList.toString())
             //이미지가 5개부터는 추가 불
@@ -219,27 +217,30 @@ class CheckConceptQuestionActivity:AppCompatActivity(), CheckConceptQuestionView
                 }
             }
 
-            //set되는 부분
-            if (imagePath != null) {
-                var fileName =
-                    SimpleDateFormat("yyyyMMddHHmmss").format(Date()) // 파일명이 겹치면 안되기 떄문에 시년월일분초 지정
-                storage.getReference().child("image").child(fileName)
-                    .putFile(imagePath.toUri())//어디에 업로드할지 지정
-                    .addOnSuccessListener { taskSnapshot -> // 업로드 정보를 담는다
-                        taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener { it ->
-                            var imageUrl = it.toString()
-                            var photo = Photo(imageUrl)
-                            firestore.collection("coding-images")
-                                .document().set(photo)
-                                .addOnSuccessListener {
-                                }
-                            Log.d("gege/imageUrl", imageUrl)
-                            Log.d("gege/photo", photo.toString())
-                            images.add(imageUrl)
+            binding.checkconceptquestionQuestionIv.setOnClickListener {
+                checkConceptQuestion()
+                //set되는 부분
+                if (imagePath != null) {
+                    var fileName =
+                        SimpleDateFormat("yyyyMMddHHmmss").format(Date()) // 파일명이 겹치면 안되기 떄문에 시년월일분초 지정
+                    storage.getReference().child("image").child(fileName)
+                        .putFile(imagePath.toUri())//어디에 업로드할지 지정
+                        .addOnSuccessListener { taskSnapshot -> // 업로드 정보를 담는다
+                            taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener { it ->
+                                var imageUrl = it.toString()
+                                var photo = Photo(imageUrl)
+                                firestore.collection("coding-images")
+                                    .document().set(photo)
+                                    .addOnSuccessListener {
+                                    }
+                                Log.d("gege/imageUrl", imageUrl)
+                                Log.d("gege/photo", photo.toString())
+                                images.add(imageUrl)
 
+                            }
                         }
-                    }
 
+                }
             }
 
             //이미지가 5개부터는 추가 불

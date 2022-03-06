@@ -241,6 +241,7 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView {
                 Log.d("SEND/path", imagePath)
                 count++
                 Log.d("path/count", count.toString())
+                images.add(imagePath)
             }
             Log.d("GETGET", photoList.toString())
 
@@ -250,52 +251,9 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView {
 //                binding.checkcodingquestionEditIv.visibility=View.VISIBLE
 //            }
 
-
-            //리스트에 추가
-//            firestore.collection("coding-images").addSnapshotListener {
-//                    querySnapshot, FirebaseFIrestoreException ->
-//                if(querySnapshot!=null){
-//                    for(dc in querySnapshot.documentChanges){
-//                        if(dc.type== DocumentChange.Type.ADDED){
-//                            var photo = dc.document.toObject(Photo::class.java)
-////                            photoList.add(photo)//url추가(이미지)
-//                            images.add(imagePath)
-//                            count++
-////                            binding.checkcodingIndicator.createIndicators(count, 0)
-//                        }
-//                    }
-//                    viewPagerAdapter.notifyDataSetChanged()
-//                }
-//            }
-//            Log.d("gege/images", images.toString())
-//            Log.d("gege/photolist", photoList.toString())
-
-            if (resultCode == CAMERA){
-                var imageFile: File? = null
-                //set되는 부분
-                if (imageFile != null) {
-                    var fileName =
-                        SimpleDateFormat("yyyyMMddHHmmss").format(Date()) // 파일명이 겹치면 안되기 떄문에 시년월일분초 지정
-                    storage.getReference().child("image").child(fileName)
-                        .putFile(imageFile.toUri())//어디에 업로드할지 지정
-                        .addOnSuccessListener { taskSnapshot -> // 업로드 정보를 담는다
-                            taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener { it ->
-                                var imageUrl = it.toString()
-                                var photo = Photo(imageUrl)
-                                firestore.collection("coding-images")
-                                    .document().set(photo)
-                                    .addOnSuccessListener {
-                                    }
-                                Log.d("gege/imageUrl", imageUrl)
-                                Log.d("gege/photo", photo.toString())
-                                images.add(imageUrl)
-                            }
-                        }
-
-                }
-            }
-
-
+            //질문하기등록 및 데이터 삭제
+            binding.checkcodingquestionQuestionIv.setOnClickListener {
+                checkcodingif()
                 //set되는 부분
                 if (imagePath != null) {
                     var fileName =
@@ -312,11 +270,12 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView {
                                     }
                                 Log.d("gege/imageUrl", imageUrl)
                                 Log.d("gege/photo", photo.toString())
-                                images.add(imageUrl)
+//                                images.add(imageUrl)
 
                             }
                         }
                 }
+            }
 
             //이미지가 5개부터는 추가 불
             if (count>=5){
