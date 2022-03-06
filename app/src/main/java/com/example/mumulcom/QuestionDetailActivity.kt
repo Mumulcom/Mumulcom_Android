@@ -25,6 +25,10 @@ private lateinit var binding : ActivityQuestionDetailBinding
     private var isScrap = false // 질문에 대한 scrap 변수
     private  var isAdopted : String = "N"
     private  var isWriter : Boolean = false
+//    private lateinit var images : ArrayList<String>
+private var images = arrayListOf<String>()
+    private var myCodingSkill : String? = null
+    private var content : String? = null
 
     private lateinit var repliesForQuestionAdapter: RepliesForQuestionAdapter
 
@@ -81,9 +85,15 @@ private lateinit var binding : ActivityQuestionDetailBinding
         }
 
         binding.questionFloatingButton.setOnClickListener {
-            startActivity(Intent(this,AnswerActivity::class.java))
+            val intent = Intent(this,AnswerActivity::class.java)
+            intent.putExtra("questionIdx",questionIdx) //  type : Long
+            intent.putStringArrayListExtra("images",images)  //type : arrayList<string>
+            intent.putExtra("myCodingSkill",myCodingSkill)
+            intent.putExtra("content",content)
+            startActivity(intent)
         }
 
+        Log.d("get/put/image", intent.putStringArrayListExtra("images",images).toString())//넘어가는지 확인
     }// end of onCreate
 
 
@@ -96,10 +106,12 @@ private lateinit var binding : ActivityQuestionDetailBinding
             setScrapForQuestion()
 
 
+
         }else{ // 스크랩를 취소했을때
             binding.clickScrapIv.setImageResource(R.drawable.ic_bottom_scrap_no_select)
             //  서버호출
             setScrapForQuestion()
+
 
 
         }
@@ -113,10 +125,20 @@ private lateinit var binding : ActivityQuestionDetailBinding
             // 서버호출
             setLikeForQuestion()
 
+            when(type){  // -> 좋아요 업댓
+                1-> getDetailCodingQuestion() // 코딩 질문
+                2-> getDetailConceptQuestion() // 개념질문
+            }
+
         }else{ // 좋아요를 취소했을때
             binding.clickLikeIv.setImageResource(R.drawable.ic_like)
             //  서버호출
             setLikeForQuestion()
+
+            when(type){  // -> 좋아요 업댓
+                1-> getDetailCodingQuestion() // 코딩 질문
+                2-> getDetailConceptQuestion() // 개념질문
+            }
         }
     }
 
@@ -217,6 +239,7 @@ private lateinit var binding : ActivityQuestionDetailBinding
             Log.d("이미지test","어댑터로 넘김")
 
         }
+        images = result[0].questionImgUrls
 
         if(result[0].userIdx== getUserIdx(this)){ // 내 글을 스크랩 불가
             binding.clickScrapIv.isClickable = false
@@ -224,6 +247,8 @@ private lateinit var binding : ActivityQuestionDetailBinding
 
         binding.currentErrorTv.text = result[0].content // 질문 내용
         binding.codingSkillConstraintLayout.visibility = View.GONE
+
+        content = result[0].content
 
         if(result[0].isLiked =="Y"){
             isLiked = true
@@ -307,7 +332,13 @@ private lateinit var binding : ActivityQuestionDetailBinding
             Log.d("이미지test","어댑터로 넘김")
 
         }
+
+        images = result[0].questionImgUrls
+
+
         binding.currentErrorTv.text = result[0].currentError // 질문 내용
+
+
 
 
         if(result[0].myCodingSkill == null){ // 내 코딩 실력
@@ -315,6 +346,7 @@ private lateinit var binding : ActivityQuestionDetailBinding
         }else{
             binding.myCodingSkillTv.text = result[0].myCodingSkill
         }
+        myCodingSkill = result[0].myCodingSkill
 
         Log.d("코딩질문 idx",result[0].questionIdx.toString())
 
@@ -338,6 +370,9 @@ private lateinit var binding : ActivityQuestionDetailBinding
 
         binding.replyCountTv.text = result[0].replyCount.toString()  // 답변 수
         binding.likeCountTv.text = result[0].likeCount.toString() // 좋아요 수
+
+
+        content = result[0].currentError
 
     }
 
