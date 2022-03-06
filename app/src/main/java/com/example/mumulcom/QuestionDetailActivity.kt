@@ -131,17 +131,17 @@ private lateinit var binding : ActivityQuestionDetailBinding
 //
 //                selectedUri = intent?.data
 
-                    result.data?.data?.let{ uri->
-                        pathList.clear()
-                        val inputStream = uri.let{
-                            contentResolver.openInputStream(
-                                it
-                            )
-                        }
-                        val bitmap = BitmapFactory.decodeStream(inputStream)
-                        inputStream!!.close()
-                        pathList.add(bitmap)
+                result.data?.data?.let{ uri->
+                    pathList.clear()
+                    val inputStream = uri.let{
+                        contentResolver.openInputStream(
+                            it
+                        )
                     }
+                    val bitmap = BitmapFactory.decodeStream(inputStream)
+                    inputStream!!.close()
+                    pathList.add(bitmap)
+                }
 
                 if(selectedUri!=null){ // 사진을 제대로 가져옴.
 
