@@ -4,11 +4,17 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.MediaStore
+import android.util.Base64.DEFAULT
+import android.util.Base64.encodeToString
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -21,6 +27,11 @@ import com.example.mumulcom.R
 import com.example.mumulcom.databinding.ActivityQuestionDetailBinding
 import com.example.mumulcom.getJwt
 import com.example.mumulcom.getUserIdx
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.IOException
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 // 질문 상세 페이지 (개념/코딩)
@@ -39,7 +50,13 @@ private lateinit var binding : ActivityQuestionDetailBinding
     private var myCodingSkill : String? = null
     private var content : String? = null
 
+    private  var pathList: ArrayList<Bitmap> = ArrayList()
+
+
     private var selectedUri : Uri? =null // 댓글에 대한 첨부 이미지 변수
+    lateinit var file : File
+
+    private lateinit var mediaPath : String
     private lateinit var resultLauncher : ActivityResultLauncher<Intent>
 
     private lateinit var repliesForQuestionAdapter: RepliesForQuestionAdapter
@@ -50,7 +67,7 @@ private lateinit var binding : ActivityQuestionDetailBinding
         setContentView(binding.root)
 
 
-        Toast.makeText(this,"QuestionDetailActivity onCreate",Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this,"QuestionDetailActivity onCreate",Toast.LENGTH_SHORT).show()
 
         val intent = intent
         bigCategoryName = intent.getStringExtra("bigCategoryName")!!
@@ -77,18 +94,16 @@ private lateinit var binding : ActivityQuestionDetailBinding
             getRepliesForQuestion() // 질문에 대한 답변 받아오는 함수
             initRecyclerView()
 
-            when(type){  // -> 좋아요 업댓
+            when(type){ // 내용 업데이트
                 1-> getDetailCodingQuestion() // 코딩 질문
                 2-> getDetailConceptQuestion() // 개념질문
             }
-
 
             binding.refreshLayout.isRefreshing = false
         }
 
         binding.clickLikeIv.setOnClickListener {  // 해당 질문에 좋아요를 눌렀을때
-
-            isLiked = !isLiked  //
+            isLiked = !isLiked
             setLikeQuestion() // 질문에 대한 좋아요 처리
 
         }
@@ -98,7 +113,7 @@ private lateinit var binding : ActivityQuestionDetailBinding
             setScrapQuestion()// 질문에 대한 스크랩 처리
         }
 
-        binding.questionFloatingButton.setOnClickListener {
+        binding.questionFloatingButton.setOnClickListener { // 답변달기 페이지로 이동
             val intent = Intent(this,AnswerActivity::class.java)
             intent.putExtra("questionIdx",questionIdx) //  type : Long
             intent.putStringArrayListExtra("images",images)  //type : arrayList<string>
@@ -108,52 +123,58 @@ private lateinit var binding : ActivityQuestionDetailBinding
         }
 
 
+        // 답변에 댓글에서 이미지 추가에 대한 처리 부분
         resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
                 result->
             if(result.resultCode== Activity.RESULT_OK){
-                val intent = result.data
-                selectedUri = intent?.data
-                if(selectedUri!=null){
-                    Toast.makeText(this ,"사진을 추가했습니다.",Toast.LENGTH_SHORT).show()
+//                val intent = result.data
+//
+//                selectedUri = intent?.data
+
+                    result.data?.data?.let{ uri->
+                        pathList.clear()
+                        val inputStream = uri.let{
+                            contentResolver.openInputStream(
+                                it
+                            )
+                        }
+                        val bitmap = BitmapFactory.decodeStream(inputStream)
+                        inputStream!!.close()
+                        pathList.add(bitmap)
+                    }
+
+                if(selectedUri!=null){ // 사진을 제대로 가져옴.
+
                 }else{
                     Toast.makeText(this ,"사진을 가져오지 못했습니다.",Toast.LENGTH_SHORT).show()
                 }
 
-
             }else return@registerForActivityResult
         }
-
-
-
-
     }// end of onCreate
+
+
 
     override fun onStart() {
         super.onStart()
-
-        Toast.makeText(this,"QuestionDetailActivity onStart",Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this,"QuestionDetailActivity onStart",Toast.LENGTH_SHORT).show()
         // todo api 호출을 여기서 하는걸로 바꾸기
 
     }
 
-    private fun setScrapQuestion(){
+    private fun setScrapQuestion(){ // 질문 스크랩할때
         if(isScrap){ // 스크랩을 했을때
             binding.clickScrapIv.setImageResource(R.drawable.ic_scrap)
-
             // 서버호출
+            Toast.makeText(this,"해당 질문을 스크랩 했습니다.",Toast.LENGTH_SHORT).show()
             setScrapForQuestion()
-
-
 
         }else{ // 스크랩를 취소했을때
             binding.clickScrapIv.setImageResource(R.drawable.ic_bottom_scrap_no_select)
             //  서버호출
+            Toast.makeText(this,"해당 질문 스크랩을 취소했습니다.",Toast.LENGTH_SHORT).show()
             setScrapForQuestion()
-
-
-
         }
-
     }
 
     private fun setLikeQuestion(){
@@ -166,14 +187,12 @@ private lateinit var binding : ActivityQuestionDetailBinding
 
             Handler(Looper.getMainLooper()).postDelayed({
                 when(type){  // -> 좋아요 업댓
-                    1-> getDetailCodingQuestion() // 코딩 질문
-                    2-> getDetailConceptQuestion() // 개념질문
+                    1-> getLikeCodingQuestion() // 코딩 질문
+                    2-> getLikeConceptQuestion() // 개념질문
                 }
             },500)
 
             Toast.makeText(this,"해당 질문에 좋아요를 눌렀습니다.",Toast.LENGTH_SHORT).show()
-
-
 
         }else{ // 좋아요를 취소했을때
             binding.clickLikeIv.setImageResource(R.drawable.ic_like)
@@ -182,8 +201,8 @@ private lateinit var binding : ActivityQuestionDetailBinding
 
             Handler(Looper.getMainLooper()).postDelayed({
                 when(type){  // -> 좋아요 업댓
-                    1-> getDetailCodingQuestion() // 코딩 질문
-                    2-> getDetailConceptQuestion() // 개념질문
+                    1-> getLikeCodingQuestion() // 코딩 질문
+                    2-> getLikeConceptQuestion() // 개념질문
                 }
             },500)
 
@@ -194,27 +213,23 @@ private lateinit var binding : ActivityQuestionDetailBinding
     }
 
 
-    private fun setScrapForQuestion(){
+    private fun setScrapForQuestion(){ // 질문 스크랩
         val scrapQuestionService = ScrapQuestionService()
         scrapQuestionService.setScrapQuestionView(this)
         scrapQuestionService.getScrapQuestion(getJwt(this), LikeSend(questionIdx, getUserIdx(this)))
-
     }
 
 
-    private fun setLikeForQuestion(){
+    private fun setLikeForQuestion(){ // 질문 좋아요
         val likeQuestionService = LikeQuestionService()
         likeQuestionService.setLikeQuestionView(this)
         likeQuestionService.getLikeQuestion(getJwt(this), LikeSend(questionIdx, getUserIdx(this)))
-
     }
-
 
 
     private fun initRecyclerView(){
         // recyclerView <-> adapter 연결
         repliesForQuestionAdapter = RepliesForQuestionAdapter(this,isAdopted,isWriter)
-
         binding.recyclerView.adapter = repliesForQuestionAdapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this,
             LinearLayoutManager.VERTICAL,false)
@@ -231,14 +246,22 @@ private lateinit var binding : ActivityQuestionDetailBinding
         val detailConceptQuestionService = DetailConceptQuestionService()
         detailConceptQuestionService.setDetailConceptQuestionService(this)
         detailConceptQuestionService.getDetailConceptQuestion(questionIdx, getUserIdx(this))
-
     }
 
     private fun getDetailCodingQuestion(){ // 코딩질문 가져옴
         val detailCodingQuestionService = DetailCodingQuestionService()
         detailCodingQuestionService.setDetailCodingQuestionService(this)
         detailCodingQuestionService.getDetailConceptQuestion(questionIdx, getUserIdx(this))
-
+    }
+    private fun getLikeCodingQuestion(){ // 좋아요수만 업뎃
+        val detailCodingQuestionService = DetailCodingQuestionService()
+        detailCodingQuestionService.setDetailCodingQuestionService(this)
+        detailCodingQuestionService.getLikeCountCodingQuestion(questionIdx, getUserIdx(this))
+    }
+    private fun getLikeConceptQuestion(){ // 좋아요수만 업뎃
+        val detailConceptQuestionService = DetailConceptQuestionService()
+        detailConceptQuestionService.setDetailConceptQuestionService(this)
+        detailConceptQuestionService.getLikeCountConceptQuestion(questionIdx, getUserIdx(this))
     }
 
 
@@ -251,8 +274,6 @@ private lateinit var binding : ActivityQuestionDetailBinding
     }
 
     override fun onGetDetailConceptQuestionsSuccess(result: ArrayList<DetailConceptQuestion>) {
-//        Log.d("size 확인111",result.size.toString())
-//        Log.d("size 확인111",result[0].nickname)
 
         isAdopted =result[0].isAdopted  // 채택여부
 
@@ -287,7 +308,6 @@ private lateinit var binding : ActivityQuestionDetailBinding
             binding.indicator.setViewPager(binding.viewPager)
 
 
-            Log.d("이미지test","어댑터로 넘김")
 
         }
         images = result[0].questionImgUrls
@@ -296,7 +316,7 @@ private lateinit var binding : ActivityQuestionDetailBinding
             binding.clickScrapIv.isClickable = false
         }
 
-        binding.currentErrorTv.text = result[0].content // 질문 내용
+        binding.currentErrorTv.text = "질문 내용 : "+result[0].content // 질문 내용
         binding.codingSkillConstraintLayout.visibility = View.GONE
 
         content = result[0].content
@@ -323,6 +343,10 @@ private lateinit var binding : ActivityQuestionDetailBinding
 
         Log.d("개념질문 idx",result[0].questionIdx.toString())
 
+    }
+
+    override fun onGetLikeCountConceptQuestion(result: ArrayList<DetailConceptQuestion>) {
+        binding.likeCountTv.text = result[0].likeCount.toString() // 좋아요 수
     }
 
 
@@ -367,8 +391,6 @@ private lateinit var binding : ActivityQuestionDetailBinding
 
         //  이미지 있으면 그 수만큼 viewpager 어댑터에 넘기고 없으면 이미지 보여주는 부분 gone 처리
         Log.d("이미지test",result[0].questionImgUrls.toString())
-//        Log.d("이미지test",result[0].questionImgUrls!!.isEmpty().toString())
-//        Log.d("이미지test--",result[0].questionImgUrls[0].toString())
 
         if(result[0].questionImgUrls.size == 0){
             binding.pictureLinearLayout.visibility = View.GONE
@@ -387,14 +409,22 @@ private lateinit var binding : ActivityQuestionDetailBinding
         images = result[0].questionImgUrls
 
 
-        binding.currentErrorTv.text = result[0].currentError // 질문 내용
+        binding.currentErrorTv.text = "질문 내용 : "+ result[0].currentError // 질문 내용
 
 
 
+        if(result[0].codeQuestionUrl!=""){ // 오류 코드 첨부
+            binding.myErrorCodeLayout.visibility = View.VISIBLE
+            binding.myErrorCodeTv.text = result[0].codeQuestionUrl
+        }else{
+            binding.myErrorCodeLayout.visibility = View.GONE
+        }
 
-        if(result[0].myCodingSkill == null){ // 내 코딩 실력
+
+        if(result[0].myCodingSkill == ""){ // 내 코딩 실력
             binding.codingSkillConstraintLayout.visibility = View.GONE
         }else{
+            binding.codingSkillConstraintLayout.visibility = View.VISIBLE
             binding.myCodingSkillTv.text = result[0].myCodingSkill
         }
         myCodingSkill = result[0].myCodingSkill
@@ -427,6 +457,10 @@ private lateinit var binding : ActivityQuestionDetailBinding
 
     }
 
+    override fun onGetLikeCountCodingQuestion(result: ArrayList<DetailCodingQuestion>) {
+        binding.likeCountTv.text = result[0].likeCount.toString() // 좋아요 수
+    }
+
     override fun onGetDetailCodingQuestionsFailure(code: Int, message: String) {
         when(code){
             400-> Log.d("코딩질문 상세페이지/API",message)
@@ -447,7 +481,7 @@ private lateinit var binding : ActivityQuestionDetailBinding
     override fun onGetRepliesSuccess(result: ArrayList<Reply>) {
         repliesForQuestionAdapter.addQuestions(result)
         repliesForQuestionAdapter.setRepliesClickListener(object : RepliesForQuestionAdapter.RepliesItemClickListener{
-            override fun onRemoveAnswerButton(isClicked: Boolean) {
+            override fun onRemoveAnswerButton(isClicked: Boolean) { // 답변하기 버튼 제거
                 if(isClicked){
                     binding.questionFloatingButton.visibility = View.GONE
                 }else{
@@ -455,13 +489,12 @@ private lateinit var binding : ActivityQuestionDetailBinding
                 }
             }
 
-            override fun onAccessAlbum(){
+            override fun onAccessAlbum(){ // 사진 추가 버튼 누르면 앨범 실행
                 getPhoto()
             }
 
-            override fun getImageUrl(): String? {
-                Log.d("imgUrl--",selectedUri.toString())
-                return selectedUri.toString()
+            override fun getImageFile(): Bitmap { // 게시 버튼 누르면 bitmap 이미지 전달.
+                return pathList[0]
             }
         })
 
