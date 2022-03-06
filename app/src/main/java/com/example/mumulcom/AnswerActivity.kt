@@ -108,6 +108,11 @@ class AnswerActivity:AppCompatActivity(), AnswerView {
             finish()
         }
 
+        //필수 부분 작성되면 답변하기 누르기
+        binding.answerAnswerIv.setOnClickListener {
+            required()
+        }
+
     }
 
     //카메라 앨범 이미지 가져오기
@@ -123,7 +128,8 @@ class AnswerActivity:AppCompatActivity(), AnswerView {
                 Log.d("SEND/path", imagePath)
                 count++
                 Log.d("path/count", count.toString())
-                images.add(imagePath)
+//                images.add(imagePath)
+                Log.d("anan",  images.add(imagePath).toString())
             }
             Log.d("GETGET", photoList.toString())
             //이미지가 5개부터는 추가 불
@@ -134,32 +140,26 @@ class AnswerActivity:AppCompatActivity(), AnswerView {
                 }
             }
 
-
-            //필수 부분 작성되면 답변하기 누르기
-            binding.answerAnswerIv.setOnClickListener {
-                required()
-
-                //이미지 set되는 부분
-                if (imagePath != null) {
-                    var fileName =
-                        SimpleDateFormat("yyyyMMddHHmmss").format(Date()) // 파일명이 겹치면 안되기 떄문에 시년월일분초 지정
-                    storage.getReference().child("image").child(fileName)
-                        .putFile(imagePath.toUri())//어디에 업로드할지 지정
-                        .addOnSuccessListener { taskSnapshot -> // 업로드 정보를 담는다
-                            taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener { it ->
-                                var imageUrl = it.toString()
-                                var photo = Photo(imageUrl)
-                                firestore.collection("answer-images")
-                                    .document().set(photo)
-                                    .addOnSuccessListener {
-                                    }
-                                Log.d("gege/imageUrl", imageUrl)
-                                Log.d("gege/photo", photo.toString())
-                                images.add(imageUrl)
-                            }
+            //이미지 set되는 부분
+            if (imagePath != null) {
+                var fileName =
+                    SimpleDateFormat("yyyyMMddHHmmss").format(Date()) // 파일명이 겹치면 안되기 떄문에 시년월일분초 지정
+                storage.getReference().child("image").child(fileName)
+                    .putFile(imagePath.toUri())//어디에 업로드할지 지정
+                    .addOnSuccessListener { taskSnapshot -> // 업로드 정보를 담는다
+                        taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener { it ->
+                            var imageUrl = it.toString()
+                            var photo = Photo(imageUrl)
+                            firestore.collection("answer-images")
+                                .document().set(photo)
+                                .addOnSuccessListener {
+                                }
+                            Log.d("gege/imageUrl", imageUrl)
+                            Log.d("gege/photo", photo.toString())
+                            images.add(imageUrl)
                         }
+                    }
 
-                }
             }
 
             //답변하기 리사이클러뷰
