@@ -16,12 +16,12 @@ class UploadCommentService {
         this.uploadCommentView = uploadCommentView
     }
 
-    fun getUploadComment(jwt:String,replyRequest: HashMap<String,RequestBody>,body: MultipartBody.Part){
+    fun getUploadComment(jwt:String,commentSend: CommentSend,body: MultipartBody.Part?){
         val uploadCommentService = getRetrofit().create(QuestionRetrofitInterface::class.java)
 
         uploadCommentView.onGetUploadCommentLoading()
 
-        uploadCommentService.getUploadComment(jwt,replyRequest,body)
+        uploadCommentService.getUploadComment(jwt,commentSend,body)
             .enqueue(object : retrofit2.Callback<UploadCommentResponse>{
                 override fun onResponse(call: Call<UploadCommentResponse>, response: Response<UploadCommentResponse>) {
 

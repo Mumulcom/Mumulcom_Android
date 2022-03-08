@@ -52,7 +52,7 @@ private lateinit var binding : ActivityQuestionDetailBinding
     private var selectedUri : Uri? =null // 댓글에 대한 첨부 이미지 변수
     lateinit var file : File
 
-    private lateinit var mediaPath : String
+
     private lateinit var resultLauncher : ActivityResultLauncher<Intent>
 
     private lateinit var repliesForQuestionAdapter: RepliesForQuestionAdapter
@@ -126,7 +126,6 @@ private lateinit var binding : ActivityQuestionDetailBinding
 //                val intent = result.data
 //
 //                selectedUri = intent?.data
-
                 result.data?.data?.let{ uri->
                     pathList.clear()
                     val inputStream = uri.let{
@@ -139,8 +138,9 @@ private lateinit var binding : ActivityQuestionDetailBinding
                     pathList.add(bitmap)
                 }
 
-                if(selectedUri!=null){ // 사진을 제대로 가져옴.
-
+                if(result.data?.data!=null){ // 사진을 제대로 가져옴.
+                    Toast.makeText(this ,"사진을 가져왔습니다.",Toast.LENGTH_SHORT).show()
+                    Log.d("imagee",result!!.data?.data.toString())
                 }else{
                     Toast.makeText(this ,"사진을 가져오지 못했습니다.",Toast.LENGTH_SHORT).show()
                 }

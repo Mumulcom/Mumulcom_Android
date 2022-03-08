@@ -51,7 +51,10 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
     private lateinit var commentsForReplyAdapter: CommentsForReplyAdapter
     private lateinit var comment : String // 댓글 작성 내용 저장할 변수
 
-   // private var imgUrl : String? = null
+    private  var bitmap : Bitmap? = null
+    private  var multibody : MultipartBody.Part? = null
+
+
 
 
 
@@ -75,8 +78,6 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
     }
 
 
-     fun String?.toPlainRequestBody() = requireNotNull(this).toRequestBody("text/plain".toMediaTypeOrNull())
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: QuestionAnswerItemBinding =  QuestionAnswerItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
@@ -96,22 +97,20 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
 
         binding.uploadCommentTv.setOnClickListener { // 게시 버튼 누름.
             Log.d("umc","게시를 누름.")
+            bitmap =repliesItemClickListener.getImageFile() // 이미지 (bitmap) 가져옴
 
-           val bitmap =repliesItemClickListener.getImageFile()
-           val uploadbitmap = Bitmap.createScaledBitmap(bitmap,300,300,true)
-            val stream = ByteArrayOutputStream()
-            uploadbitmap.compress(Bitmap.CompressFormat.PNG,100,stream)
-            val byteArray = stream.toByteArray()
-            val sendimage = byteArray.toRequestBody("image/*".toMediaTypeOrNull())
-            val multibody : MultipartBody.Part =
-                MultipartBody.Part.createFormData("images","image",sendimage)
-
-
-            val replyIdxRequestBody : RequestBody = replyIdx.toString().toPlainRequestBody()
-            val textHashMap = hashMapOf<String,RequestBody>()
-//            textHashMap["replyIdx"] =
-//            textHashMap["userIdx"] =
-//            textHashMap["content"] =
+            if(bitmap!=null){
+                val uploadbitmap = Bitmap.createScaledBitmap(bitmap!!,300,300,true)
+                val stream = ByteArrayOutputStream()
+                uploadbitmap.compress(Bitmap.CompressFormat.PNG,100,stream)
+                val byteArray = stream.toByteArray()
+                val sendimage = byteArray.toRequestBody("image/*".toMediaTypeOrNull())
+                 multibody  =
+                    MultipartBody.Part.createFormData("images","image.png",sendimage)
+            }
+            if(bitmap==null){
+                multibody = null
+            }
 
 
             comment =binding.commentEditText.text.toString() // 입력한 댓글을 가져옴
@@ -121,7 +120,7 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
             }else{
                 //  api 에 연결해서 넘겨줌.
 
-             //   uploadCommentService.getUploadComment(getJwt(context), ReplyRequest(replyIdx, getUserIdx(context),comment),)
+                uploadCommentService.getUploadComment(getJwt(context), CommentSend(replyIdx, getUserIdx(context),comment),multibody)
 
                 Handler(Looper.getMainLooper()).postDelayed({
                     getCommentsForReply() // 댓글 가져오는 api 호출
@@ -131,15 +130,11 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
                     //    commentsForReplyAdapter.notifyDataSetChanged()
                 },500)
 
-
                 binding.commentEditText.text.clear()
 
             }
 
-
         }
-
-
 
 
         return ViewHolder(binding)
@@ -186,32 +181,32 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
         }
 
         // 댓글 처리
-        holder.binding.commentIv.setOnClickListener {
-            isCommentClick=!isCommentClick
-            if(isCommentClick){
-                holder.binding.commentIv.setImageResource(R.drawable.ic_message_select)
-                holder.binding.itemCommentTv.setTextColor(Color.parseColor("#F7B77C"))
-                holder.binding.commentLinearLayout.visibility = View.VISIBLE // 댓글창 염
-
-                // api 연결
-                getCommentsForReply() // 댓글 가져오는 api 호출
-                commentsForReplyAdapter = CommentsForReplyAdapter(context) // recyclerView adapter 연결
-                holder.binding.commentRecyclerView.adapter = commentsForReplyAdapter
-                holder.binding.commentRecyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
-
-
-
-
-            }else{
-                holder.binding.commentIv.setImageResource(R.drawable.ic_message)
-                holder.binding.itemCommentTv.setTextColor(Color.parseColor("#000000"))
-                holder.binding.commentLinearLayout.visibility = View.GONE // 댓글창 닫음.
-            }
-            //  답변하기 버튼 gone or visible 변경 (QuestionDetailActivity)
-            repliesItemClickListener.onRemoveAnswerButton(isCommentClick)
-
-
-        }
+//        holder.binding.commentIv.setOnClickListener {
+//            isCommentClick=!isCommentClick
+//            if(isCommentClick){
+//                holder.binding.commentIv.setImageResource(R.drawable.ic_message_select)
+//                holder.binding.itemCommentTv.setTextColor(Color.parseColor("#F7B77C"))
+//                holder.binding.commentLinearLayout.visibility = View.VISIBLE // 댓글창 염
+//
+//                // api 연결
+//                getCommentsForReply() // 댓글 가져오는 api 호출
+//                commentsForReplyAdapter = CommentsForReplyAdapter(context) // recyclerView adapter 연결
+//                holder.binding.commentRecyclerView.adapter = commentsForReplyAdapter
+//                holder.binding.commentRecyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+//
+//
+//
+//
+//            }else{
+//                holder.binding.commentIv.setImageResource(R.drawable.ic_message)
+//                holder.binding.itemCommentTv.setTextColor(Color.parseColor("#000000"))
+//                holder.binding.commentLinearLayout.visibility = View.GONE // 댓글창 닫음.
+//            }
+//            //  답변하기 버튼 gone or visible 변경 (QuestionDetailActivity)
+//            repliesItemClickListener.onRemoveAnswerButton(isCommentClick)
+//
+//
+//        }
 
 
 
@@ -252,7 +247,7 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
             binding.createdAtTv.text = reply.createdAt // 작성 날짜
 
 
-            if(reply.replyUrl==null){
+            if(reply.replyUrl==null||reply.replyUrl==""){
                 binding.replyUrl.visibility = View.GONE
    //             binding.replyUrl.text = "참고 링크 : 없음."// 참고 링크
             }else{
@@ -278,8 +273,7 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
                 binding.itemLikeIv.setImageResource(R.drawable.ic_liked)
             }
 
-            replyIdx =reply.replyIdx // 답변에 대한 고유 번호 저장. -> 서버에 넘겨서 댓글 받아옴.
-            Log.d("replyIdx",replyIdx.toString())
+
 
             // --------------- 채택하기 처리 -------------------------------
 
@@ -316,6 +310,34 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
                 }
             }
 
+
+            replyIdx =reply.replyIdx // 답변에 대한 고유 번호 저장. -> 서버에 넘겨서 댓글 받아옴.
+            Log.d("replyIdx",replyIdx.toString())
+
+            // api 연결
+            getCommentsForReply() // 댓글 가져오는 api 호출
+            commentsForReplyAdapter = CommentsForReplyAdapter(context) // recyclerView adapter 연결
+            binding.commentRecyclerView.adapter = commentsForReplyAdapter
+            binding.commentRecyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+
+
+            binding.commentIv.setOnClickListener {
+                isCommentClick=!isCommentClick
+                            if(isCommentClick){
+                binding.commentIv.setImageResource(R.drawable.ic_message_select)
+                binding.itemCommentTv.setTextColor(Color.parseColor("#F7B77C"))
+                binding.commentLinearLayout.visibility = View.VISIBLE // 댓글창 염
+
+
+            }else{
+                binding.commentIv.setImageResource(R.drawable.ic_message)
+                binding.itemCommentTv.setTextColor(Color.parseColor("#000000"))
+                binding.commentLinearLayout.visibility = View.GONE // 댓글창 닫음.
+            }
+            //  답변하기 버튼 gone or visible 변경 (QuestionDetailActivity)
+            repliesItemClickListener.onRemoveAnswerButton(isCommentClick)
+
+            }
 
 
         }// end of bind()
@@ -422,4 +444,4 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
     }
 
 
-}
+}// end of class
