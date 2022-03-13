@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.media.DrmInitData
 import android.os.Handler
 import android.os.Looper
@@ -14,7 +15,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat.*
 import androidx.core.content.ContextCompat
@@ -102,7 +105,7 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
             bitmap =repliesItemClickListener.getImageFile() // 이미지 (bitmap) 가져옴
 
             if(bitmap!=null){
-                val uploadbitmap = Bitmap.createScaledBitmap(bitmap!!,300,300,true)
+                val uploadbitmap = Bitmap.createScaledBitmap(bitmap!!,500,300,true)
                 val stream = ByteArrayOutputStream()
                 uploadbitmap.compress(Bitmap.CompressFormat.PNG,100,stream)
                 val byteArray = stream.toByteArray()
@@ -170,45 +173,45 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
             }
         }
         // 채택하기 처리
-        holder.binding.selectAnswerIv.setOnClickListener {
-            //  채택하는 api 호출
-            val adoptReplyService = AdoptReplyService()
-            adoptReplyService.setAdoptReplyView(this)
-            Log.d("house",replyIdx.toString())
-            adoptReplyService.getAdoptReply(getJwt(context), getUserIdx(context),replyIdx)
-            isClickAdoptButton = true
-            //  답변 api 재호출 (QuestionDetailActivity)
-            //  repliesItemClickListener.onClickAdoptButton(isClickAdoptButton)
-            holder.binding.selectAnswerIv.setImageResource(R.drawable.ic_adopt_reply_ok)
-        }
+//        holder.binding.selectAnswerIv.setOnClickListener {
+//            //  채택하는 api 호출
+//            val adoptReplyService = AdoptReplyService()
+//            adoptReplyService.setAdoptReplyView(this)
+//            Log.d("house",replyIdx.toString())
+//            adoptReplyService.getAdoptReply(getJwt(context), getUserIdx(context),replyIdx)
+//            isClickAdoptButton = true
+//            //  답변 api 재호출 (QuestionDetailActivity)
+//            //  repliesItemClickListener.onClickAdoptButton(isClickAdoptButton)
+//            holder.binding.selectAnswerIv.setImageResource(R.drawable.ic_adopt_reply_ok)
+//        }
 
         // 댓글 처리
-//        holder.binding.commentIv.setOnClickListener {
-//            isCommentClick=!isCommentClick
-//            if(isCommentClick){
-//                holder.binding.commentIv.setImageResource(R.drawable.ic_message_select)
-//                holder.binding.itemCommentTv.setTextColor(Color.parseColor("#F7B77C"))
-//                holder.binding.commentLinearLayout.visibility = View.VISIBLE // 댓글창 염
-//
-//                // api 연결
-//                getCommentsForReply() // 댓글 가져오는 api 호출
-//                commentsForReplyAdapter = CommentsForReplyAdapter(context) // recyclerView adapter 연결
-//                holder.binding.commentRecyclerView.adapter = commentsForReplyAdapter
-//                holder.binding.commentRecyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
-//
-//
-//
-//
-//            }else{
-//                holder.binding.commentIv.setImageResource(R.drawable.ic_message)
-//                holder.binding.itemCommentTv.setTextColor(Color.parseColor("#000000"))
-//                holder.binding.commentLinearLayout.visibility = View.GONE // 댓글창 닫음.
-//            }
-//            //  답변하기 버튼 gone or visible 변경 (QuestionDetailActivity)
-//            repliesItemClickListener.onRemoveAnswerButton(isCommentClick)
-//
-//
-//        }
+        holder.binding.commentIv.setOnClickListener {
+            isCommentClick=!isCommentClick
+            if(isCommentClick){
+                holder.binding.commentIv.setImageResource(R.drawable.ic_message_select)
+                holder.binding.itemCommentTv.setTextColor(Color.parseColor("#F7B77C"))
+                holder.binding.commentLinearLayout.visibility = View.VISIBLE // 댓글창 염
+
+                // api 연결
+                getCommentsForReply() // 댓글 가져오는 api 호출
+                commentsForReplyAdapter = CommentsForReplyAdapter(context) // recyclerView adapter 연결
+                holder.binding.commentRecyclerView.adapter = commentsForReplyAdapter
+                holder.binding.commentRecyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+
+
+
+
+            }else{
+                holder.binding.commentIv.setImageResource(R.drawable.ic_message)
+                holder.binding.itemCommentTv.setTextColor(Color.parseColor("#000000"))
+                holder.binding.commentLinearLayout.visibility = View.GONE // 댓글창 닫음.
+            }
+            //  답변하기 버튼 gone or visible 변경 (QuestionDetailActivity)
+            repliesItemClickListener.onRemoveAnswerButton(isCommentClick)
+
+
+        }
 
 
 
@@ -356,6 +359,40 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
             }
 
 
+
+
+
+            // 채택하기 누를때
+            binding.selectAnswerIv.setOnClickListener {
+
+              //  Log.d("adopt",reply.replyIdx.toString())
+
+                val builder = AlertDialog.Builder(context).create()
+                val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_adopt,null)
+
+                builder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                builder.setCancelable(false)
+                builder.setCanceledOnTouchOutside(false)
+
+                val approve = dialogView.findViewById<Button>(R.id.dialog_approve_btn)
+                approve.setOnClickListener {
+                    // todo 답변 채택 api 호출
+
+                    adoptReplyApi(reply.replyIdx)
+                    binding.selectAnswerIv.setImageResource(R.drawable.ic_adopt_reply_ok) // 채택이 된 이미지로 변경
+                    builder.dismiss()
+                }
+
+                val cancel = dialogView.findViewById<Button>(R.id.dialog_cancel_btn)
+                cancel.setOnClickListener {
+                    builder.dismiss()
+                }
+
+                builder.setView(dialogView)
+                builder.show()
+
+            }
+
         }// end of bind()
 
     }
@@ -367,7 +404,17 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
         likeReplyService.getLikeReply(getJwt(context), LikeReplySend(replyIdx,getUserIdx(context)))
     }
 
+    private fun adoptReplyApi(replyIdx:Long){ // 답변 채택하기 api 호출
+        val adoptReplyService = AdoptReplyService()
+        adoptReplyService.setAdoptReplyView(this)
+        Log.d("house",replyIdx.toString())
+        adoptReplyService.getAdoptReply(getJwt(context), getUserIdx(context),replyIdx)
+        isClickAdoptButton = true
+        //  답변 api 재호출 (QuestionDetailActivity)
+        //  repliesItemClickListener.onClickAdoptButton(isClickAdoptButton)
 
+
+    }
 
 
 

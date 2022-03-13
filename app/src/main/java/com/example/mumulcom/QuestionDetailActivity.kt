@@ -275,8 +275,8 @@ private lateinit var binding : ActivityQuestionDetailBinding
             isWriter = true
         }
 
-//        getRepliesForQuestion() // 질문에 대한 답변 받아오는 함수
-//        initRecyclerView()
+        getRepliesForQuestion() // 질문에 대한 답변 받아오는 함수
+        initRecyclerView()
 
 
         Glide.with(this).load(result[0].profileImgUrl).into(binding.profileIv) // 프로필 이미지
