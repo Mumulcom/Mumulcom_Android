@@ -2,6 +2,7 @@ package com.example.mumulcom
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -15,8 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat.requestPermissions
-import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
+import androidx.core.app.ActivityCompat.*
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -67,6 +67,8 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
         //   fun onClickAdoptButton(isClicked:Boolean)
         fun onAccessAlbum()
         fun getImageFile(): Bitmap
+        // ----------------------------
+        fun goBackCommentActivity(_replyIdx:Long,profileImage:String,nickname:String,createdAt:String,replyUrl:String?,content:String,replyImgUrl:ArrayList<String>)
     }
 
 
@@ -218,7 +220,6 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
         val commentsForReplyService = CommentsForReplyService()
         commentsForReplyService.setCommentsForReplyView(this)
         Log.d("replyIdx:---",replyIdx.toString())
-        //  commentsForReplyService.getCommentsForReply(46)
         commentsForReplyService.getCommentsForReply(replyIdx)
     }
 
@@ -241,6 +242,9 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
 
     inner class ViewHolder(val binding:QuestionAnswerItemBinding):RecyclerView.ViewHolder(binding.root){
 
+        var replyUrl : String? = null
+        var _replyIdx : Long = -1
+
         fun bind(reply: Reply){
             Glide.with(context).load(reply.profileImgUrl).into(binding.profileIv) // 프로필 이미지
             binding.nickNameTv.text = reply.nickname // 닉네임
@@ -249,9 +253,11 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
 
             if(reply.replyUrl==null||reply.replyUrl==""){
                 binding.replyUrl.visibility = View.GONE
+                replyUrl = null
    //             binding.replyUrl.text = "참고 링크 : 없음."// 참고 링크
             }else{
                 binding.replyUrl.text = "참고 링크 : "+reply.replyUrl // 참고 링크
+                replyUrl = reply.replyUrl
             }
 
             binding.contentTv.text = reply.content // 답변 내용
@@ -321,21 +327,31 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
             binding.commentRecyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
 
 
+            // 댓글 창 누를때
             binding.commentIv.setOnClickListener {
-                isCommentClick=!isCommentClick
-                            if(isCommentClick){
-                binding.commentIv.setImageResource(R.drawable.ic_message_select)
-                binding.itemCommentTv.setTextColor(Color.parseColor("#F7B77C"))
-                binding.commentLinearLayout.visibility = View.VISIBLE // 댓글창 염
+//                isCommentClick=!isCommentClick
+//                            if(isCommentClick){
+//                binding.commentIv.setImageResource(R.drawable.ic_message_select)
+//                binding.itemCommentTv.setTextColor(Color.parseColor("#F7B77C"))
+//                binding.commentLinearLayout.visibility = View.VISIBLE // 댓글창
+//                                replyIdx =reply.replyIdx
+//
+//                            }else{
+//                binding.commentIv.setImageResource(R.drawable.ic_message)
+//                binding.itemCommentTv.setTextColor(Color.parseColor("#000000"))
+//                binding.commentLinearLayout.visibility = View.GONE // 댓글창 닫음.
+//
+//            }
+//            //  답변하기 버튼 gone or visible 변경 (QuestionDetailActivity)
+//            repliesItemClickListener.onRemoveAnswerButton(isCommentClick)
+
+                _replyIdx = reply.replyIdx
 
 
-            }else{
-                binding.commentIv.setImageResource(R.drawable.ic_message)
-                binding.itemCommentTv.setTextColor(Color.parseColor("#000000"))
-                binding.commentLinearLayout.visibility = View.GONE // 댓글창 닫음.
-            }
-            //  답변하기 버튼 gone or visible 변경 (QuestionDetailActivity)
-            repliesItemClickListener.onRemoveAnswerButton(isCommentClick)
+                repliesItemClickListener.goBackCommentActivity(_replyIdx,reply.profileImgUrl,reply.nickname,reply.createdAt,replyUrl,reply.content,
+                reply.replyImgUrl)
+
+
 
             }
 

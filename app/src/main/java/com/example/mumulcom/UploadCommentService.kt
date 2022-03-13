@@ -1,6 +1,7 @@
 package com.example.mumulcom
 
 
+import android.util.Log
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -25,6 +26,7 @@ class UploadCommentService {
             .enqueue(object : retrofit2.Callback<UploadCommentResponse>{
                 override fun onResponse(call: Call<UploadCommentResponse>, response: Response<UploadCommentResponse>) {
 
+                    Log.d("banana",response.body().toString())
                     val resp = response.body()!!
 
                     when(resp.code){
