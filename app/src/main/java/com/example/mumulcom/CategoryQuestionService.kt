@@ -22,19 +22,23 @@ class CategoryQuestionService {
             .enqueue(object :retrofit2.Callback<CategoryQuestionResponse>{
                 override fun onResponse(call: Call<CategoryQuestionResponse>, response: Response<CategoryQuestionResponse>) {
 
-                    val resp = response.body()!!
 
-                    when(resp.code){
-                        1000-> {categoryQuestionView.onGetQuestionsSuccess(resp.result)
-                            Log.d("CategoryQuestionService/API","성공")
+                    Log.d("apiTest",response.toString())
 
-                        }
-                        else-> categoryQuestionView.onGetQuestionsFailure(resp.code,resp.message)
-                    }
+                 //   val resp = response.body()!!
+
+//                    when(resp.code){
+//                        1000-> {categoryQuestionView.onGetQuestionsSuccess(resp.result)
+//                            Log.d("CategoryQuestionService/API","성공")
+//
+//                        }
+//                        else-> categoryQuestionView.onGetQuestionsFailure(resp.code,resp.message)
+//                    }
 
                 }
 
                 override fun onFailure(call: Call<CategoryQuestionResponse>, t: Throwable) {
+                    Log.d("apiTest","실패")
                     categoryQuestionView.onGetQuestionsFailure(400,"네트워크 오류가 발생했습니다.")
                 }
 

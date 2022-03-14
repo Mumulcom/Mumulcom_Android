@@ -105,7 +105,7 @@ class CommentActivity : AppCompatActivity() ,CommentsForReplyView, UploadComment
             Log.d("apple",path.toString())
             // todo 사진과 댓글내용 서버에 전달.
             if(path!=null){ // 이미지가 추가됬을때 -> 이미지 & 댓글 전달
-                val uploadBitmap = Bitmap.createScaledBitmap(path!!,400,400,true)
+                val uploadBitmap = Bitmap.createScaledBitmap(path!!,500,400,true)
                 val stream = ByteArrayOutputStream()
                 uploadBitmap.compress(Bitmap.CompressFormat.JPEG,100,stream)
                 val byteArray = stream.toByteArray()
@@ -125,8 +125,8 @@ class CommentActivity : AppCompatActivity() ,CommentsForReplyView, UploadComment
                     },500)
 
                     binding.commentEditText.text.clear()
-
-
+                    binding.imageLinearLayout.visibility = View.GONE
+                    path = null
 
                 }
 
