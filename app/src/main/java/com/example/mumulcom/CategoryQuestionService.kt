@@ -25,15 +25,15 @@ class CategoryQuestionService {
 
                     Log.d("apiTest",response.toString())
 
-                 //   val resp = response.body()!!
+                    val resp = response.body()!!
 
-//                    when(resp.code){
-//                        1000-> {categoryQuestionView.onGetQuestionsSuccess(resp.result)
-//                            Log.d("CategoryQuestionService/API","성공")
-//
-//                        }
-//                        else-> categoryQuestionView.onGetQuestionsFailure(resp.code,resp.message)
-//                    }
+                    when(resp.code){
+                        1000-> {categoryQuestionView.onGetQuestionsSuccess(resp.result)
+                            Log.d("CategoryQuestionService/API","성공")
+
+                        }
+                        else-> categoryQuestionView.onGetQuestionsFailure(resp.code,resp.message)
+                    }
 
                 }
 

@@ -402,15 +402,16 @@ private lateinit var binding : ActivityQuestionDetailBinding
 
 
 
-        if(result[0].codeQuestionUrl!=""){ // 오류 코드 첨부
+        if(result[0].codeQuestionUrl==""||result[0].codeQuestionUrl==null){ // 오류 코드 첨부
+            binding.myErrorCodeLayout.visibility = View.GONE
+
+        }else{
             binding.myErrorCodeLayout.visibility = View.VISIBLE
             binding.myErrorCodeTv.text = result[0].codeQuestionUrl
-        }else{
-            binding.myErrorCodeLayout.visibility = View.GONE
         }
 
 
-        if(result[0].myCodingSkill == ""){ // 내 코딩 실력
+        if(result[0].myCodingSkill == ""||result[0].myCodingSkill==null){ // 내 코딩 실력
             binding.codingSkillConstraintLayout.visibility = View.GONE
         }else{
             binding.codingSkillConstraintLayout.visibility = View.VISIBLE
