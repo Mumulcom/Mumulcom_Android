@@ -10,8 +10,6 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import java.lang.String
-import kotlin.Int
 
 
 //코딩질문 개념질문 답변하기 작성자 어댑터
@@ -19,6 +17,12 @@ import kotlin.Int
 
     var onItemClickListener:OnItemClickListener?=null
     val NUM_PAGES = 5
+    private val listener: MyItemClickListner? = null
+
+    interface MyItemClickListner {
+        fun onClickMeClick(position: Int)
+        fun onItemClick(position: Int)
+    }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val imageIv: ImageView =itemView.findViewById<ImageView?>(R.id.imageSlider)
@@ -40,11 +44,8 @@ import kotlin.Int
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view=LayoutInflater.from(context).inflate(R.layout.item_slider,parent,false)
-        val plusIv=R.id.view_Plus_Iv
         return ViewHolder(view)
-
     }
-
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -56,6 +57,7 @@ import kotlin.Int
                 position.toString(),
                 Toast.LENGTH_SHORT
             ).show()
+
         }
     if (position!=0){
         holder.plusIv.visibility=View.VISIBLE

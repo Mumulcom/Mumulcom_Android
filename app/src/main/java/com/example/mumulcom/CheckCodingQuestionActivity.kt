@@ -6,9 +6,10 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
@@ -20,17 +21,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.net.toUri
 import androidx.viewpager2.widget.ViewPager2
 import com.example.mumulcom.databinding.ActivityCheckcodingquestionBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import java.util.*
-
-import android.text.Editable
-
-import android.text.TextWatcher
-import okhttp3.MultipartBody
 
 
 //, CheckCodingQuestionView
@@ -147,8 +142,6 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView {
             }
         })
 
-
-        binding.checkcodingquestionPlusIv.visibility=View.VISIBLE
 
 
         if (count<5) {
@@ -369,12 +362,26 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView {
             binding.checkcodingquestionVp.adapter = viewPagerAdapter
             binding.checkcodingquestionVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
             binding.checkcodingIndicator.setViewPager(binding.checkcodingquestionVp)
-            binding.checkcodingquestionVp.bringToFront()
+
         }
 
     }
 
+    fun onClickMeClick(position: Int) {
+        Toast.makeText(this, String.format("ClickMe:%d", position), Toast.LENGTH_SHORT)
+            .show()
+    }
 
+    fun onItemClick(position: Int) {
+        val intent =
+            Intent(this, CodingCameraShootingActivity::class.java)
+        activityResultLauncher.launch(intent)
+    }
+//        Toast.makeText(
+//            this,
+//            String.format("ItemClick:%d", position),
+//            Toast.LENGTH_SHORT
+//        ).show()
     /********************* 스피너 ********************/
     // dp 값을 px 값으로 변환해주는 함수
     private fun dipToPixels(dipValue: Float): Float {
