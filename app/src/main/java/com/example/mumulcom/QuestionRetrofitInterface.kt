@@ -98,7 +98,7 @@ interface QuestionRetrofitInterface {
 //    ):Call<MadeConceptQuestionResponse>
 
 
-    @Multipart
+     @Multipart
     @POST("/replies/reply") // 답변에 댓글달때 호출
     fun getUploadComment(
         @Header("X-ACCESS-TOKEN")  X_ACCESS_TOKEN : String,
