@@ -151,7 +151,7 @@ class CodingCameraShootingActivity: AppCompatActivity() {
                             .load(bitmap)
                             .into(binding.ivPre)
                         binding.ivPre.visibility = View.VISIBLE
-                        Log.d("gallery/ppp", bitmap.toString())
+                        Log.d("gallery /ppp", bitmap.toString())
                     }
                 }
                 CAMERA -> {
