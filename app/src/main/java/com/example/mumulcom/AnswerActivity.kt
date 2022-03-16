@@ -2,9 +2,9 @@ package com.example.mumulcom
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -20,13 +20,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.net.toUri
 import androidx.viewpager2.widget.ViewPager2
 import com.example.mumulcom.databinding.ActivityAnswerBinding
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import java.util.*
+import okhttp3.MultipartBody
 
 
 class AnswerActivity:AppCompatActivity(), AnswerView {
@@ -48,6 +47,10 @@ class AnswerActivity:AppCompatActivity(), AnswerView {
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>//이동(카메라 앨범)
     var count=0//이미지 수
 
+    // bitmap 변수
+    private  var path : Bitmap? = null
+    // multipart 관련 변수
+    private  var multibody : MultipartBody.Part? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -147,11 +150,12 @@ class AnswerActivity:AppCompatActivity(), AnswerView {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == RESULT_OK) {
-            var imagePath = data?.getStringExtra("path")!!
+//            path = data?.getParcelableExtra("path")!!
+            var imagePath = data?.getByteArrayExtra("path")!!
 
             photoList.apply {
                 add(Photo(imagePath))
-                Log.d("SEND/path", imagePath)
+                Log.d("SEND/path", imagePath.toString())
                 count++
                 Log.d("path/count", count.toString())
             }
@@ -164,27 +168,27 @@ class AnswerActivity:AppCompatActivity(), AnswerView {
                 }
             }
 
-                //이미지 set되는 부분
-                if (imagePath != null) {
-                    var fileName =
-                        SimpleDateFormat("yyyyMMddHHmmss").format(Date()) // 파일명이 겹치면 안되기 떄문에 시년월일분초 지정
-                    storage.getReference().child("image").child(fileName)
-                        .putFile(imagePath.toUri())//어디에 업로드할지 지정
-                        .addOnSuccessListener { taskSnapshot -> // 업로드 정보를 담는다
-                            taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener { it ->
-                                var imageUrl = it.toString()
-                                var photo = Photo(imageUrl)
-                                firestore.collection("answer-images")
-                                    .document().set(photo)
-                                    .addOnSuccessListener {
-                                    }
-                                Log.d("gege/imageUrl", imageUrl)
-                                Log.d("gege/photo", photo.toString())
-                                images.add(imageUrl)
-                            }
-                        }
-
-                }
+//                //이미지 set되는 부분
+//                if (imagePath != null) {
+//                    var fileName =
+//                        SimpleDateFormat("yyyyMMddHHmmss").format(Date()) // 파일명이 겹치면 안되기 떄문에 시년월일분초 지정
+//                    storage.getReference().child("image").child(fileName)
+//                        .putFile(path.toUri())//어디에 업로드할지 지정
+//                        .addOnSuccessListener { taskSnapshot -> // 업로드 정보를 담는다
+//                            taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener { it ->
+//                                var imageUrl = it.toString()
+//                                var photo = Photo(imageUrl)
+//                                firestore.collection("answer-images")
+//                                    .document().set(photo)
+//                                    .addOnSuccessListener {
+//                                    }
+//                                Log.d("gege/imageUrl", imageUrl)
+//                                Log.d("gege/photo", photo.toString())
+//                                images.add(imageUrl)
+//                            }
+//                        }
+//
+//                }
 
             //답변하기 리사이클러뷰
             photoAdapter = PhotoAdapter(this, photoList)
