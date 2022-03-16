@@ -1,7 +1,6 @@
 package com.example.mumulcom
 
 import android.Manifest
-import android.R.attr
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -22,9 +21,12 @@ import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.example.mumulcom.databinding.ActivityCodingcamerashootingBinding
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
-import java.io.InputStream
 import java.util.*
 
 
@@ -40,6 +42,8 @@ class CodingCameraShootingActivity: AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SimpleDateFormat")
     var imageDate: SimpleDateFormat = SimpleDateFormat("yyyyMMdd_HHmmss")
+
+    var path: Bitmap? = null
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -128,16 +132,26 @@ class CodingCameraShootingActivity: AppCompatActivity() {
             when (requestCode) {
                 GALLERY -> {
                     if (requestCode == GALLERY) { // 갤러리 선택한 경우
-//				1) data의 주소 사용하는 방법
+//          1) data의 주소 사용하는 방법
                         imagePath =
                             data?.dataString!! // "content://media/external/images/media/7215"
-
+                        data?.data?.let{ // 결과가 제대로 들어왔을때 (이미지 주소를 잘 가져왔을때) 실행
+                                uri->
+                            path = null // 앨범에서 가져올때마다 초기화
+                            val inputStream = uri.let{
+                                contentResolver.openInputStream(
+                                    it
+                                )
+                            }
+                            bitmap = BitmapFactory.decodeStream(inputStream)
+                        }
                     }
                     if (imagePath.length > 0) {
                         Glide.with(this)
-                            .load(imagePath)
+                            .load(bitmap)
                             .into(binding.ivPre)
                         binding.ivPre.visibility = View.VISIBLE
+                        Log.d("gallery /ppp", bitmap.toString())
                     }
                 }
                 CAMERA -> {
@@ -149,9 +163,11 @@ class CodingCameraShootingActivity: AppCompatActivity() {
                 }
             }
 //            binding.ivPre.setImageBitmap(bitmap)
+            //사진이 회전되므로 보여줄떈 imagepath, 넘겨줄땐 bitmap
             Glide.with(this)
                 .load(imagePath)
                 .into(binding.ivPre)
+            Log.d("camara/ppp", bitmap.toString())
             Log.d("pathpath", imagePath)
 
             //삭제버튼
@@ -168,10 +184,14 @@ class CodingCameraShootingActivity: AppCompatActivity() {
             if(imagePath!="") {
                 binding.ivPre.visibility=View.VISIBLE
                 binding.camerashootingCheckIb.setOnClickListener {
-                    intent.putExtra("path", imagePath)
+                    val uploadBitmap = Bitmap.createScaledBitmap(bitmap!!,500,400,true)
+                    val stream = ByteArrayOutputStream()
+                    uploadBitmap.compress(Bitmap.CompressFormat.JPEG,100,stream)
+                    val byteArray = stream.toByteArray()
+                    intent.putExtra("path", byteArray)
                     setResult(RESULT_OK, intent);
                     finish()
-                    Log.d("PUT/path", imagePath.toString())
+                    Log.d("PUT/path", byteArray.toString())
 
                 }
             }
@@ -188,6 +208,27 @@ class CodingCameraShootingActivity: AppCompatActivity() {
     }
 
 
+
+//    @RequiresApi(Build.VERSION_CODES.N)
+//    @SuppressLint("SimpleDateFormat")
+//    @Throws(IOException::class)
+//    fun createImageFile(): File? {
+//// 이미지 파일 생성
+//// SimpleDateFormat imageDate = new SimpleDateFormat("yyyyMMdd_HHmmss");
+//        val timeStamp = imageDate.format(Date()) // 파일명 중복을 피하기 위한 "yyyyMMdd_HHmmss"꼴의 timeStamp
+//        val fileName = "IMAGE_$timeStamp" // 이미지 파일 명
+//        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+//        val file = File.createTempFile(fileName, ".jpg", storageDir) // 이미지 파일 생성
+//        imagePath = file.absolutePath // 파일 절대경로 저장하기, String
+//        imagePath=file.path
+//        Log.d("file//",file.path)
+//        imagePath= file.toUri().toString()
+//        Log.d("file//",file.toUri().toString())
+//        imagePath= file.toURI().toString()
+//        Log.d("file//",file.toURI().toString())
+//        return file
+//    }
+
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SimpleDateFormat")
     @Throws(IOException::class)
@@ -199,12 +240,6 @@ class CodingCameraShootingActivity: AppCompatActivity() {
         val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         val file = File.createTempFile(fileName, ".jpg", storageDir) // 이미지 파일 생성
         imagePath = file.absolutePath // 파일 절대경로 저장하기, String
-        imagePath=file.path
-        Log.d("file//",file.path)
-        imagePath= file.toUri().toString()
-        Log.d("file//",file.toUri().toString())
-        imagePath= file.toURI().toString()
-        Log.d("file//",file.toURI().toString())
         return file
     }
 

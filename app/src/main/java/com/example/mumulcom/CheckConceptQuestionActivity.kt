@@ -4,9 +4,9 @@ import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -22,12 +22,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.net.toUri
 import androidx.viewpager2.widget.ViewPager2
 import com.example.mumulcom.databinding.ActivityCheckconceptquestionBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import java.util.*
+import okhttp3.MultipartBody
 
 
 // CheckConcetpuestionView
@@ -58,6 +57,12 @@ class CheckConceptQuestionActivity:AppCompatActivity(), CheckConceptQuestionView
     private lateinit var smallCategoryAdapter: ArrayAdapter<String>
 
     var count=0//이미지수
+
+    // bitmap 변수
+    private  var path : Bitmap? = null
+    // multipart 관련 변수
+    private  var multibody : MultipartBody.Part? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -284,37 +289,38 @@ class CheckConceptQuestionActivity:AppCompatActivity(), CheckConceptQuestionView
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == RESULT_OK) {
-            var imagePath = data?.getStringExtra("path")!!
+            var imagePath = data?.getByteArrayExtra("path")!!
+            path = data?.getParcelableExtra("path")!!
 
             photoList.apply {
                 add(Photo(imagePath))
-                Log.d("SEND/path", imagePath)
+                Log.d("SEND/path", imagePath.toString())
                 count++
                 Log.d("path/count", count.toString())
             }
             Log.d("GETGET", photoList.toString())
 
-                //set되는 부분
-                if (imagePath != null) {
-                    var fileName =
-                        SimpleDateFormat("yyyyMMddHHmmss").format(Date()) // 파일명이 겹치면 안되기 떄문에 시년월일분초 지정
-                    storage.getReference().child("image").child(fileName)
-                        .putFile(imagePath.toUri())//어디에 업로드할지 지정
-                        .addOnSuccessListener { taskSnapshot -> // 업로드 정보를 담는다
-                            taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener { it ->
-                                var imageUrl = it.toString()
-                                var photo = Photo(imageUrl)
-                                firestore.collection("concept-images")
-                                    .document().set(photo)
-                                    .addOnSuccessListener {
-                                    }
-                                Log.d("gege/imageUrl", imageUrl)
-                                Log.d("gege/photo", photo.toString())
-                                images.add(imageUrl)
-                            }
-                        }
-
-                }
+//                //set되는 부분
+//                if (path != null) {
+//                    var fileName =
+//                        SimpleDateFormat("yyyyMMddHHmmss").format(Date()) // 파일명이 겹치면 안되기 떄문에 시년월일분초 지정
+//                    storage.getReference().child("image").child(fileName)
+//                        .putFile(.toUri())//어디에 업로드할지 지정
+//                        .addOnSuccessListener { taskSnapshot -> // 업로드 정보를 담는다
+//                            taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener { it ->
+//                                var imageUrl = it.toString()
+//                                var photo = Photo(imageUrl)
+//                                firestore.collection("concept-images")
+//                                    .document().set(photo)
+//                                    .addOnSuccessListener {
+//                                    }
+//                                Log.d("gege/imageUrl", imageUrl)
+//                                Log.d("gege/photo", photo.toString())
+//                                images.add(imageUrl)
+//                            }
+//                        }
+//
+//                }
 
 //이미지가 5개부터는 추가 불가
             if (count>=5){

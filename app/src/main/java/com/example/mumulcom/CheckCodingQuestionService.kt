@@ -13,12 +13,12 @@ class CheckCodingQuestionService{
         this.checkCodingQuestionView=checkCodingQuestionView
     }
 
-    fun checkCodingQuestion(jwt: String, checkcoding: CheckCoding){
+    fun checkCodingQuestion(jwt: String, checkcoding: CheckCoding, images: ArrayList<MultipartBody.Part?>?){
         val checkCodingQuestionService= getRetrofit().create(CheckCodingQuestionRetrofitInterface::class.java)
 
         checkCodingQuestionView.onCheckCodingQuestionLoading()
 
-        checkCodingQuestionService.checkCodingQuestion(jwt, checkcoding).enqueue(object : Callback<CheckCodingQuestionResponse>{
+        checkCodingQuestionService.checkCodingQuestion(jwt, checkcoding, images).enqueue(object : Callback<CheckCodingQuestionResponse>{
             override fun onResponse(
                 call: Call<CheckCodingQuestionResponse>,
                 response: Response<CheckCodingQuestionResponse>
