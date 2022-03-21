@@ -412,4 +412,3 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
 
 }// end of class
 
-
