@@ -2,15 +2,10 @@ package com.example.mumulcom
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.media.DrmInitData
 import android.os.Handler
 import android.os.Looper
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,27 +13,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat.*
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import com.bumptech.glide.Glide
 
 import com.example.mumulcom.databinding.QuestionAnswerItemBinding
-import okhttp3.MediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import java.io.ByteArrayOutputStream
-
-import java.io.File
 
 
-class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer:Boolean):RecyclerView.Adapter<RepliesForQuestionAdapter.ViewHolder>(diffUtil),
+class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer:Boolean): RecyclerView.Adapter<RepliesForQuestionAdapter.ViewHolder>(),
     LikeReplyView, CommentsForReplyView, UploadCommentView, AdoptReplyView {
+
+    private val asyncDiffer = AsyncListDiffer(this,UserDiffItemCallback())
 
 
     private val replyList = ArrayList<Reply>()
@@ -100,39 +84,6 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(replyList[position])
 
-        // 좋아요 처리
-//        holder.binding.itemLikeIv.setOnClickListener {
-//            isLike = !isLike
-//            if(isLike){
-//                holder.binding.itemLikeIv.setImageResource(R.drawable.ic_liked)
-//               // setLikeReply() // 답변에 대한 좋아요 처리
-//                val likeReplyService = LikeReplyService()
-//                likeReplyService.setLikeReplyView(this)
-//                likeReplyService.getLikeReply(getJwt(context), LikeReplySend(replyList[position].replyIdx,getUserIdx(context)))
-//                Log.d("america",replyList[position].replyIdx.toString())
-//
-//                Handler(Looper.getMainLooper()).postDelayed({
-//
-//                },500)
-//
-//            }else{
-//                holder.binding.itemLikeIv.setImageResource(R.drawable.ic_like)
-//            //    setLikeReply() // 답변에 대한 좋아요 처리
-//                val likeReplyService = LikeReplyService()
-//                likeReplyService.setLikeReplyView(this)
-//                likeReplyService.getLikeReply(getJwt(context), LikeReplySend(replyList[position].replyIdx,getUserIdx(context)))
-//                Log.d("america",replyList[position].replyIdx.toString())
-//
-//                Handler(Looper.getMainLooper()).postDelayed({
-//
-//
-//                },500)
-//
-//            }
-//        }
-
-
-
     }// end of onBindViewHolder
 
 
@@ -158,6 +109,10 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
         this.replyList.addAll(replies)
 
         notifyDataSetChanged()
+    }
+
+    fun replaceItem(replyList : List<Reply>){
+        asyncDiffer.submitList(replyList)
     }
 
 
@@ -411,11 +366,6 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
 
 
 
-
-
-
-
-
     // ---------------  UploadComment  implement : 답변에 대한 댓글 달기 ----------------
 
     override fun onGetUploadCommentLoading() {
@@ -456,18 +406,7 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
         }
     }
 
-    companion object{
-        val diffUtil = object : DiffUtil.ItemCallback<Reply>(){
-            override fun areItemsTheSame(oldItem: Reply, newItem: Reply): Boolean {
-                return oldItem.likeCount == newItem.likeCount
-            }
 
-            override fun areContentsTheSame(oldItem: Reply, newItem: Reply): Boolean {
-                return oldItem == newItem
-            }
-
-        }
-    }
 
 
 

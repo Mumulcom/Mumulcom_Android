@@ -50,6 +50,8 @@ private lateinit var binding : ActivityQuestionDetailBinding
 
     lateinit var file : File
 
+    private var isFirst : Boolean = true
+
 
     private lateinit var resultLauncher : ActivityResultLauncher<Intent>
 
@@ -85,7 +87,7 @@ private lateinit var binding : ActivityQuestionDetailBinding
         binding.refreshLayout.setOnRefreshListener {
             //  서버에서 데이터 reload
             getRepliesForQuestion() // 질문에 대한 답변 받아오는 함수
-            initRecyclerView()
+    //        initRecyclerView()
 
             when(type){ // 내용 업데이트
                 1-> getDetailCodingQuestion() // 코딩 질문
@@ -474,7 +476,10 @@ private lateinit var binding : ActivityQuestionDetailBinding
     }
 
     override fun onGetRepliesSuccess(result: ArrayList<Reply>) {
+
         repliesForQuestionAdapter.addQuestions(result)
+     //   repliesForQuestionAdapter.replaceItem(result)
+
 
         repliesForQuestionAdapter.setRepliesClickListener(object : RepliesForQuestionAdapter.RepliesItemClickListener{
             override fun onRemoveAnswerButton(isClicked: Boolean) { // 답변하기 버튼 제거
@@ -487,6 +492,8 @@ private lateinit var binding : ActivityQuestionDetailBinding
 
             override fun setIsLike() {
                 // 답변 데이터 갱신
+                getRepliesForQuestion() // 질문에 대한 답변 받아오는 함수
+                initRecyclerView()
 
             }
 
@@ -506,7 +513,7 @@ private lateinit var binding : ActivityQuestionDetailBinding
             }
         })
 
-
+        isFirst =false
     }
     private fun getPhoto(){
         when{
