@@ -261,13 +261,14 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView {
         val checkCodingQuestionService=CheckCodingQuestionService()
 
         checkCodingQuestionService.setcheckcodingquestionView(this)
-
-        if (images.toString().length>2) {
-
-            checkCodingQuestionService.checkCodingQuestion(getJwt(this), getCoding(), images)
-        }else{
-            checkCodingQuestionService.checkCodingQuestion(getJwt(this), getCoding(), null)
-        }
+//
+//        if (images.toString().length>2) {
+//
+//            checkCodingQuestionService.checkCodingQuestion(getJwt(this), getCoding(), images)
+//        }else{
+//            checkCodingQuestionService.checkCodingQuestion(getJwt(this), getCoding(), null)
+//        }
+        checkCodingQuestionService.checkCodingQuestion(getJwt(this), CheckCoding(getUserIdx(this),"배고픔이란 뭘까요?","코딩스킬",1,2,"배고픔에 대해서",null), null)
         Log.d("ppp/images", images.toString())
         Log.d("CHECKCODING/APIHH","Hello")
     }

@@ -13,7 +13,7 @@ class CheckCodingQuestionService{
         this.checkCodingQuestionView=checkCodingQuestionView
     }
 
-    fun checkCodingQuestion(jwt: String, checkcoding: CheckCoding, images: ArrayList<MultipartBody.Part?>?){
+    fun checkCodingQuestion(jwt: String, checkcoding: CheckCoding, images: ArrayList<MultipartBody.Part>?){
         val checkCodingQuestionService= getRetrofit().create(CheckCodingQuestionRetrofitInterface::class.java)
 
         checkCodingQuestionView.onCheckCodingQuestionLoading()
