@@ -315,7 +315,7 @@ private lateinit var binding : ActivityQuestionDetailBinding
         binding.currentErrorTv.text = "내용 : "+result[0].content // 질문 내용
         binding.codingSkillConstraintLayout.visibility = View.GONE
 
-        // content = result[0].content
+         content = result[0].content
 
         if(result[0].isLiked =="Y"){ // 이미 좋아요를 했을때
             isLiked = true
@@ -450,7 +450,7 @@ private lateinit var binding : ActivityQuestionDetailBinding
         binding.likeCountTv.text = result[0].likeCount.toString() // 좋아요 수
 
 
-    //    content = result[0].currentError
+        content = result[0].currentError
 
     }
 
