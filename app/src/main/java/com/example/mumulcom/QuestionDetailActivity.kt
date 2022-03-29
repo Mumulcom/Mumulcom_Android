@@ -114,9 +114,9 @@ private lateinit var binding : ActivityQuestionDetailBinding
             intent.putStringArrayListExtra("images",images)  //type : arrayList<string>
             Log.d("checkimage",images.toString())
             intent.putExtra("myCodingSkill",myCodingSkill)
-            intent.putExtra("content",content)
+            intent.putExtra("content",title)
             Log.d("aaa",myCodingSkill.toString())
-            Log.d("aaa",content.toString())
+            Log.d("aaa",title.toString())
             startActivity(intent)
         }
 
@@ -386,6 +386,7 @@ private lateinit var binding : ActivityQuestionDetailBinding
             binding.smallCategoryTv.text = "#"+result[0].smallCategoryName // 하위 카테고리
         }
 
+        title=result[0].title
         //  이미지 있으면 그 수만큼 viewpager 어댑터에 넘기고 없으면 이미지 보여주는 부분 gone 처리
         Log.d("이미지test",result[0].questionImgUrls.toString())
 
@@ -398,11 +399,6 @@ private lateinit var binding : ActivityQuestionDetailBinding
             binding.indicator.setViewPager(binding.viewPager)
 
             Log.d("이미지test","어댑터로 넘김")
-<<<<<<< HEAD
-
-=======
-            
->>>>>>> aa13fb4ab1a7ff7c8c6fac83e4b6c28f8aa5c6c6
             images.addAll(result[0].questionImgUrls)
             Log.d("checkimage--",images.toString())
         }
@@ -456,11 +452,7 @@ private lateinit var binding : ActivityQuestionDetailBinding
         binding.likeCountTv.text = result[0].likeCount.toString() // 좋아요 수
 
 
-<<<<<<< HEAD
-        //    content = result[0].currentError
-=======
         content = result[0].currentError
->>>>>>> aa13fb4ab1a7ff7c8c6fac83e4b6c28f8aa5c6c6
 
     }
 
