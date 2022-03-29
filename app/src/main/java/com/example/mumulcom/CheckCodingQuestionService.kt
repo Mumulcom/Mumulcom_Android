@@ -4,6 +4,7 @@ package com.example.mumulcom
 import android.util.Log
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import retrofit2.Call
@@ -18,25 +19,25 @@ class CheckCodingQuestionService{
         this.checkCodingQuestionView=checkCodingQuestionView
     }
 
-    fun checkCodingQuestion(jwt: String, images: ArrayList<MultipartBody.Part?>?, checkCoding: CheckCoding
+    fun checkCodingQuestion(jwt: String, images: ArrayList<MultipartBody.Part?>?, userIdx: Long, currentError:String, myCodingSkill: String?, bigCategoryIdx: Long, smallCategoryIdx: Long?, title: String, codeQuestionUrl: String?
     ) {
         val checkCodingQuestionService= getRetrofit().create(CheckCodingQuestionRetrofitInterface::class.java)
 
-//        val jsonObject = JSONObject("{\"userIdx\":${userIdx},\"currentError\":\"${currentError}\",\"myCodingSkill\":\"${myCodingSkill}\",\"bigCategoryIdx\":${bigCategoryIdx}, \"smallCategoryIdx\":${smallCategoryIdx},\"title\":\"${title}\",\"codeQuestionUrl\":\"${codeQuestionUrl}\"}").toString()
-////        val jsonBody = RequestBody.create("application/json".toMediaTypeOrNull(),jsonObject)
-//        val CodeQuestionReq = jsonObject.toRequestBody(contentType = "application/json".toMediaTypeOrNull())
-//        Log.d("json/jsonObject", jsonObject)
-//        Log.d("json/jsonBody", CodeQuestionReq.toString())
-//
-//        val body = "multipart/form-data".toRequestBody(MultipartBody.FORM)
-//        val emptyPart = MultipartBody.Part.createFormData("images","images",body)
-//        val emptyList = arrayListOf<MultipartBody.Part?>()
-//        emptyList.add(emptyPart)
+        val jsonObject = JSONObject("{\"userIdx\":${userIdx},\"currentError\":\"${currentError}\",\"myCodingSkill\":\"${myCodingSkill}\",\"bigCategoryIdx\":${bigCategoryIdx}, \"smallCategoryIdx\":${smallCategoryIdx},\"title\":\"${title}\",\"codeQuestionUrl\":\"${codeQuestionUrl}\"}").toString()
+//        val jsonBody = RequestBody.create("application/json".toMediaTypeOrNull(),jsonObject)
+        val CodeQuestionReq = jsonObject.toRequestBody(contentType = "application/json".toMediaTypeOrNull())
+        Log.d("json/jsonObject", jsonObject)
+        Log.d("json/jsonBody", CodeQuestionReq.toString())
+
+        val body = "multipart/form-data".toRequestBody(MultipartBody.FORM)
+        val emptyPart = MultipartBody.Part.createFormData("images","images",body)
+        val emptyList = arrayListOf<MultipartBody.Part?>()
+        emptyList.add(emptyPart)
 
 
         checkCodingQuestionView.onCheckCodingQuestionLoading()
         checkCodingQuestionService.checkCodingQuestion(
-            jwt, images, checkCoding
+            jwt, images, CodeQuestionReq
         ).enqueue(object : Callback<CheckCodingQuestionResponse> {
             override fun onResponse(call: Call<CheckCodingQuestionResponse>, response: Response<CheckCodingQuestionResponse>) {
                 Log.d("CHECKCODING/API-RESPONSE", response.toString())
@@ -45,7 +46,7 @@ class CheckCodingQuestionService{
                 Log.d("CHECKCODING/API-RESPONSE3", response.isSuccessful.toString())
                 Log.d("CHECKCODING/API-images", images.toString())
                 Log.d("CHECKCODING/API-body", checkCodingQuestionService.checkCodingQuestion(
-                    jwt, images, checkCoding
+                    jwt, images, CodeQuestionReq
                 ).request().toString())
 
                 if (response.isSuccessful&&response.code()==200){
@@ -70,8 +71,8 @@ class CheckCodingQuestionService{
         Log.d("CHECKCODING/API","Hello")
         Log.d("API/images", images.toString())
         Log.d("API/jwt", jwt)
-//        Log.d("API/CodeQuestionReq", CodeQuestionReq.toString())
-//        Log.d("API/jsonObject", jsonObject.toString())
+        Log.d("API/CodeQuestionReq", CodeQuestionReq.toString())
+        Log.d("API/jsonObject", jsonObject.toString())
     }
 
 }
