@@ -73,10 +73,6 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView, 
 
     // bitmap 변수
     private  var imagePath : Bitmap? = null
-    // multipart 관련 변수
-//    private  var multibody= arrayListOf<MultipartBody.Part?>()
-//    private  var multibody : MultipartBody.Part? = null
-
     val checkCodingQuestionService=CheckCodingQuestionService()
 
     @RequiresApi(Build.VERSION_CODES.N)
