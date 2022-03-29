@@ -237,6 +237,7 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView, 
         val checkCodingQuestionService=CheckCodingQuestionService()
 
         checkCodingQuestionService.setcheckcodingquestionView(this)
+<<<<<<< HEAD
         val body = "multipart/form-data".toRequestBody(MultipartBody.FORM)
         val emptyPart = MultipartBody.Part.createFormData("images","",body)
         val emptyList = arrayListOf<MultipartBody.Part?>()
@@ -249,6 +250,17 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView, 
 
             checkCodingQuestionService.checkCodingQuestion(getJwt(this),CheckCoding(userIdx, currentError, myCodingSkill, bigCategoryIdx, smallCategoryIdx, title, codeQuestionUrl),null)
         }
+=======
+//
+//        if (images.toString().length>2) {
+//
+//            checkCodingQuestionService.checkCodingQuestion(getJwt(this), getCoding(), images)
+//        }else{
+//            checkCodingQuestionService.checkCodingQuestion(getJwt(this), getCoding(), null)
+//        }
+        checkCodingQuestionService.checkCodingQuestion(getJwt(this), CheckCoding(getUserIdx(this),"배고픔이란 뭘까요?","코딩스킬",1,2,"배고픔에 대해서",null), null)
+        Log.d("ppp/images", images.toString())
+>>>>>>> aa13fb4ab1a7ff7c8c6fac83e4b6c28f8aa5c6c6
         Log.d("CHECKCODING/APIHH","Hello")
 
     }

@@ -87,7 +87,7 @@ dependencies {
 
     // 사진 확대 축소
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
-    
+
 }
 
 

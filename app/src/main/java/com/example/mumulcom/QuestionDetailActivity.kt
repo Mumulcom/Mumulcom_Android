@@ -50,6 +50,8 @@ private lateinit var binding : ActivityQuestionDetailBinding
 
     lateinit var file : File
 
+    private var isFirst : Boolean = true
+
 
     private lateinit var resultLauncher : ActivityResultLauncher<Intent>
 
@@ -85,7 +87,7 @@ private lateinit var binding : ActivityQuestionDetailBinding
         binding.refreshLayout.setOnRefreshListener {
             //  서버에서 데이터 reload
             getRepliesForQuestion() // 질문에 대한 답변 받아오는 함수
-            initRecyclerView()
+    //        initRecyclerView()
 
             when(type){ // 내용 업데이트
                 1-> getDetailCodingQuestion() // 코딩 질문
@@ -315,7 +317,7 @@ private lateinit var binding : ActivityQuestionDetailBinding
         binding.currentErrorTv.text = "내용 : "+result[0].content // 질문 내용
         binding.codingSkillConstraintLayout.visibility = View.GONE
 
-        // content = result[0].content
+         content = result[0].content
 
         if(result[0].isLiked =="Y"){ // 이미 좋아요를 했을때
             isLiked = true
@@ -396,7 +398,11 @@ private lateinit var binding : ActivityQuestionDetailBinding
             binding.indicator.setViewPager(binding.viewPager)
 
             Log.d("이미지test","어댑터로 넘김")
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> aa13fb4ab1a7ff7c8c6fac83e4b6c28f8aa5c6c6
             images.addAll(result[0].questionImgUrls)
             Log.d("checkimage--",images.toString())
         }
@@ -450,7 +456,11 @@ private lateinit var binding : ActivityQuestionDetailBinding
         binding.likeCountTv.text = result[0].likeCount.toString() // 좋아요 수
 
 
+<<<<<<< HEAD
         //    content = result[0].currentError
+=======
+        content = result[0].currentError
+>>>>>>> aa13fb4ab1a7ff7c8c6fac83e4b6c28f8aa5c6c6
 
     }
 
@@ -476,7 +486,10 @@ private lateinit var binding : ActivityQuestionDetailBinding
     }
 
     override fun onGetRepliesSuccess(result: ArrayList<Reply>) {
+
         repliesForQuestionAdapter.addQuestions(result)
+     //   repliesForQuestionAdapter.replaceItem(result)
+
 
         repliesForQuestionAdapter.setRepliesClickListener(object : RepliesForQuestionAdapter.RepliesItemClickListener{
             override fun onRemoveAnswerButton(isClicked: Boolean) { // 답변하기 버튼 제거
@@ -487,12 +500,11 @@ private lateinit var binding : ActivityQuestionDetailBinding
                 }
             }
 
-            override fun onAccessAlbum(){ // 사진 추가 버튼 누르면 앨범 실행
-                getPhoto()
-            }
+            override fun setIsLike() {
+                // 답변 데이터 갱신
+                getRepliesForQuestion() // 질문에 대한 답변 받아오는 함수
+                initRecyclerView()
 
-            override fun getImageFile(): Bitmap { // 게시 버튼 누르면 bitmap 이미지 전달.
-                return pathList[0]
             }
 
             override fun goBackCommentActivity(_replyIdx: Long, profileImage: String, nickname: String, createdAt: String, replyUrl: String?, content: String, replyImgUrl: ArrayList<String>
@@ -511,7 +523,7 @@ private lateinit var binding : ActivityQuestionDetailBinding
             }
         })
 
-
+        isFirst =false
     }
     private fun getPhoto(){
         when{

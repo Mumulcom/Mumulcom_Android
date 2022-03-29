@@ -19,6 +19,7 @@ class CheckCodingQuestionService{
         this.checkCodingQuestionView=checkCodingQuestionView
     }
 
+<<<<<<< HEAD
     fun checkCodingQuestion(
         jwt: String,
         checkCoding: CheckCoding,
@@ -40,6 +41,10 @@ class CheckCodingQuestionService{
 //            jsonObject.toRequestBody(contentType = "application/json".toMediaTypeOrNull())
 //        Log.d("json/jsonObject", jsonObject)
 //        Log.d("json/CodeQuestionReq", CodeQuestionReq.toString())
+=======
+    fun checkCodingQuestion(jwt: String, checkcoding: CheckCoding, images: ArrayList<MultipartBody.Part>?){
+        val checkCodingQuestionService= getRetrofit().create(CheckCodingQuestionRetrofitInterface::class.java)
+>>>>>>> aa13fb4ab1a7ff7c8c6fac83e4b6c28f8aa5c6c6
 
         checkCodingQuestionView.onCheckCodingQuestionLoading()
 
