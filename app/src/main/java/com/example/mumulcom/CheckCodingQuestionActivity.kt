@@ -2,6 +2,7 @@ package com.example.mumulcom
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -26,17 +27,25 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.mumulcom.databinding.ActivityCheckcodingquestionBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.File
 
 
 //, CheckCodingQuestionView
-class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView {
+class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView, PhotoClickLister {
 
     lateinit var binding: ActivityCheckcodingquestionBinding
 
-//    private var images = arrayListOf<String>()
+    //    private var images = arrayListOf<String>()
     private var images = arrayListOf<MultipartBody.Part?>()
     var photoList = arrayListOf<Photo>()
     private var jwt: String = ""
@@ -63,10 +72,7 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView {
     private lateinit var smallCategoryAdapter: ArrayAdapter<String>
 
     // bitmap 변수
-    private  var path : Bitmap? = null
-    // multipart 관련 변수
-    private  var multibody= arrayListOf<MultipartBody.Part?>()
-
+    private  var imagePath : Bitmap? = null
     val checkCodingQuestionService=CheckCodingQuestionService()
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -97,6 +103,7 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView {
 
 
         photoList.add(Photo())
+
 
         //자동으로 완료버튼 채워지기
         binding.checkcodingquestionTitleTextEt.addTextChangedListener(object : TextWatcher {
@@ -154,52 +161,22 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView {
 
 
         if (count<5) {
-                //추가버튼
-                binding.checkcodingquestionPlusIv.setOnClickListener {
-                    val intent =
-                        Intent(this, CodingCameraShootingActivity::class.java)
-                    activityResultLauncher.launch(intent)
-                }
+            //추가버튼
+            binding.checkcodingquestionPlusIv.setOnClickListener {
+                val intent =
+                    Intent(this, CodingCameraShootingActivity::class.java)
+                activityResultLauncher.launch(intent)
+            }
 
         }
 
-
-        title=binding.checkcodingquestionTitleTextEt.text.toString()
-        currentError=binding.checkcodingquestionStopPartTextEt.text.toString()
-        myCodingSkill=binding.checkcodingquestionCodingLevelTextEt.text.toString()
-        codeQuestionUrl=binding.checkcodingquestionErrorCodeTextEt.text.toString()
-        bigCategoryIdx=binding.checkcodingquestionBigCategorySp.selectedItemPosition.toLong()+1
-        if (bigCategoryIdx.toInt()==5) {
-            smallCategoryIdx =null
-            Log.i(ContentValues.TAG, "하위 카테고리 넘버 확인: $smallCategoryIdx")
-        }
-        else {
-            if (bigCategory == "앱") {
-                smallCategoryIdx =
-                    binding.checkcodingquestionSmallCategorySp.selectedItemPosition.toLong() + 1
-                Log.i(ContentValues.TAG, "하위 카테고리 넘버 확인: $smallCategoryIdx")
-            }
-            if (bigCategory == "웹") {
-                smallCategoryIdx =
-                    binding.checkcodingquestionSmallCategorySp.selectedItemPosition.toLong() + 3
-                Log.i(ContentValues.TAG, "하위 카테고리 넘버 확인: $smallCategoryIdx")
-            }
-            if (bigCategory == "서버") {
-                smallCategoryIdx =
-                    binding.checkcodingquestionSmallCategorySp.selectedItemPosition.toLong() + 6
-                Log.i(ContentValues.TAG, "하위 카테고리 넘버 확인: $smallCategoryIdx")
-            }
-            if (bigCategory == "프로그래밍 언어") {
-                smallCategoryIdx =
-                    binding.checkcodingquestionSmallCategorySp.selectedItemPosition.toLong() + 8
-                Log.i(ContentValues.TAG, "하위 카테고리 넘버 확인: $smallCategoryIdx")
-            }
-        }
 
         //질문하기등록 및 데이터 삭제
         binding.checkcodingquestionQuestionIv.setOnClickListener {
             checkcodingif()
         }
+
+
 
         //뒤로가기 버튼
         binding.checkcodingquestionBackIv.setOnClickListener {
@@ -210,7 +187,8 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView {
     }
 
 
-    private fun getCoding(): CheckCoding {  // view에서 받은 값들
+    //api서버
+    private fun checkCodingQuestion(){
 
         title=binding.checkcodingquestionTitleTextEt.text.toString()
         currentError=binding.checkcodingquestionStopPartTextEt.text.toString()
@@ -243,7 +221,6 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView {
                 Log.i(ContentValues.TAG, "하위 카테고리 넘버 확인: $smallCategoryIdx")
             }
         }
-
         Log.d("images", images.toString())
         Log.d("userIdx : ", userIdx.toString())
         Log.d("title : ", title)
@@ -252,53 +229,54 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView {
         Log.d("codeQuestionUrl : ", codeQuestionUrl)
         Log.d("bigCategoryIdx : ", bigCategoryIdx.toString())
         Log.d("smallCategoryIdx :", smallCategoryIdx.toString())
-        return CheckCoding(userIdx, currentError, myCodingSkill, bigCategoryIdx, smallCategoryIdx, title, codeQuestionUrl)
 
-    }
-
-    //    //api서버
-    private fun checkCodingQuestion(){
         val checkCodingQuestionService=CheckCodingQuestionService()
 
         checkCodingQuestionService.setcheckcodingquestionView(this)
-//
-//        if (images.toString().length>2) {
-//
-//            checkCodingQuestionService.checkCodingQuestion(getJwt(this), getCoding(), images)
-//        }else{
-//            checkCodingQuestionService.checkCodingQuestion(getJwt(this), getCoding(), null)
-//        }
-        checkCodingQuestionService.checkCodingQuestion(getJwt(this), CheckCoding(getUserIdx(this),"배고픔이란 뭘까요?","코딩스킬",1,2,"배고픔에 대해서",null), null)
-        Log.d("ppp/images", images.toString())
+
+        val body = "multipart/form-data".toRequestBody(MultipartBody.FORM)
+        val emptyPart = MultipartBody.Part.createFormData("images","",body)
+        val emptyList = arrayListOf<MultipartBody.Part?>()
+        emptyList.add(emptyPart)
+
+
+        if (images.toString().length>2) {//이미지가 있으면
+            checkCodingQuestionService.checkCodingQuestion(getJwt(this), images, userIdx, currentError, myCodingSkill, bigCategoryIdx, smallCategoryIdx, title, codeQuestionUrl)
+        }else{//이미지가 없으면
+
+            checkCodingQuestionService.checkCodingQuestion(getJwt(this),null, userIdx, currentError, myCodingSkill, bigCategoryIdx, smallCategoryIdx, title, codeQuestionUrl)
+        }
+
         Log.d("CHECKCODING/APIHH","Hello")
+
     }
 
 
 
     private fun checkcodingif(){
         if (binding.checkcodingquestionSmallCategorySp.isEnabled() == false) {
-                Toast.makeText(this, "카테고리를 선택해주세요.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "카테고리를 선택해주세요.", Toast.LENGTH_SHORT).show()
 
+            return
+        }
+        if (bigCategory != "기타") {
+            if (smallCategory == null) {
+                Toast.makeText(this, "하위 카테고리를 선택해주세요.", Toast.LENGTH_SHORT).show()
                 return
             }
-            if (bigCategory != "기타") {
-                if (smallCategory == null) {
-                    Toast.makeText(this, "하위 카테고리를 선택해주세요.", Toast.LENGTH_SHORT).show()
-                    return
-                }
-            }
-            if (binding.checkcodingquestionTitleTextEt.text.isEmpty()) {
+        }
+        if (binding.checkcodingquestionTitleTextEt.text.isEmpty()) {
 
-                Toast.makeText(this, "제목을 작성해주세요.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "제목을 작성해주세요.", Toast.LENGTH_SHORT).show()
 
-                return
-            }
-            if (binding.checkcodingquestionStopPartTextEt.text.isEmpty()) {
+            return
+        }
+        if (binding.checkcodingquestionStopPartTextEt.text.isEmpty()) {
 
-                Toast.makeText(this, "현재 막힌 부분을 작성해주세요.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "현재 막힌 부분을 작성해주세요.", Toast.LENGTH_SHORT).show()
 
-                return
-            }
+            return
+        }
 
 
         //승인 버튼 눌러야 api전송
@@ -350,55 +328,36 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView {
     }
 
 
+
     //카메라 앨범 이미지 가져오기
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == RESULT_OK) {
-//            var imagePath = data?.getStringExtra("path")!!
-            var imagePath = data?.getByteArrayExtra("path")!!
-//            path=data?.getParcelableExtra("path")!!
+            var stringpath = data?.getStringExtra("imagepath")!!
+            val imagePath = data?.getByteArrayExtra("path")!!
 
             Log.d("ppp/get", imagePath.toString())
 
             //데이터적용
             photoList.apply {
-                add( 0, Photo(imagePath))
-                Log.d("SEND/path", imagePath.toString())
+                add( 0, Photo(stringpath))
+                Log.d("STRING/path", stringpath.toString())
                 count++
                 Log.d("path/count", count.toString())
+
             }
             Log.d("GETGET", photoList.toString())
+
 
             if (imagePath!=null) {
                 val sendImage = imagePath.toRequestBody("image/*".toMediaTypeOrNull())
                 val multibody: MultipartBody.Part=MultipartBody.Part.createFormData("images", "image.jpeg", sendImage)
                 images.add(multibody)
             }
-
-                //set되는 부분-파이어베이스
-//                if (imagePath != null) {
-//                    var fileName =
-//                        SimpleDateFormat("yyyyMMddHHmmss").format(Date()) // 파일명이 겹치면 안되기 떄문에 시년월일분초 지정
-//                    storage.getReference().child("image").child(fileName).putFile(imagePath.toUri())
-//                        //어디에 업로드할지 지정
-//                        .addOnSuccessListener { taskSnapshot -> // 업로드 정보를 담는다
-//                            taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener { it ->
-//                                var imageUrl = it.toString()
-//                                var photo = Photo(imageUrl)
-//                                firestore.collection("coding-images")
-//                                    .document().set(photo)
-//                                    .addOnSuccessListener {
-//                                    }
-//                                Log.d("gege/imageUrl", imageUrl)
-//                                Log.d("gege/photo", photo.toString())
-//                                images.add(imageUrl)
-//
-//                            }
-//                        }
-//
-//                }
+            Log.d("path/multi", images.toString())
+            binding.checkcodingquestionPlusIv.visibility=View.GONE
 
             //이미지가 5개부터는 추가 불
             if (count>=5){
@@ -408,32 +367,19 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView {
                 }
             }
 
-
             // 뷰페이저 어댑터 생성
-            viewPagerAdapter = ViewPagerAdapter(this, photoList)
+            viewPagerAdapter = ViewPagerAdapter(this, photoList, this)
             binding.checkcodingquestionVp.adapter = viewPagerAdapter
             binding.checkcodingquestionVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
             binding.checkcodingIndicator.setViewPager(binding.checkcodingquestionVp)
+            binding.checkcodingIndicator.createIndicators(count, 0)
 
         }
 
     }
 
-    fun onClickMeClick(position: Int) {
-        Toast.makeText(this, String.format("ClickMe:%d", position), Toast.LENGTH_SHORT)
-            .show()
-    }
 
-    fun onItemClick(position: Int) {
-        val intent =
-            Intent(this, CodingCameraShootingActivity::class.java)
-        activityResultLauncher.launch(intent)
-    }
-//        Toast.makeText(
-//            this,
-//            String.format("ItemClick:%d", position),
-//            Toast.LENGTH_SHORT
-//        ).show()
+
     /********************* 스피너 ********************/
     // dp 값을 px 값으로 변환해주는 함수
     private fun dipToPixels(dipValue: Float): Float {
@@ -611,6 +557,12 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView {
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
         }
+    }
+
+    override fun onPhotoClicked(photo: Photo) {
+        val intent =
+            Intent(this, CodingCameraShootingActivity::class.java)
+        activityResultLauncher.launch(intent)
     }
 
 }

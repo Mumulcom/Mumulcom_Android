@@ -30,7 +30,7 @@ import okhttp3.MultipartBody
 
 
 // CheckConcetpuestionView
-class CheckConceptQuestionActivity:AppCompatActivity(), CheckConceptQuestionView {
+class CheckConceptQuestionActivity:AppCompatActivity(), CheckConceptQuestionView, PhotoClickLister {
 
     lateinit var binding: ActivityCheckconceptquestionBinding
 
@@ -289,12 +289,13 @@ class CheckConceptQuestionActivity:AppCompatActivity(), CheckConceptQuestionView
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == RESULT_OK) {
+ //           var imagePath = data?.getStringExtra("path")!!
             var imagePath = data?.getByteArrayExtra("path")!!
-            path = data?.getParcelableExtra("path")!!
+            var stringpath = data?.getStringExtra("imagepath")!!
 
             photoList.apply {
-                add(Photo(imagePath))
-                Log.d("SEND/path", imagePath.toString())
+                add(Photo(stringpath))
+                Log.d("SEND/path", stringpath)
                 count++
                 Log.d("path/count", count.toString())
             }
@@ -330,10 +331,11 @@ class CheckConceptQuestionActivity:AppCompatActivity(), CheckConceptQuestionView
                 }
             }
             // 뷰페이저 어댑터 생성
-            viewPagerAdapter = ViewPagerAdapter(this, photoList)
+            viewPagerAdapter = ViewPagerAdapter(this, photoList, this)
             binding.checkconceptquestionVp.adapter = viewPagerAdapter
             binding.checkconceptquestionVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
             binding.checkconceptIndicator.setViewPager(binding.checkconceptquestionVp)
+            binding.checkconceptIndicator.createIndicators(count, 0)
         }
 
     }
@@ -531,6 +533,12 @@ class CheckConceptQuestionActivity:AppCompatActivity(), CheckConceptQuestionView
         Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show()
 
         finish()
+    }
+
+    override fun onPhotoClicked(photo: Photo) {
+        val intent =
+            Intent(this, ConceptCameraShootingActivity::class.java)
+        activityResultLauncher.launch(intent)
     }
 
 
