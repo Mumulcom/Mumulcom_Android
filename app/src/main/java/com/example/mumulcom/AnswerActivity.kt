@@ -25,7 +25,9 @@ import com.example.mumulcom.databinding.ActivityAnswerBinding
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 
 class AnswerActivity:AppCompatActivity(), AnswerView {
@@ -46,11 +48,6 @@ class AnswerActivity:AppCompatActivity(), AnswerView {
     lateinit var answerQuestionVPAdater: AnswerQuestionVPAdater
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>//이동(카메라 앨범)
     var count=0//이미지 수
-
-    // bitmap 변수
-    private  var path : Bitmap? = null
-    // multipart 관련 변수
-    private  var multibody : MultipartBody.Part? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -150,16 +147,25 @@ class AnswerActivity:AppCompatActivity(), AnswerView {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == RESULT_OK) {
-//            path = data?.getParcelableExtra("path")!!
-            var imagePath = data?.getByteArrayExtra("path")!!
+            var stringpath = data?.getStringExtra("imagepath")!!
+//            val imagePath = data?.getByteArrayExtra("path")!!
 
             photoList.apply {
-                add(Photo(imagePath))
-                Log.d("SEND/path", imagePath.toString())
+                add( Photo(stringpath))
+                Log.d("SEND/path", stringpath)
                 count++
                 Log.d("path/count", count.toString())
+                images.add(stringpath)
             }
             Log.d("GETGET", photoList.toString())
+
+//            if (imagePath!=null) {
+//                val sendImage = imagePath.toRequestBody("image/*".toMediaTypeOrNull())
+//                val multibody: MultipartBody.Part=MultipartBody.Part.createFormData("images", "image.jpeg", sendImage)
+////                images.add(multibody)
+//            }
+            Log.d("path/multi", images.toString())
+
             //이미지가 5개부터는 추가 불
             if (count>=5){
                 //추가버튼
@@ -206,6 +212,7 @@ class AnswerActivity:AppCompatActivity(), AnswerView {
         val secondIntent = intent
         val message = secondIntent.getStringExtra("content")
         questionTV.setText("질문: "+ message)
+        Log.d("get/content", message.toString())
 
         //현재코딩실력 내용
         val myCodingSkill=binding.answerCodingLevelContentTv
@@ -217,7 +224,7 @@ class AnswerActivity:AppCompatActivity(), AnswerView {
             binding.answerLevelLinearLayout.visibility=View.VISIBLE
 
         }
-        Log.d("get/level", levelmessage.toString())
+        Log.d("get/myCodingSkilll", levelmessage.toString())
         if (levelmessage==null) {
             binding.answerLevelLinearLayout.visibility=View.GONE
 

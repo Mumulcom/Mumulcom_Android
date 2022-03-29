@@ -42,7 +42,7 @@ private lateinit var binding : ActivityQuestionDetailBinding
     private var isScrap = false // 질문에 대한 scrap 변수
     private  var isAdopted : String = "N"
     private  var isWriter : Boolean = false
-    private lateinit var images : ArrayList<String>
+    private  var images : ArrayList<String> = ArrayList<String>()
     private var myCodingSkill : String? = null
     private var content : String? = null
 
@@ -110,8 +110,11 @@ private lateinit var binding : ActivityQuestionDetailBinding
             val intent = Intent(this,AnswerActivity::class.java)
             intent.putExtra("questionIdx",questionIdx) //  type : Long
             intent.putStringArrayListExtra("images",images)  //type : arrayList<string>
+            Log.d("checkimage",images.toString())
             intent.putExtra("myCodingSkill",myCodingSkill)
             intent.putExtra("content",content)
+            Log.d("aaa",myCodingSkill.toString())
+            Log.d("aaa",content.toString())
             startActivity(intent)
         }
 
@@ -298,6 +301,8 @@ private lateinit var binding : ActivityQuestionDetailBinding
             imageViewPagerAdapter.addQuestions(result[0].questionImgUrls!!)
             binding.viewPager.adapter = imageViewPagerAdapter
             binding.indicator.setViewPager(binding.viewPager)
+            images.addAll(result[0].questionImgUrls)
+            Log.d("checkimage--",images.toString())
 
         }
 //        images = result[0].questionImgUrls
@@ -390,12 +395,13 @@ private lateinit var binding : ActivityQuestionDetailBinding
             binding.viewPager.adapter = imageViewPagerAdapter
             binding.indicator.setViewPager(binding.viewPager)
 
-
             Log.d("이미지test","어댑터로 넘김")
 
+            images.addAll(result[0].questionImgUrls)
+            Log.d("checkimage--",images.toString())
         }
 
-       // images = result[0].questionImgUrls
+        // images = result[0].questionImgUrls
 
 
         binding.currentErrorTv.text = "내용 : "+ result[0].currentError // 질문 내용
@@ -444,7 +450,7 @@ private lateinit var binding : ActivityQuestionDetailBinding
         binding.likeCountTv.text = result[0].likeCount.toString() // 좋아요 수
 
 
-    //    content = result[0].currentError
+        //    content = result[0].currentError
 
     }
 

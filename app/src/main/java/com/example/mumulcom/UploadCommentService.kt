@@ -26,7 +26,9 @@ class UploadCommentService {
             .enqueue(object : retrofit2.Callback<UploadCommentResponse>{
                 override fun onResponse(call: Call<UploadCommentResponse>, response: Response<UploadCommentResponse>) {
 
-                    Log.d("banana",response.body().toString())
+                    Log.d("banana/response.body()",response.body().toString())
+
+                    Log.d("APIAPI//commentSend",uploadCommentService.getUploadComment(jwt,commentSend,body).request().toString())
                     val resp = response.body()!!
 
                     when(resp.code){
