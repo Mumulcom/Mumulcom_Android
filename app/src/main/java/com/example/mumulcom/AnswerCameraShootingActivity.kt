@@ -25,6 +25,7 @@ import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.mumulcom.databinding.ActivityAnswercamerashootingBinding
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.lang.String
@@ -179,7 +180,12 @@ class AnswerCameraShootingActivity: AppCompatActivity() {
             if(imagePath!="") {
                 binding.ivPre.visibility = View.VISIBLE
                 binding.answercameraCamerashootingCheckIb.setOnClickListener {
-                    intent.putExtra("path", imagePath)
+                    intent.putExtra("imagepath", imagePath)
+//                    val uploadBitmap = Bitmap.createScaledBitmap(bitmap!!,500,400,true)
+//                    val stream = ByteArrayOutputStream()
+//                    uploadBitmap.compress(Bitmap.CompressFormat.JPEG,100,stream)
+//                    val byteArray = stream.toByteArray()
+//                    intent.putExtra("path", byteArray)
                     setResult(RESULT_OK, intent);
                     finish()
                     Log.d("PUT/path", imagePath)

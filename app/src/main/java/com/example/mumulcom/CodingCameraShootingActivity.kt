@@ -158,11 +158,9 @@ class CodingCameraShootingActivity: AppCompatActivity() {
                     val options = BitmapFactory.Options()
                     options.inSampleSize = 2 // 이미지 축소 정도. 원 크기에서 1/inSampleSize 로 축소됨
                     bitmap = BitmapFactory.decodeFile(imagePath, options)
-//                    imagePath= bitmap.toString()
                     binding.ivPre.visibility = View.VISIBLE
                 }
             }
-//            binding.ivPre.setImageBitmap(bitmap)
             //사진이 회전되므로 보여줄떈 imagepath, 넘겨줄땐 bitmap
             Glide.with(this)
                 .load(imagePath)
@@ -180,7 +178,7 @@ class CodingCameraShootingActivity: AppCompatActivity() {
             }
 
 
-            //이미지가 null값이 아니어야 체크버튼 클릭 가능
+            //이미지가 null값이 아니어야 체크버튼 클릭 가능(사진 다른 액티비티로 전송)
             if(imagePath!="") {
                 binding.ivPre.visibility=View.VISIBLE
                 binding.camerashootingCheckIb.setOnClickListener {
@@ -189,6 +187,7 @@ class CodingCameraShootingActivity: AppCompatActivity() {
                     uploadBitmap.compress(Bitmap.CompressFormat.JPEG,100,stream)
                     val byteArray = stream.toByteArray()
                     intent.putExtra("path", byteArray)
+                    intent.putExtra("imagepath", imagePath)
                     setResult(RESULT_OK, intent);
                     finish()
                     Log.d("PUT/path", byteArray.toString())
@@ -196,14 +195,6 @@ class CodingCameraShootingActivity: AppCompatActivity() {
                 }
             }
 
-//            //삭제버튼
-//            binding.camerashootingturnIb.setOnClickListener {
-//                imagePath=""
-//                binding.ivPre.visibility=View.INVISIBLE
-//                binding.camerashootingCheckIb.setOnClickListener {
-//                    Toast.makeText(this, "이미지를 넣어주세요", Toast.LENGTH_SHORT).show()
-//                }
-//            }
         }
     }
 

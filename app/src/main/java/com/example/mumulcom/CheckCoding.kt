@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 // 코딩 질문하기
 data class CheckCoding(
-//    @SerializedName("images") val images: ArrayList<String>?,//이미지 우선 List<multiplefile>
     @SerializedName("userIdx") var userIdx: Long, //유저
     @SerializedName("currentError") var currentError: String, // 현재 막힌 부분
     @SerializedName("myCodingSkill") var myCodingSkill: String?, // 현재 나의 코딩 실력
