@@ -36,7 +36,6 @@ class CodingCameraShootingActivity: AppCompatActivity() {
 
     //이미지 전송
     val CAMERA: Int = 100
-    val CHECK:Int=1000
     val GALLERY: Int = 101 // 갤러리 선택 시 인텐트로 보내는 값
     var imagePath=""
     @RequiresApi(Build.VERSION_CODES.N)
@@ -199,26 +198,6 @@ class CodingCameraShootingActivity: AppCompatActivity() {
     }
 
 
-
-//    @RequiresApi(Build.VERSION_CODES.N)
-//    @SuppressLint("SimpleDateFormat")
-//    @Throws(IOException::class)
-//    fun createImageFile(): File? {
-//// 이미지 파일 생성
-//// SimpleDateFormat imageDate = new SimpleDateFormat("yyyyMMdd_HHmmss");
-//        val timeStamp = imageDate.format(Date()) // 파일명 중복을 피하기 위한 "yyyyMMdd_HHmmss"꼴의 timeStamp
-//        val fileName = "IMAGE_$timeStamp" // 이미지 파일 명
-//        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-//        val file = File.createTempFile(fileName, ".jpg", storageDir) // 이미지 파일 생성
-//        imagePath = file.absolutePath // 파일 절대경로 저장하기, String
-//        imagePath=file.path
-//        Log.d("file//",file.path)
-//        imagePath= file.toUri().toString()
-//        Log.d("file//",file.toUri().toString())
-//        imagePath= file.toURI().toString()
-//        Log.d("file//",file.toURI().toString())
-//        return file
-//    }
 
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SimpleDateFormat")
