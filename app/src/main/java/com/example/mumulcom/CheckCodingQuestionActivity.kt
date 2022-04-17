@@ -2,7 +2,6 @@ package com.example.mumulcom
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -27,29 +26,22 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.mumulcom.databinding.ActivityCheckcodingquestionBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
 
 
 //, CheckCodingQuestionView
 class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView, PhotoClickLister {
 
     lateinit var binding: ActivityCheckcodingquestionBinding
-
-    //    private var images = arrayListOf<String>()
     private var images = arrayListOf<MultipartBody.Part?>()
     var photoList = arrayListOf<Photo>()
     private var jwt: String = ""
-    private var userIdx: Long = 0
+    private var userIdx: Long =0
     private lateinit var title: String
     private lateinit var currentError: String
     private lateinit var myCodingSkill: String
@@ -72,7 +64,6 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView, 
     private lateinit var smallCategoryAdapter: ArrayAdapter<String>
 
     // bitmap 변수
-    private  var imagePath : Bitmap? = null
     val checkCodingQuestionService=CheckCodingQuestionService()
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -230,21 +221,27 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView, 
         Log.d("bigCategoryIdx : ", bigCategoryIdx.toString())
         Log.d("smallCategoryIdx :", smallCategoryIdx.toString())
 
-        val checkCodingQuestionService=CheckCodingQuestionService()
+//        val checkCodingQuestionService=CheckCodingQuestionService()
 
         checkCodingQuestionService.setcheckcodingquestionView(this)
 
-        val body = "multipart/form-data".toRequestBody(MultipartBody.FORM)
-        val emptyPart = MultipartBody.Part.createFormData("images","",body)
-        val emptyList = arrayListOf<MultipartBody.Part?>()
-        emptyList.add(emptyPart)
-
 
         if (images.toString().length>2) {//이미지가 있으면
-            checkCodingQuestionService.checkCodingQuestion(getJwt(this), images, userIdx, currentError, myCodingSkill, bigCategoryIdx, smallCategoryIdx, title, codeQuestionUrl)
-        }else{//이미지가 없으면
+                checkCodingQuestionService.checkCodingQuestion(
+                    getJwt(this),
+                    images, userIdx,
+                        currentError,
+                        myCodingSkill,
+                        bigCategoryIdx,
+                        smallCategoryIdx,
+                        title,
+                        codeQuestionUrl
+                )
 
-            checkCodingQuestionService.checkCodingQuestion(getJwt(this),null, userIdx, currentError, myCodingSkill, bigCategoryIdx, smallCategoryIdx, title, codeQuestionUrl)
+        }else{//이미지가 없으면
+            checkCodingQuestionService.checkCodingQuestion(getJwt(this),null,
+               userIdx, currentError, myCodingSkill, bigCategoryIdx, smallCategoryIdx, title, codeQuestionUrl)
+
         }
 
         Log.d("CHECKCODING/APIHH","Hello")
@@ -349,7 +346,6 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView, 
 
             }
             Log.d("GETGET", photoList.toString())
-
 
             if (imagePath!=null) {
                 val sendImage = imagePath.toRequestBody("image/*".toMediaTypeOrNull())
