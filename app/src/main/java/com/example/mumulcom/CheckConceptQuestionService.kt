@@ -16,13 +16,14 @@ class CheckConceptQuestionService{
         this.checkConceptQuestionView=checkConceptQuestionView
     }
 
-    fun checkConceptQuestion(jwt: String, images: List<MultipartBody.Part?>?, userIdx: Long, bigCategoryIdx: Long, smallCategoryIdx: Long?, title: String, content:String){
+    fun checkConceptQuestion(jwt: String, images: List<MultipartBody.Part?>?, checkConcept: CheckConcept){
+//        fun checkConceptQuestion(jwt: String, images: List<MultipartBody.Part?>?, userIdx: Long, bigCategoryIdx: Long, smallCategoryIdx: Long?, title: String, content:String){
         val checkConceptQuestionService= getRetrofit().create(CheckConceptQuestionRetrofitInterface::class.java)
 
-        val jsonObject = JSONObject("{\"userIdx\":${userIdx},\"bigCategoryIdx\":${bigCategoryIdx}, \"smallCategoryIdx\":${smallCategoryIdx},\"title\":\"${title}\",\"content\":\"${content}\"}").toString()
-        val conceptQueReq = jsonObject.toRequestBody("application/json".toMediaTypeOrNull())
-        Log.d("json/jsonObject", jsonObject)
-        Log.d("json/jsonBody", conceptQueReq.toString())
+//        val jsonObject = JSONObject("{\"userIdx\":${userIdx},\"bigCategoryIdx\":${bigCategoryIdx}, \"smallCategoryIdx\":${smallCategoryIdx},\"title\":\"${title}\",\"content\":\"${content}\"}").toString()
+//        val conceptQueReq = jsonObject.toRequestBody("application/json".toMediaTypeOrNull())
+//        Log.d("json/jsonObject", jsonObject)
+//        Log.d("json/jsonBody", conceptQueReq.toString())
 
         checkConceptQuestionView.onCheckConceptQuestionLoading()
 
@@ -30,7 +31,7 @@ class CheckConceptQuestionService{
             null
         }else{
             images
-        }, conceptQueReq).enqueue(object : Callback<CheckConceptQuestionResponse>{
+        }, checkConcept).enqueue(object : Callback<CheckConceptQuestionResponse>{
             override fun onResponse(
                 call: Call<CheckConceptQuestionResponse>,
                 response: Response<CheckConceptQuestionResponse>

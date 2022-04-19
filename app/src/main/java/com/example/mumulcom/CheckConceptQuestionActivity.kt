@@ -211,16 +211,16 @@ class CheckConceptQuestionActivity:AppCompatActivity(), CheckConceptQuestionView
         if (images.toString().length>2) {//이미지가 있으면
             checkConceptQuestionService.checkConceptQuestion(
                 getJwt(this),
-                images, userIdx,
+                images, CheckConcept(userIdx,
                 bigCategoryIdx,
                 smallCategoryIdx,
                 title,
-                content
+                content)
             )
 
         }else{//이미지가 없으면
             checkConceptQuestionService.checkConceptQuestion(getJwt(this),null,
-                userIdx, bigCategoryIdx, smallCategoryIdx, title, content)
+                CheckConcept(userIdx, bigCategoryIdx, smallCategoryIdx, title, content))
 
         }
 

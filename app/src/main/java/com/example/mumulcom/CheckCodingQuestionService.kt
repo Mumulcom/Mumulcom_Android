@@ -18,15 +18,16 @@ class CheckCodingQuestionService{
     }
 
     fun checkCodingQuestion(
-        jwt: String, images: ArrayList<MultipartBody.Part?>?, userIdx: Long, currentError:String, myCodingSkill: String?, bigCategoryIdx: Long, smallCategoryIdx: Long?, title: String, codeQuestionUrl: String?
-    ) {
+        jwt: String, images: ArrayList<MultipartBody.Part?>?, checkCoding: CheckCoding) {
+//        jwt: String, images: ArrayList<MultipartBody.Part?>?, userIdx: Long, currentError:String, myCodingSkill: String?, bigCategoryIdx: Long, smallCategoryIdx: Long?, title: String, codeQuestionUrl: String?
+//        ) {
 
         val checkCodingQuestionService= getRetrofit().create(CheckCodingQuestionRetrofitInterface::class.java)
 
-        val jsonObject = JSONObject("{\"userIdx\":${userIdx},\"currentError\":\"${currentError}\",\"myCodingSkill\":\"${myCodingSkill}\",\"bigCategoryIdx\":${bigCategoryIdx}, \"smallCategoryIdx\":${smallCategoryIdx},\"title\":\"${title}\",\"codeQuestionUrl\":\"${codeQuestionUrl}\"}").toString()
-        val codeQuestionReq = jsonObject.toRequestBody("application/json".toMediaTypeOrNull())
-        Log.d("json/jsonObject", jsonObject)
-        Log.d("json/jsonBody", codeQuestionReq.toString())
+//        val jsonObject = JSONObject("{\"userIdx\":${userIdx},\"currentError\":\"${currentError}\",\"myCodingSkill\":\"${myCodingSkill}\",\"bigCategoryIdx\":${bigCategoryIdx}, \"smallCategoryIdx\":${smallCategoryIdx},\"title\":\"${title}\",\"codeQuestionUrl\":\"${codeQuestionUrl}\"}").toString()
+//        val codeQuestionReq = jsonObject.toRequestBody("application/json".toMediaTypeOrNull())
+//        Log.d("json/jsonObject", jsonObject)
+//        Log.d("json/jsonBody", codeQuestionReq.toString())
 
         checkCodingQuestionView.onCheckCodingQuestionLoading()
         
@@ -35,12 +36,10 @@ class CheckCodingQuestionService{
                 null
             }else{
                 images
-                 }, codeQuestionReq).enqueue(object : Callback<CheckCodingQuestionResponse> {
+                 }, checkCoding).enqueue(object : Callback<CheckCodingQuestionResponse> {
             override fun onResponse(call: Call<CheckCodingQuestionResponse>, response: Response<CheckCodingQuestionResponse>) {
                 Log.d("CHECKCODING/API-RESPONSE", response.toString())
-                Log.d("CHECKCODING/API-body", checkCodingQuestionService.checkCodingQuestion(
-                    jwt, images, codeQuestionReq
-                ).request().toString())
+                Log.d("co/API-RESPONSE", checkCoding.toString())
                 if (response.isSuccessful&&response.code()==200){
                     val resp=response.body()!!
                     Log.d("CHECKCODING/API-SUCCESS-mumulcom", resp.toString())

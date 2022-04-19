@@ -57,7 +57,7 @@ class CodingCameraShootingActivity: AppCompatActivity() {
 
 
 
-        //        권한 체크
+        //권한 체크
         val hasCamPerm =
             checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
         val hasWritePerm =
