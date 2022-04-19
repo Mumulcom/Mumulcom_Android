@@ -13,7 +13,7 @@ interface CheckConceptQuestionRetrofitInterface {
     fun checkConceptQuestion(
         @Header("X-ACCESS-TOKEN") jwt: String,
         @Part images: List<MultipartBody.Part?>?,
-        @Part ("conceptQueReq") conceptQueReq: RequestBody,
+        @Part ("conceptQueReq") conceptQueReq: CheckConcept,
     ): Call<CheckConceptQuestionResponse>
 }
 

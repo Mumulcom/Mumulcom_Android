@@ -408,8 +408,6 @@ private lateinit var binding : ActivityQuestionDetailBinding
 
         binding.currentErrorTv.text = "내용 : "+ result[0].currentError // 질문 내용
 
-
-
         if(result[0].codeQuestionUrl==""||result[0].codeQuestionUrl==null){ // 오류 코드 첨부
             binding.myErrorCodeLayout.visibility = View.GONE
 
@@ -417,7 +415,7 @@ private lateinit var binding : ActivityQuestionDetailBinding
             binding.myErrorCodeLayout.visibility = View.VISIBLE
             binding.myErrorCodeTv.text = result[0].codeQuestionUrl
         }
-
+        Log.d("co", result[0].codeQuestionUrl.toString())
 
         if(result[0].myCodingSkill == ""||result[0].myCodingSkill==null){ // 내 코딩 실력
             binding.codingSkillConstraintLayout.visibility = View.GONE

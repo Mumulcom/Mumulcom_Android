@@ -13,7 +13,7 @@ interface CheckCodingQuestionRetrofitInterface {
     fun checkCodingQuestion(
         @Header("X-ACCESS-TOKEN") X_ACCESS_TOKEN: String,
         @Part images: List<MultipartBody.Part?>?,
-        @Part ("codeQuestionReq") codeQuestionReq: RequestBody,
+        @Part ("codeQuestionReq") codeQuestionReq: CheckCoding,
         ): Call<CheckCodingQuestionResponse>
 }
 
