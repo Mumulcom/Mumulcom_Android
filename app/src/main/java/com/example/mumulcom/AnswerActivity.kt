@@ -269,11 +269,11 @@ class AnswerActivity:AppCompatActivity(), AnswerView {
 
         answerService.setanswerView(this)
 
-//        if (images.toString().length>2) {
-            answerService.answer(getJwt(this), images, questionIdx, userIdx, replyUrl, content)
-//        }else{
-//            answerService.answer(getJwt(this), null, questionIdx, userIdx, replyUrl, content)
-//        }
+        if (images.toString().length>2) {
+            answerService.answer(getJwt(this), images, Answer(questionIdx, userIdx, replyUrl, content))
+        }else{
+            answerService.answer(getJwt(this), null,Answer(questionIdx, userIdx, replyUrl, content))
+        }
         Log.d("ANSWER/API","Hello")
     }
 

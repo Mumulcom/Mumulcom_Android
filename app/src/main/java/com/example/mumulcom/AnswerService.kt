@@ -17,12 +17,9 @@ class AnswerService{
         this.answerView=answerView
     }
 
-    fun answer(jwt: String, images: List<MultipartBody.Part?>, questionIdx: Long, userIdx: Long, replyUrl: String?, content: String){
-        val answerService= getRetrofit().create(AnswerRetrofitInterface::class.java)
 
-        val jsonObject = JSONObject("{\"questionIdx\":${questionIdx},\"userIdx\":${userIdx},\"replyUrl\":\"${replyUrl}\",\"content\":\"${content}\"}").toString()
-        val jsonBody = jsonObject.toRequestBody("application/json".toMediaTypeOrNull())
-        Log.d("json/jsonObject", jsonObject)
+    fun answer(jwt: String, images: List<MultipartBody.Part?>?, answer: Answer){
+        val answerService= getRetrofit().create(AnswerRetrofitInterface::class.java)
 
         val body = "".toRequestBody(MultipartBody.FORM)
         val emptyPart = MultipartBody.Part.createFormData("images","",body)
@@ -35,13 +32,13 @@ class AnswerService{
                                                    emptyList
                                                    }else{
                                                         images
-                                                        }, jsonBody).enqueue(object : Callback<AnswerResponse>{
+                                                        }, answer).enqueue(object : Callback<AnswerResponse>{
             override fun onResponse(
                 call: Call<AnswerResponse>,
                 response: Response<AnswerResponse>
             ) {
                 Log.d("ANSWER/API-RESPONSE", response.toString())
-                Log.d("json/API-body", answerService.answer(jwt, emptyList, jsonBody).request().toString())
+
                 if (response.isSuccessful&&response.code()==200){
                     val resp=response.body()!!
                     Log.d("ANSWER/API-SUCCESS-mumulcom", resp.toString())

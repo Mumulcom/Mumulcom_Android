@@ -11,7 +11,7 @@ interface AnswerRetrofitInterface {
     @POST("/replies")
     fun answer(
         @Header("X-ACCESS-TOKEN") jwt: String,
-        @Part images: List<MultipartBody.Part?>,
-        @Part ("postReplyReq") postReplyReq: RequestBody
+        @Part images: List<MultipartBody.Part?>?,
+        @Part ("postReplyReq") postReplyReq: Answer
     ): Call<AnswerResponse>
 }
