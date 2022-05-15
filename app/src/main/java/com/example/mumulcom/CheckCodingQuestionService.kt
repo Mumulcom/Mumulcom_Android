@@ -10,6 +10,7 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.ArrayList
 
 
 class CheckCodingQuestionService{
@@ -19,46 +20,40 @@ class CheckCodingQuestionService{
         this.checkCodingQuestionView=checkCodingQuestionView
     }
 
-    fun checkCodingQuestion(jwt: String, images: ArrayList<MultipartBody.Part?>?, userIdx: Long, currentError:String, myCodingSkill: String?, bigCategoryIdx: Long, smallCategoryIdx: Long?, title: String, codeQuestionUrl: String?
+    fun checkCodingQuestion(jwt: String, codingQuestionSend:CodingQuestionSend, body: ArrayList<MultipartBody.Part>?
     ) {
         val checkCodingQuestionService= getRetrofit().create(CheckCodingQuestionRetrofitInterface::class.java)
 
-        val jsonObject = JSONObject("{\"userIdx\":${userIdx},\"currentError\":\"${currentError}\",\"myCodingSkill\":\"${myCodingSkill}\",\"bigCategoryIdx\":${bigCategoryIdx}, \"smallCategoryIdx\":${smallCategoryIdx},\"title\":\"${title}\",\"codeQuestionUrl\":\"${codeQuestionUrl}\"}").toString()
-//        val jsonBody = RequestBody.create("application/json".toMediaTypeOrNull(),jsonObject)
-        val CodeQuestionReq = jsonObject.toRequestBody(contentType = "application/json".toMediaTypeOrNull())
-        Log.d("json/jsonObject", jsonObject)
-        Log.d("json/jsonBody", CodeQuestionReq.toString())
-
-        val body = "multipart/form-data".toRequestBody(MultipartBody.FORM)
-        val emptyPart = MultipartBody.Part.createFormData("images","images",body)
-        val emptyList = arrayListOf<MultipartBody.Part?>()
-        emptyList.add(emptyPart)
-
+        Log.d("kim","코딩 질문 서비스 실행")
 
         checkCodingQuestionView.onCheckCodingQuestionLoading()
-        checkCodingQuestionService.checkCodingQuestion(
-            jwt, images, CodeQuestionReq
-        ).enqueue(object : Callback<CheckCodingQuestionResponse> {
+
+        checkCodingQuestionService.checkCodingQuestion(jwt, codingQuestionSend,body)
+            .enqueue(object : Callback<CheckCodingQuestionResponse> {
             override fun onResponse(call: Call<CheckCodingQuestionResponse>, response: Response<CheckCodingQuestionResponse>) {
-                Log.d("CHECKCODING/API-RESPONSE", response.toString())
-                Log.d("CHECKCODING/API- response.body()", response.body().toString())
-                Log.d("CHECKCODING/API- response.errorbody()", response.errorBody()!!.string())
-                Log.d("CHECKCODING/API-RESPONSE3", response.isSuccessful.toString())
-                Log.d("CHECKCODING/API-images", images.toString())
-                Log.d("CHECKCODING/API-body", checkCodingQuestionService.checkCodingQuestion(
-                    jwt, images, CodeQuestionReq
-                ).request().toString())
 
-                if (response.isSuccessful&&response.code()==200){
-                    val resp=response.body()!!
-                    Log.d("CHECKCODING/API-SUCCESS-mumulcom", resp.toString())
+                Log.d("kim","서버 연결 성공")
 
-                    when(resp.code){
-                        1000-> checkCodingQuestionView.onCheckCodingQuestionSuccess(resp.result)
+                val resp = response.body()
 
-                        else->checkCodingQuestionView.onCheckCodingQuestionFailure(resp.code, resp.message)
-                    }
-                }
+                Log.d("kim",response.toString())
+
+//                when(resp.code){
+//                    1000-> checkCodingQuestionView.onCheckCodingQuestionSuccess(resp.result)
+//                    else->checkCodingQuestionView.onCheckCodingQuestionFailure(resp.code, resp.message)
+//                }
+
+
+//                if (response.isSuccessful&&response.code()==200){
+//                    val resp=response.body()!!
+//                    Log.d("CHECKCODING/API-SUCCESS-mumulcom", resp.toString())
+//
+//                    when(resp.code){
+//                        1000-> checkCodingQuestionView.onCheckCodingQuestionSuccess(resp.result)
+//
+//                        else->checkCodingQuestionView.onCheckCodingQuestionFailure(resp.code, resp.message)
+//                    }
+//                }
             }
 
             override fun onFailure(call: Call<CheckCodingQuestionResponse>, t: Throwable) {
@@ -68,11 +63,7 @@ class CheckCodingQuestionService{
                 Log.d("CHECKCODING/API-ERROR",t.message.toString())
             }
         })
-        Log.d("CHECKCODING/API","Hello")
-        Log.d("API/images", images.toString())
-        Log.d("API/jwt", jwt)
-        Log.d("API/CodeQuestionReq", CodeQuestionReq.toString())
-        Log.d("API/jsonObject", jsonObject.toString())
+
     }
 
 }

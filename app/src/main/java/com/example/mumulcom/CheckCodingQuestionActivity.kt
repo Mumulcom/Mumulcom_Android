@@ -240,12 +240,14 @@ class CheckCodingQuestionActivity:AppCompatActivity(), CheckCodingQuestionView, 
         emptyList.add(emptyPart)
 
 
-        if (images.toString().length>2) {//이미지가 있으면
-            checkCodingQuestionService.checkCodingQuestion(getJwt(this), images, userIdx, currentError, myCodingSkill, bigCategoryIdx, smallCategoryIdx, title, codeQuestionUrl)
-        }else{//이미지가 없으면
-
-            checkCodingQuestionService.checkCodingQuestion(getJwt(this),null, userIdx, currentError, myCodingSkill, bigCategoryIdx, smallCategoryIdx, title, codeQuestionUrl)
-        }
+//        if (images.toString().length>2) {//이미지가 있으면
+//            checkCodingQuestionService.checkCodingQuestion(getJwt(this), images, userIdx, currentError, myCodingSkill, bigCategoryIdx, smallCategoryIdx, title, codeQuestionUrl)
+//        }else{//이미지가 없으면
+//
+//            checkCodingQuestionService.checkCodingQuestion(getJwt(this),null, userIdx, currentError, myCodingSkill, bigCategoryIdx, smallCategoryIdx, title, codeQuestionUrl)
+//        }
+        checkCodingQuestionService.checkCodingQuestion(getJwt(this),CodingQuestionSend(userIdx,"가나다라마바사","가나다라",
+        1,1,"가나다라","dfsdfd"),null)
 
         Log.d("CHECKCODING/APIHH","Hello")
 
