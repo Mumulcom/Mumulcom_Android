@@ -16,6 +16,8 @@ import android.provider.MediaStore
 import android.util.Base64.DEFAULT
 import android.util.Base64.encodeToString
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -150,6 +152,7 @@ private lateinit var binding : ActivityQuestionDetailBinding
             }else return@registerForActivityResult
         }
     }// end of onCreate
+
 
 
     override fun onStart() {
@@ -510,6 +513,12 @@ private lateinit var binding : ActivityQuestionDetailBinding
                 Log.d("replyImageResult",replyImgUrl.toString())
                 startActivity(intent)
 
+            }
+
+            override fun goProfileActivity(profileId: Long) {
+                val intent=Intent(this@QuestionDetailActivity,ProfileActivity::class.java)
+                intent.putExtra("profileIdx",profileId)
+                startActivity(intent)
             }
         })
 
