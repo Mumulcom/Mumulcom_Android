@@ -4,7 +4,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
-import java.util.ArrayList
 
 
 //인터페이스 생성
@@ -13,13 +12,10 @@ interface CheckCodingQuestionRetrofitInterface {
     @POST("/questions/coding")
     fun checkCodingQuestion(
         @Header("X-ACCESS-TOKEN") X_ACCESS_TOKEN: String,
-        @Part("CodeQuestionReq") CodeQuestionReq: CodingQuestionSend,
-        @Part images: List<MultipartBody.Part>?
-
-        ): Call<CheckCodingQuestionResponse>
-
+        @Part images: List<MultipartBody.Part?>?,
+        @Part ("codeQuestionReq") codeQuestionReq: CheckCoding,
+    ): Call<CheckCodingQuestionResponse>
 }
-
 
 
 

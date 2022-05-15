@@ -3,10 +3,9 @@ package com.example.mumulcom
 
 import android.util.Log
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Response
-import retrofit2.http.Multipart
+
 
 class UploadCommentService {
     private lateinit var uploadCommentView: UploadCommentView
@@ -17,8 +16,9 @@ class UploadCommentService {
         this.uploadCommentView = uploadCommentView
     }
 
-    fun getUploadComment(jwt:String,commentSend: CommentSend,body: MultipartBody.Part?){
+    fun getUploadComment(jwt:String,commentSend: CommentSend, body: MultipartBody.Part?){
         val uploadCommentService = getRetrofit().create(QuestionRetrofitInterface::class.java)
+
 
         uploadCommentView.onGetUploadCommentLoading()
 
@@ -27,7 +27,8 @@ class UploadCommentService {
                 override fun onResponse(call: Call<UploadCommentResponse>, response: Response<UploadCommentResponse>) {
 
                     Log.d("banana/response.body()",response.body().toString())
-
+                    Log.d("banana/response.body()",commentSend.toString())
+                    Log.d("json/API", call.request().toString())
                     Log.d("APIAPI//commentSend",uploadCommentService.getUploadComment(jwt,commentSend,body).request().toString())
                     val resp = response.body()!!
 

@@ -2,7 +2,6 @@ package com.example.mumulcom
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
@@ -36,18 +35,16 @@ class AnswerActivity:AppCompatActivity(), AnswerView {
     private lateinit var storage: FirebaseStorage
     private lateinit var firestore: FirebaseFirestore //파이어스토리지
     lateinit var photoAdapter:PhotoAdapter//리사이클러뷰
-    private var images = arrayListOf<String>()
     var photoList = arrayListOf<Photo>()
-    var answerList = arrayListOf<Album>()//답변하기에 떠있는 질문창
     private var jwt: String = ""
     private var userIdx: Long = 1
-    private lateinit var title: String
     private var questionIdx: Long=0
     private lateinit var replyUrl: String
     private lateinit var content:String
     lateinit var answerQuestionVPAdater: AnswerQuestionVPAdater
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>//이동(카메라 앨범)
     var count=0//이미지 수
+    private var images = arrayListOf<MultipartBody.Part?>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -148,22 +145,21 @@ class AnswerActivity:AppCompatActivity(), AnswerView {
 
         if (resultCode == RESULT_OK) {
             var stringpath = data?.getStringExtra("imagepath")!!
-//            val imagePath = data?.getByteArrayExtra("path")!!
+            val imagePath = data?.getByteArrayExtra("path")!!
 
             photoList.apply {
                 add( Photo(stringpath))
                 Log.d("SEND/path", stringpath)
                 count++
                 Log.d("path/count", count.toString())
-                images.add(stringpath)
             }
             Log.d("GETGET", photoList.toString())
 
-//            if (imagePath!=null) {
-//                val sendImage = imagePath.toRequestBody("image/*".toMediaTypeOrNull())
-//                val multibody: MultipartBody.Part=MultipartBody.Part.createFormData("images", "image.jpeg", sendImage)
-////                images.add(multibody)
-//            }
+            if (imagePath!=null) {
+                val sendImage = imagePath.toRequestBody("image/*".toMediaTypeOrNull())
+                val multibody: MultipartBody.Part=MultipartBody.Part.createFormData("images", "image.jpeg", sendImage)
+                images.add(multibody)
+            }
             Log.d("path/multi", images.toString())
 
             //이미지가 5개부터는 추가 불
@@ -254,16 +250,30 @@ class AnswerActivity:AppCompatActivity(), AnswerView {
         Log.d("answer/content : ", content)
         Log.d("answer/images", images.toString())
 
-        return Answer(questionIdx, userIdx, replyUrl, content, images)
+        return Answer(questionIdx, userIdx, replyUrl, content)
     }
 
     //api서버 전송
     private fun answerif(){
+        questionIdx= intent.getLongExtra("questionIdx",questionIdx)
+        replyUrl=binding.answerAnswerCodeEt.text.toString()
+        content=binding.answerExplanationEt.text.toString()
+
+        Log.d("answer/questionIdx : ", questionIdx.toString())
+        Log.d("answer/userIdx : ", userIdx.toString())
+        Log.d("answer/replyUrl : ", replyUrl)
+        Log.d("answer/content : ", content)
+        Log.d("answer/images", images.toString())
+
         val answerService=AnswerService()
 
         answerService.setanswerView(this)
 
-        answerService.answer(getJwt(this), getAnswer())
+        if (images.toString().length>2) {
+            answerService.answer(getJwt(this), images, Answer(questionIdx, userIdx, replyUrl, content))
+        }else{
+            answerService.answer(getJwt(this), null,Answer(questionIdx, userIdx, replyUrl, content))
+        }
         Log.d("ANSWER/API","Hello")
     }
 
