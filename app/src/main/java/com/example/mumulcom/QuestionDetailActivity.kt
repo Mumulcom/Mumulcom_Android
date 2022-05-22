@@ -502,6 +502,7 @@ private lateinit var binding : ActivityQuestionDetailBinding
 
             override fun goBackCommentActivity(_replyIdx: Long, profileImage: String, nickname: String, createdAt: String, replyUrl: String?, content: String, replyImgUrl: ArrayList<String>
             ) {
+                Log.d("abctest1:",_replyIdx.toString())
                 val intent = Intent(this@QuestionDetailActivity,CommentActivity::class.java)
                 intent.putExtra("replyIdx",_replyIdx)
                 intent.putExtra("profileImage",profileImage) // 프로필 이미지
@@ -519,7 +520,8 @@ private lateinit var binding : ActivityQuestionDetailBinding
 //                val intent=Intent(this@QuestionDetailActivity,ProfileActivity::class.java)
 //                intent.putExtra("profileIdx",profileId)
 //                startActivity(intent)
-                val reportDialogFragment = ReportDialogFragment()
+                Log.d("abctest1:",profileId.toString())
+                val reportDialogFragment = ReportDialogFragment(profileId)
                 reportDialogFragment.show(supportFragmentManager,ReportDialogFragment.TAG)
             }
         })

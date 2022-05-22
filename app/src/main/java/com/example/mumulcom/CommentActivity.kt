@@ -264,7 +264,7 @@ class CommentActivity : AppCompatActivity() ,CommentsForReplyView, UploadComment
         commentsForReplyAdapter.addComments(result)
         commentsForReplyAdapter.setCommentsClickListener(object : CommentsForReplyAdapter.CommentsItemClickListener {
             override fun goReportActivity(reportUserId: Long) {
-                val reportDialogFragment = ReportDialogFragment()
+                val reportDialogFragment = ReportDialogFragment(reportUserId)
                 reportDialogFragment.show(supportFragmentManager,ReportDialogFragment.TAG)
             }
 

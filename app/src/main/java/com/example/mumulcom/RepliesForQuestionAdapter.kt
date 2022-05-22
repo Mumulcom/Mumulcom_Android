@@ -268,7 +268,8 @@ class RepliesForQuestionAdapter(val context: Context,var adopt:String,var writer
             // 답변한 사용자의 프로필 사진 누를때
             //TODO 프로필 사진과 닉네임을 눌렀을때도 이동하도록 변경
             binding.profileIv.setOnClickListener {
-                repliesItemClickListener.goReportActivity(_replyIdx)
+                var userIdx:Long = reply.userIdx
+                repliesItemClickListener.goReportActivity(userIdx)
             }
 
 

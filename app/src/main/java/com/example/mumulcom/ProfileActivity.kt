@@ -7,7 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.example.mumulcom.databinding.ActivityProfileBinding
 
-// 프로필 activity
+// todo 안쓰는 파일
 class ProfileActivity : AppCompatActivity() {
 
     private lateinit var binding:ActivityProfileBinding
