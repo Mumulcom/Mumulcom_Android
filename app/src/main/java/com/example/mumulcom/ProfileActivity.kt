@@ -27,7 +27,7 @@ class ProfileActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowCustomEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false) // 기본 제목 삭제
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // 뒤로가기 추가
-        binding.toolbar.title="프로필"
+        binding.toolbar.title="사용자 프로필"
 
 
     }
@@ -45,8 +45,9 @@ class ProfileActivity : AppCompatActivity() {
                 startActivity(intent)
                 return true
             }
-            R.id.home ->{
+            android.R.id.home ->{
                 finish()
+                return true
             }
         }
         return super.onOptionsItemSelected(item)
