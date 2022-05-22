@@ -26,6 +26,7 @@
         <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/drawable/main_btm_home_selector.xml" value="0.1845" />
         <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/drawable/main_btm_question_selector.xml" value="0.1845" />
         <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/drawable/question_list_background.xml" value="0.1245" />
+        <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/layout/activity_announce.xml" value="0.23055555555555557" />
         <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/layout/activity_answer.xml" value="0.264" />
         <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/layout/activity_checkcodingquestion.xml" value="0.264" />
         <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/layout/activity_codingcamerashooting.xml" value="0.19583333333333333" />
@@ -47,6 +48,8 @@
         <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/layout/dialog_adopt.xml" value="0.20462962962962963" />
         <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/layout/dialog_answer.xml" value="0.12222222222222222" />
         <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/layout/dialog_signup.xml" value="0.11203703703703703" />
+        <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/layout/fragment_bottom_report_sheet.xml" value="0.2935185185185185" />
+        <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/layout/fragment_bottom_sheet.xml" value="0.2935185185185185" />
         <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/layout/fragment_home.xml" value="0.14166666666666666" />
         <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/layout/fragment_profile.xml" value="0.4" />
         <entry key="..\:/AndroidProject/MuMulcom/Mumulcom_Android/app/src/main/res/layout/fragment_question.xml" value="0.20208333333333334" />

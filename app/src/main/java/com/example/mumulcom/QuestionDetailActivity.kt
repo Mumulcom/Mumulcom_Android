@@ -515,10 +515,12 @@ private lateinit var binding : ActivityQuestionDetailBinding
 
             }
 
-            override fun goProfileActivity(profileId: Long) {
-                val intent=Intent(this@QuestionDetailActivity,ProfileActivity::class.java)
-                intent.putExtra("profileIdx",profileId)
-                startActivity(intent)
+            override fun goReportActivity(profileId: Long) {
+//                val intent=Intent(this@QuestionDetailActivity,ProfileActivity::class.java)
+//                intent.putExtra("profileIdx",profileId)
+//                startActivity(intent)
+                val reportDialogFragment = ReportDialogFragment()
+                reportDialogFragment.show(supportFragmentManager,ReportDialogFragment.TAG)
             }
         })
 

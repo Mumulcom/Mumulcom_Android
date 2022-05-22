@@ -47,13 +47,13 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
     <TextView
-        android:textStyle="bold"
-        android:textColor="@color/black"
+
+        android:textColor="@color/error"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="사용자를 신고하는 이유를 선택해 주세요"
+        android:text="*사용자를 신고하는 이유를 선택해 주세요"
         android:layout_marginBottom="40dp"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
